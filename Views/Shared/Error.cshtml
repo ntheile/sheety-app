@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div id="message">
+    <h2 class="text-danger">Whoops! We've encountered an error while processing your request!</h2>
+
+    <p>
+        Try refreshing the page. If you keep getting this error, please contact the GSD, and keep the error info
+        below for reference:
+    </p>
+    <div id="error-details">
+        @if (!string.IsNullOrEmpty((string)ViewData["RequestId"]))
+        {
+            <p>
+                <strong>Request ID:</strong> <code>@ViewData["RequestId"]</code><br />
+                <strong>Error Message:</strong> <code>@Context.Request.Query["message"].ToString()</code>
+            </p>
+        }
+    </div>
+</div>

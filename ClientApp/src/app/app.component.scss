@@ -1,0 +1,74 @@
+@media (max-width: 767px) {
+    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
+    .body-content {
+        padding-top: 50px;
+    }
+}
+
+mat-sidenav-container {
+    background: transparent;
+    mat-sidenav
+    {
+        width: 228px;
+        .mat-button, .mat-raised-button
+        {
+            width: 100%;
+            text-align: left;
+        }
+
+        mat-list-item {
+            cursor: pointer;
+            border-bottom: 1px solid rgba(0, 0, 0, .12);
+      
+            .med-bold {
+              font-weight: 500;
+            }
+      
+            .font-size-14 {
+              font-size: 14px;
+            }
+        }
+    
+        .active {
+            background: rgba(0,0,0, .06);
+        }
+    
+        mat-list-item:focus {
+            outline: 0 none;
+            background: rgba(0,0,0, .06);
+        }
+    }
+}
+
+.nav-logo {
+    width: 115px;
+    margin-left: 56px;
+    margin-right: 84px;
+    margin-top: 15px;
+    @media (min-width: 1024px) {
+        display: none;
+    }
+  }
+
+.body-content {
+    margin: 95px 10px 0 10px;
+}
+
+mat-sidenav {
+    margin: 75px 0 0 0;
+}
+
+app-header {
+  width: inherit;
+  margin-left: 40px;
+}
+
+.menu-btn {
+    position: absolute;
+    z-index: 9999;
+    top: 19px;
+    left: 12px;
+    padding: 0 5px;
+    min-width: 25px;
+  }
+  

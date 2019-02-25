@@ -1,0 +1,31 @@
+button {
+  padding-right: 0px;
+  padding-left: 8px;
+  float: right;
+}
+
+.large-user-account {
+  display: block;
+}
+
+.user-name, .small-user-account {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .large-user-account {
+    display: none;
+  }
+
+  .small-user-account {
+    display: block;
+    .icon {
+      margin-top: 7px;
+      margin-right: 8px;
+    }
+  }
+
+  .user-name {
+    display: block;
+  }
+}

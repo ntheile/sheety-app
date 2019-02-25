@@ -1,0 +1,45 @@
+//Toolbar Component
+.mat-toolbar {
+    &.mat-primary {
+        background-color: white;
+        box-shadow: 0 2px 18px 0 rgba(0,0,0,0.18);
+        color: $black-87-opacity;
+        height: 75px;
+        position: absolute;
+        z-index: 999;
+    }
+    &.mat-accent {
+        background-color: mat-color($mat-dow-dark-red, 500);
+        box-shadow: 0 2px 18px 0 rgba(0,0,0,0.18);
+        color: $white-87-opacity;
+        height: 75px;
+        position: absolute;
+        z-index: 999;
+    }
+}
+.mat-toolbar {
+    &.mat-primary:before {
+        content: '';
+        width: 115px;
+        height: 75px;
+        margin-left: 40px;
+        background: url('~/../src/assets/dow-logo.png') center center no-repeat;
+        background-size: contain;
+        margin-right: 84px;
+        @media (max-width: 1024px) {
+            display: none;
+        }
+    }
+    &.mat-accent:before {
+        content: '';
+        width: 115px;
+        height: 75px;
+        margin-left: 40px;
+        background: url('~/../src/assets/dow-logo.png') center center no-repeat;
+        background-size: contain;
+        margin-right: 84px;
+        @media (max-width: 1024px) {
+            display: none;
+        }
+    }
+}

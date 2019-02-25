@@ -1,0 +1,11 @@
+/* 
+    Mixins - Do calculations, conditionals on Sass variables, etc.
+    Usage example:
+        font-size: calculateRem(16px);
+*/
+
+// Change pixel value to REM
+@function calculateRem($val) {
+	$converted: $val / 16px;
+	@return #{$converted}rem;
+}

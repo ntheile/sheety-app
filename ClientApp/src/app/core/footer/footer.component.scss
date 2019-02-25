@@ -1,0 +1,24 @@
+//@import '../../../styles/_helpers.scss';
+//Because our angularcli.json provides stylePreprocessorOptions
+//You can import *.scss under src/styles without a relative path
+@import 'helpers';
+
+.footer-copyright {
+    margin: 30px auto;
+    @include font-size(14px);
+    text-align: center;
+    
+    p {
+        color: $black-opacity-87;
+    };
+    
+    a {
+        color: $black-opacity-47;
+        text-decoration: underline;
+        padding: 0 7px;
+        
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

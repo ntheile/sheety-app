@@ -1,0 +1,12 @@
+@import 'dow-theme/dow-color-palette.scss';
+
+@import '~@angular/material/theming';
+@include   mat-core();
+$primary:  mat-palette($mat-dow-dark-red, 500, 600, 800);
+$accent:   mat-palette($mat-dow-dark-orange, 600, 100, 800);
+$warn:     mat-palette($mat-dow-magenta, 600);
+$theme:    mat-light-theme($primary, $accent, $warn);
+@include   angular-material-theme($theme);
+
+// Dow Theme Individual Component Overrides below
+@import 'dow-theme/dow-custom-component-themes.scss';

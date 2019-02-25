@@ -1,0 +1,112 @@
+/*
+	---- Sizes ----
+ */
+
+// Responsive widths
+$widthMobile  : 93%; 
+$widthDesktop : 84%;
+
+// Breakpoints from flex-layout - https://github.com/angular/flex-layout/wiki/API-Overview
+// Variable is to be used with include-media helper library - http://include-media.com/#features
+//   -- Example usage: @include media('<md') { display: none; }
+$breakpoints: (
+    xs    : 599px,
+	gt-xs : 600px,
+	sm    : 959px,
+	gt-sm : 960px,
+	md    : 1279px,
+	gt-md : 1280px,
+	lg    : 1919px,
+	gt-lg : 1920px,
+	xl    : 5000px,
+);
+
+
+/*
+	---- COLORS!!! ----
+ */
+
+// Neutrals
+$color-white         : #ffffff;
+$white               : $color-white;
+$color-black         : #111111;
+$black               : $color-black;
+$off-black			 : #212121;
+
+$black-opacity-87 : rgba(0,0,0,0.87);
+$black-opacity-54 : rgba(0,0,0,0.54);
+$black-opacity-57 : rgba(0,0,0,0.57);
+$black-opacity-47 : rgba(0,0,0,0.47);
+$black-opacity-38 : rgba(0,0,0,0.38);
+$black-opacity-23 : rgba(0,0,0,0.23);
+$black-opacity-12 : rgba(0,0,0,0.12);
+$black-opacity-06 : rgba(0,0,0,0.06);
+$black-opacity-03 : rgba(0,0,0,0.03);
+
+$color-grey          : #999999;
+$gray                : $color-grey;
+$grey                : $color-grey;
+
+$color-grey-light    : #bfbfbf;
+$grey-light          : $color-grey-light;
+$gray-light          : $color-grey-light;
+
+$color-grey-lighter  : #e6e6e6;
+$grey-lighter        : $color-grey-lighter;
+$gray-lighter        : $color-grey-lighter;
+
+$color-grey-lightest : #f2f2f2;
+$grey-lightest       : $color-grey-lightest;
+$gray-lightest       : $color-grey-lightest;
+
+$color-grey-dark     : #808080;
+$grey-dark           : $color-grey-dark;
+$gray-dark           : $color-grey-dark;
+
+$color-grey-darker   : #666666;
+$grey-darker         : $color-grey-darker;
+$gray-darker         : $color-grey-darker;
+
+
+// -- Dow Palette --
+ 
+// RED
+$color-red               : #E80033; 
+$red: $color-red;
+$color-red-dark          : #d0002e;
+$color-red-darker        : #bf0d3e;
+$color-red-darkest       : #ac0c38;
+
+// BLUE
+$color-blue              : #337ab7;
+$color-blue-dark         : #286090;
+
+// YELLOW
+$color-yellow            : #fdbb30;
+$color-yellow-dark       : #e3a82b;
+$color-yellow-lightest   : #fff8ea;
+
+// ORANGE
+$color-orange            : #ed8b00;
+$color-orange-bright     : #ffa500;
+$color-orange-light      : #fff0d0;
+$color-orange-med        : #f15d22;
+$color-orange-med-darker : #d8541f;
+$color-orange-dark       : #d57d00;
+$color-orange-button     : $color-orange-med;
+
+// PURPLE 
+$color-purple            : #910048;
+$color-purple-darker     : #820041;
+
+// MAGENTA
+$color-magenta           : #d0006f;
+$color-magenta-lighter   : #ca296c;
+$color-magenta-darker    : #bb0064;  
+
+// GREEN
+$color-green : #4CAF50;
+
+// Other                 :   
+$color-text              : $color-black !default;
+$color-border            : $color-grey-lightest !default;
