@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace thing_faceter.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class AccountController : Controller
     {
         EnvironmentOptions _environmentOptions;

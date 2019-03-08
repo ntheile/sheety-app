@@ -20,7 +20,11 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]
             },
-            "assets": ["src/assets"],
+            "assets": [
+              "src/assets",
+              "src/data/hierarchy.json",
+              "src/data/data.json"
+            ],
             "styles": ["src/styles/styles.css", "src/styles/theme.scss"],
             "scripts": []
           },

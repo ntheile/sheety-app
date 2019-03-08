@@ -60,88 +60,88 @@ namespace thing_faceter
             // Register the IConfiguration instance which MyOptions binds against.
             services.Configure<EnvironmentOptions>(Configuration.GetSection("Environment"));
 
-            services.AddAuthentication(auth =>
-            {
-                auth.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                auth.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                auth.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options =>
-            {
-                options.Cookie.Name = "thing_faceter_AUTH";                
-                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-                options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.Expiration = TimeSpan.FromHours(1);
-                options.LoginPath = new PathString("/Account/Login");
-                options.LogoutPath = new PathString("/Account/Logout");
-                options.AccessDeniedPath = new PathString("/forbidden"); 
-                // The default setting for cookie expiration is 14 days. SlidingExpiration is set to true by default
-                options.ExpireTimeSpan = TimeSpan.FromHours(1);
-                options.SlidingExpiration = true;
-                options.Events.OnRedirectToLogin = ctx =>
-                {
-                    if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == (int)HttpStatusCode.OK)
-                    {
-                        ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    }
-                    else
-                    {
-                        ctx.Response.Redirect(ctx.RedirectUri);
-                    }
-                    return Task.FromResult(0);
-                };
-                options.Events.OnRedirectToAccessDenied = (ctx) =>
-                {
-                    if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == (int)HttpStatusCode.OK)
-                    {
-                        ctx.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                    }
-                    else
-                        ctx.Response.Redirect(ctx.RedirectUri);
-                    return Task.CompletedTask;
-                };
-            })
-            .AddOpenIdConnect(oidcOptions =>
-            {
-                oidcOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                oidcOptions.ClientId = _clientID;
-                oidcOptions.ClientSecret = _clientSecret;
-                oidcOptions.Authority = _authority;
-                oidcOptions.ResponseType = OpenIdConnectResponseType.CodeIdToken;
-                oidcOptions.SaveTokens = true;
-                oidcOptions.ClaimActions.Remove("amr");
-                oidcOptions.ClaimActions.Remove("aud");
-                oidcOptions.ClaimActions.Remove("iss");
-                oidcOptions.ClaimActions.Remove("iat");
-                oidcOptions.ClaimActions.Remove("nbf");
-                oidcOptions.ClaimActions.Remove("exp");
-                oidcOptions.Events = new OpenIdConnectEvents
-                {
-                    OnTicketReceived = context =>
-                    {
-                        context.Properties.IsPersistent = true;
-                        return Task.FromResult(0);
-                    },
-                    OnAuthorizationCodeReceived = async (context) =>
-                    {
-                        // Acquire a Token for the API and cache it in the Distributed Token Cache using ADAL
-                        string userObjectId = (context.Principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier"))?.Value;
-                        ClientCredential credentials = new ClientCredential(_clientID, _clientSecret);
+            //services.AddAuthentication(auth =>
+            //{
+            //    auth.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    auth.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    auth.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //}).AddCookie(options =>
+            //{
+            //    options.Cookie.Name = "thing_faceter_AUTH";                
+            //    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+            //    options.Cookie.SameSite = SameSiteMode.None;
+            //    options.Cookie.Expiration = TimeSpan.FromHours(1);
+            //    options.LoginPath = new PathString("/Account/Login");
+            //    options.LogoutPath = new PathString("/Account/Logout");
+            //    options.AccessDeniedPath = new PathString("/forbidden"); 
+            //    // The default setting for cookie expiration is 14 days. SlidingExpiration is set to true by default
+            //    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+            //    options.SlidingExpiration = true;
+            //    options.Events.OnRedirectToLogin = ctx =>
+            //    {
+            //        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == (int)HttpStatusCode.OK)
+            //        {
+            //            ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            //        }
+            //        else
+            //        {
+            //            ctx.Response.Redirect(ctx.RedirectUri);
+            //        }
+            //        return Task.FromResult(0);
+            //    };
+            //    options.Events.OnRedirectToAccessDenied = (ctx) =>
+            //    {
+            //        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == (int)HttpStatusCode.OK)
+            //        {
+            //            ctx.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            //        }
+            //        else
+            //            ctx.Response.Redirect(ctx.RedirectUri);
+            //        return Task.CompletedTask;
+            //    };
+            //})
+            //.AddOpenIdConnect(oidcOptions =>
+            //{
+            //    oidcOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    oidcOptions.ClientId = _clientID;
+            //    oidcOptions.ClientSecret = _clientSecret;
+            //    oidcOptions.Authority = _authority;
+            //    oidcOptions.ResponseType = OpenIdConnectResponseType.CodeIdToken;
+            //    oidcOptions.SaveTokens = true;
+            //    oidcOptions.ClaimActions.Remove("amr");
+            //    oidcOptions.ClaimActions.Remove("aud");
+            //    oidcOptions.ClaimActions.Remove("iss");
+            //    oidcOptions.ClaimActions.Remove("iat");
+            //    oidcOptions.ClaimActions.Remove("nbf");
+            //    oidcOptions.ClaimActions.Remove("exp");
+            //    oidcOptions.Events = new OpenIdConnectEvents
+            //    {
+            //        OnTicketReceived = context =>
+            //        {
+            //            context.Properties.IsPersistent = true;
+            //            return Task.FromResult(0);
+            //        },
+            //        OnAuthorizationCodeReceived = async (context) =>
+            //        {
+            //            // Acquire a Token for the API and cache it in the Distributed Token Cache using ADAL
+            //            string userObjectId = (context.Principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier"))?.Value;
+            //            ClientCredential credentials = new ClientCredential(_clientID, _clientSecret);
 
-                        //Get an instance of the token cache for the current user request
-                        IDistributedCache distributedCache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
-                        var cache = new DistributedTokenCache(context.Principal, distributedCache);
-                        AuthenticationContext authContext = new AuthenticationContext(_authority, cache);
+            //            //Get an instance of the token cache for the current user request
+            //            IDistributedCache distributedCache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
+            //            var cache = new DistributedTokenCache(context.Principal, distributedCache);
+            //            AuthenticationContext authContext = new AuthenticationContext(_authority, cache);
 
-                        AuthenticationResult authResult = await authContext.AcquireTokenByAuthorizationCodeAsync(context.ProtocolMessage.Code,
-                            new Uri(context.Properties.Items[OpenIdConnectDefaults.RedirectUriForCodePropertiesKey]), credentials, _resourceID);
+            //            AuthenticationResult authResult = await authContext.AcquireTokenByAuthorizationCodeAsync(context.ProtocolMessage.Code,
+            //                new Uri(context.Properties.Items[OpenIdConnectDefaults.RedirectUriForCodePropertiesKey]), credentials, _resourceID);
 
-                        // Notify the OIDC middleware that we already took care of code redemption.
-                        context.HandleCodeRedemption(authResult.AccessToken, authResult.IdToken);
-                    },
-                    OnRemoteFailure = OnAuthenticationFailed
+            //            // Notify the OIDC middleware that we already took care of code redemption.
+            //            context.HandleCodeRedemption(authResult.AccessToken, authResult.IdToken);
+            //        },
+            //        OnRemoteFailure = OnAuthenticationFailed
 
-                };
-            });
+            //    };
+            //});
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
@@ -189,7 +189,7 @@ namespace thing_faceter
             });
 
             app.UseHttpsRedirection();
-            app.UseAuthentication();
+            // app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -201,7 +201,7 @@ namespace thing_faceter
             });
 
 
-            app.UseWhen(IsUnauthenticatedSpaPath, TriggerSignIn);
+            // app.UseWhen(IsUnauthenticatedSpaPath, TriggerSignIn);
 
             app.UseSpa(spa =>
             {

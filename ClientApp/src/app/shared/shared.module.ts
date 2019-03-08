@@ -3,6 +3,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+
 import {
     MatButtonModule,
     MatMenuModule,
@@ -18,7 +19,7 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
 } from '@angular/material';
 
 const MATERIALCOMPONENTS = [

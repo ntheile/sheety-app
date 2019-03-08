@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthGuardService } from './core/auth-guard';
 import { SharedModule } from './shared/shared.module';
 
+
 import 'hammerjs';
 
 @NgModule({
@@ -25,10 +26,10 @@ import 'hammerjs';
     }),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     BrowserAnimationsModule,
-    HttpClientModule,
+    HttpClientModule,    
     CoreModule,
     SharedModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
     AppInsightsService,
