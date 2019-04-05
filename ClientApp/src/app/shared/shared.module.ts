@@ -1,26 +1,26 @@
-import { NgModule } from '@angular/core';
-import { CdkTableModule } from '@angular/cdk/table';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
+import { CdkTableModule } from "@angular/cdk/table";
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 
 import {
     MatButtonModule,
-    MatMenuModule,
-    MatToolbarModule,
-    MatIconModule,
     MatCardModule,
-    MatSidenavModule,
-    MatListModule,
     MatCheckboxModule,
-    MatRadioModule,
-    MatSlideToggleModule,
-    MatProgressSpinnerModule,
+    MatExpansionModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
-    MatTableModule,
+    MatListModule,
+    MatMenuModule,
     MatPaginatorModule,
-} from '@angular/material';
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatSidenavModule,
+    MatSlideToggleModule,
+    MatTableModule,
+    MatToolbarModule,
+} from "@angular/material";
 
 const MATERIALCOMPONENTS = [
     CdkTableModule,
@@ -38,7 +38,8 @@ const MATERIALCOMPONENTS = [
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatExpansionModule,
 ];
 
 @NgModule({
@@ -52,6 +53,6 @@ const MATERIALCOMPONENTS = [
         CommonModule,
         FormsModule,
         MATERIALCOMPONENTS,
-    ]
+    ],
 })
 export class SharedModule { }

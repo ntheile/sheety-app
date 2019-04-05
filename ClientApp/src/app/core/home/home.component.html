@@ -1,28 +1,41 @@
-<mat-card>
-
+<div style="display:flex; flex-direction: row">
+    <mat-card style="margin-right: 20px; min-width: 320px;">
+        <h2>facets</h2>
+        <span>Should Facet: {{ shouldFacet }}</span>
+        <button (click)="filter()" >filter</button>
+        <pre *ngIf="shouldFacet">
+            <app-facet #facets></app-facet>
+        </pre>
+    </mat-card>
+    <mat-card>
     
-    <button (click)="go()" >/home/market</button>
-
-    <mat-card-title>
-        <pre>
-            {{ routeParams | json }}
-        </pre>
-        <span>Depth: {{ hierarchyDepth }}</span>
-    </mat-card-title>
-
- 
         
+        <!-- <button (click)="go()" >/home/market</button> -->
     
-    <mat-card-content>
-        <h3>Search Options</h3>
-        <pre>
-            {{ searchOpts | json }}
-        </pre>
-          <hr/>
-        <h3>Data</h3>
-        <pre>
-            {{ currentData | json }}
-        </pre>
+        <mat-card-title>
+            <pre>
+                {{ routeParams | json }}
+            </pre>
+            <span>Depth: {{ hierarchyDepth }}</span><br/>
+            <span>Count: {{ currentData.length }}</span><br/>
+            
+        </mat-card-title>
+    
+     
+            
         
-    </mat-card-content>
-</mat-card>
+        <mat-card-content>
+            <h3>Search Options</h3>
+            <pre>
+                {{ searchOpts | json }}
+            </pre>
+              <hr/>
+            <h3>Data</h3>
+            <pre>
+                {{ currentData | json }}
+            </pre>
+            
+        </mat-card-content>
+    </mat-card>
+    
+</div>

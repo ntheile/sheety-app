@@ -1,7 +1,11 @@
 {
   "extends": ["tslint:recommended", "codelyzer"],
   "linterOptions": {
-    "exclude": ["./src/*.ts"]
+    "exclude": [
+      "./src/*.ts",
+      "**/*.json",
+      "*.json",
+    ]
   },
   "rules": {
     "arrow-return-shorthand": true,

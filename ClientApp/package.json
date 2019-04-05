@@ -46,12 +46,14 @@
     "@nguniversal/module-map-ngfactory-loader": "^5.0.0",
     "aspnet-prerendering": "^3.0.1",
     "core-js": "^2.5.7",
+    "d3-collection": "^1.0.7",
     "fuse.js": "^3.4.2",
     "hammerjs": "^2.0.8",
     "intl": "^1.2.5",
     "ngx-json-viewer": "^2.4.0",
     "normalize.css": "^7.0.0",
     "rxjs": "^6.3.2",
+    "underscore": "^1.9.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { initChangeDetectorIfExisting } from '@angular/core/src/render3/instructions';
-import * as Fuse from 'fuse.js';
-import * as _ from 'lodash';
-import { SearchOptions } from '../data/interfaces';
-import { filter, reduce } from 'rxjs/operators';
+import { HttpClient } from "@angular/common/http";
+import { PropertyBindingType } from "@angular/compiler";
+import { Injectable } from "@angular/core";
+import { initChangeDetectorIfExisting } from "@angular/core/src/render3/instructions";
+import * as Fuse from "fuse.js";
+import * as _ from "lodash";
+import { filter, reduce } from "rxjs/operators";
+import { SearchOptions } from "../data/interfaces";
+declare let underscore: any;
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class DataService {
 
@@ -18,6 +20,9 @@ export class DataService {
   keysOrig;
   orginalSearchOptions;
   savedData;
+  pubfuse = Fuse;
+  facets;
+  originalData;
 
   constructor(
     public http: HttpClient,
@@ -30,291 +35,217 @@ export class DataService {
   }
 
   async getHierarchy() {
-    this.hierarchy = await this.http.get('./../data/hierarchy.json').toPromise();
+    this.hierarchy = await this.http.get("./../data/hierarchy.json").toPromise();
     return this.hierarchy;
   }
 
   async getData() {
-    this.data = await this.http.get('./../data/data.json').toPromise();
+    this.data = await this.http.get("./../data/data.json").toPromise();
+    this.originalData = this.data;
     return this.data;
   }
 
-  async getDataAtDepth(depth, keys, filterStr, refresh, childKeys) {
-    let childData = null;
-    if (!this.data || refresh) {
-      await this.getData();
-    }
-
-    if (filterStr) {
-
-
-      // this.data[0].products.filter( f=>f.name == 'DOWLEXTM 2629UE' )
-
-      if (  _.isArray(this.data) ) {
-        this.data = this.data.filter(eval(filterStr));
-        let loopedData = [];
-        for (let item of this.data) {
-          let d = item['products'].find(  item => item.name === 'DOWLEXTM 2629UE' ) ;  
-          if (d){
-            loopedData.push(d);
-          }
-        }
-      } else {
-        // for (let aryItem of this.data){
-        //   let b = 2;
-        // }
-        let a = 1;
-      }
-    }
-
-
-    if (keys.length === 0) {
-      childData = this.data;
+  async getFacets() {
+    if (this.getFacets) {
+      this.facets = await this.http.get("./../data/facets.json").toPromise();
+      return this.facets;
     } else {
-      // example query: this.data.map( item => ( {'sheet': item.sheet ,'market': item.market } ) )
-      let query = 'item => ({';
-      let i = 1;
-      for (const key of keys) {
-        query = query + ` '${key.key}' : item.${key.key} `;
-        if (i < keys.length) {
-          query = query + ',';
-        }
-
-        i++;
-      }
-      query = query + '})';
-      const mappedData = this.data.map(eval(query));
-      childData = Array.from(new Set(mappedData));
+      return null;
     }
-
-    if (childKeys.length > 0) {
-      // delete child (children are shown in sub page)
-      for (const key of keys) {
-        if (childKeys.length > 0) {
-          for (const childAry of childData) {
-            const omitChildren = childAry[`${key.key}`];
-            for (const childKey of childKeys) {
-              for (const omitChild of omitChildren) {
-                delete omitChild[`${childKey.key}`];
-              }
-            }
-          }
-        }
-      }
-    } else { // you are at the bottom, create facets and details page
-
-    }
-
-    return childData;
-  }
-
-  async getDataAt(data, depth, childKey) {
-    
-    let childData = [];
-
-    let d = data;
-    let dep = depth;
-    let chi = childKey;
-
-
-
-
-
-   
-    return childData;
-  }
-
-  // /market/Rigids/products/DOWLEXTM%202629UE/0
-  async search(route) {
-
-    if (!this.data) {
-      await this.getData();
-    }
-
-
-    // pair 1
-
-    // /markets
-    let options: any = {
-      keys: ['market'],
-    };
-    let markets: any = new Fuse(this.data, options);
-    let marketKeys = markets.list.map(select => select.market);
-
-    // /markets/Active Comfort
-    let oneMarket = markets.search('Active Comfort');
-    let arraysToConcat = [];
-    for (let item of oneMarket) {
-      arraysToConcat.push(item.products);
-    }
-    let oneMarketsProducts = Array.prototype.concat.apply([], arraysToConcat);
-
-
-    // sub pair 2
-
-    // /markets/Active Comfort/products
-    options = {
-      keys: ['name']
-    };
-    let products = new Fuse(oneMarketsProducts, options);
-
-    // properties
-    // /markets/Active Comfort/products/50% ASPUN 6834 + 50%PP/0
-    let oneProduct: any = products.search('50% ASPUN 6834 + 50%PP');
-    let oneProductProps = oneProduct[0].properties;
-
-    let a = 1;
   }
 
   // keys = ['market'],
   // showOnly = 'sheet' || null
   // searchTerm = null || 'Rigids'
   // omitFields = ['products']
-  
 
   // keys = ['products.name'],
   // showOnly = null
   // omitFields = ['properties']
   // searchTerm = 'DOWLEXTM 2629UE'
-  
-  async search2(searchOptions: SearchOptions) {
-  
+
+  async search(searchOptions: SearchOptions) {
+
+    // Transformer 
+    //   - good for custom logic if reading from goofy structured spreadsheets/json
     if (searchOptions.transform) {
       searchOptions = searchOptions.transform(searchOptions);
     }
-    
     let data = searchOptions.data;
-    let keys = searchOptions.keys;
-    let searchTerm = searchOptions.searchTerm;
-    let omitFields = searchOptions.omitFields;
-    let showOnly = searchOptions.showOnly;
-  
-
-    let options: any = {
+    const keys = searchOptions.keys;
+    const searchTerm = searchOptions.searchTerm;
+    const omitFields = searchOptions.omitFields;
+    const showOnly = searchOptions.showOnly;
+    const options: any = {
       threshold: 0,
       distance: 0,
-      keys: keys
+      keys,
     };
-
     if (showOnly) {
       options.id = showOnly;
     }
-
     let data2 = null;
-   
-     // recurse the hierchary to from the top route to the bottom to filter down the data (good for bookmarking, so you dont have to start at route 1)
-    if (searchOptions.routeParms){
-      if ( searchOptions.depth  > 1 ) {
-        // recurse
-        let nextSearchOptions = JSON.parse(JSON.stringify(searchOptions));
-        if (this.stopDepth == 0){
-          // this.search = searchOptions.routeParms.length;
+
+    // loop the hierchary 
+    //   - from the top route to the bottom . it filters down the data 
+    //   - good for bookmarking, so you dont have to start at route 1 then 2 then 3 to N
+    if (searchOptions.routeParms) {
+      if (searchOptions.depth > 1) {
+        const nextSearchOptions = JSON.parse(JSON.stringify(searchOptions));
+        if (this.stopDepth == 0) {
+          // save original options
           this.stopDepth = searchOptions.depth;
-          this.keysOrig  = searchOptions.keys.slice(0);
-          this.orginalSearchOptions = {...searchOptions};
+          this.keysOrig = searchOptions.keys.slice(0);
+          this.orginalSearchOptions = { ...searchOptions };
         }
-        for (let levelItem of Object.keys(searchOptions.routeParms) ){
-          
-          if ( searchOptions.depth < 0 || levelItem == 'properties') {
+        for (const levelItem of Object.keys(searchOptions.routeParms)) {
+          if (searchOptions.depth < 0 || levelItem == "properties") {
             // you are at the bottom!
             break;
           }
-          // stop when you are at the bottoms
           nextSearchOptions.keys = [];
           nextSearchOptions.keys.push(levelItem);
           nextSearchOptions.searchTerm = searchOptions.routeParms[levelItem];
           nextSearchOptions.depth = (searchOptions.depth - 1);
-          nextSearchOptions.routeParms = {[levelItem]: searchOptions.routeParms[levelItem]}
-          let opts: any = {
+          nextSearchOptions.routeParms = { [levelItem]: searchOptions.routeParms[levelItem] };
+          const opts: any = {
             threshold: 0,
             distance: 0,
-            keys: nextSearchOptions.keys 
+            keys: nextSearchOptions.keys,
           };
-          if (this.savedData){
+          if (this.savedData) {
             data = this.savedData;
           }
-          let results: any = new Fuse(data, opts);
-          let trimmedData ;
+          const results: any = new Fuse(data, opts);
+          let trimmedData;
           if (nextSearchOptions.searchTerm) {
             trimmedData = results.search(nextSearchOptions.searchTerm);
           } else {
             trimmedData = results.list;
           }
-         // await this.search2(nextSearchOptions);
           data2 = trimmedData;
           this.savedData = trimmedData;
-          let a = 1;
+          const a = 1;
           this.stopDepth--;
         }
-        
-      } else{
-        
       }
     }
 
-
-    if (data2){
+    // Search the bottom most node
+    if (data2) {
       searchOptions = this.orginalSearchOptions;
       searchOptions.data = data2;
     }
-    
-    
-    let results: any = new Fuse(data, options);
-    let filtered; 
+    const results: any = new Fuse(data, options);
+    let filtered;
     if (searchTerm) {
       filtered = results.search(searchTerm);
     } else {
       filtered = results.list;
     }
 
-    // if search term make sure you are filtered down
+    // Reducer (filters the array some more)
     if (searchOptions.reducer) {
-      let reduced = searchOptions.reducer(filtered, searchTerm);
+      const reduced = searchOptions.reducer(filtered, searchTerm);
       filtered = reduced;
     }
-    
 
-
+    // Omitter (omits keys you don't want)
     if (omitFields) {
-      for (let item of filtered) {
-         for (let omit of omitFields) {
-             let splitDot = omit.split('.');
-             omit = splitDot[splitDot.length - 1];
-             this.removeKeys(item, [omit] );  
-         }
+      for (const item of filtered) {
+        for (let omit of omitFields) {
+          const splitDot = omit.split(".");
+          omit = splitDot[splitDot.length - 1];
+          this.removeKeys(item, [omit]);
+        }
       }
     }
-    let a = 1;
+
     return filtered;
-  
   }
 
+  async filter(data, properties) {
 
-  removeKeys (obj, keys){
-    var index;
-    for (var prop in obj) {
-        // important check that this is objects own property
-        // not from prototype prop inherited
-        if(obj.hasOwnProperty(prop)){
-            switch(typeof(obj[prop])){
-                case 'string':
-                    index = keys.indexOf(prop);
-                    if(index > -1){
-                        delete obj[prop];
-                    }
-                    break;
-                case 'object':
-                    index = keys.indexOf(prop);
-                    if(index > -1){
-                        delete obj[prop];
-                    }else{
-                        this.removeKeys(obj[prop], keys);
-                    }
-                    break;
-            }
+    const results = [];
+
+    properties = properties.map((d) => {
+      const obj: any = {};
+      obj.name = d.name;
+      obj.value = d.value;
+      return obj;
+    });
+
+    // queryBuilder
+    let queryBuilder = " q => ";
+    for (const prop of properties) {
+      queryBuilder = queryBuilder + ` q.name == ${prop.name} `;
+    }
+
+    // find by name in properties leaf
+    for (const item of data) {
+      if (item.properties) {
+
+        // remove dups (the "thing" need to be unique in the data structure)
+        let propsAry;
+        if (item.properties.length) {
+          propsAry = item.properties[0];
         }
+
+        // map to only name and value properties
+        propsAry = propsAry.map((d) => {
+          const obj: any = {};
+          obj.name = d.name;
+          obj.value = d.value;
+          return obj;
+        });
+
+        // execute query
+        let isInList = false;
+        for (const prop of properties) {
+          const result  = propsAry.filter( (f) => f.name == prop.name && f.value == prop.value );
+          if (result.length > 0) {
+            isInList = true;
+          } else {
+            isInList = false;
+            break;
+          }
+        }
+
+        if (isInList) {
+          results.push(item);
+        }
+        
+        const a = 1;
+      }
+    }
+
+    return results;
+  }
+
+  removeKeys(obj, keys) {
+    let index;
+    for (const prop in obj) {
+      // important check that this is objects own property
+      // not from prototype prop inherited
+      if (obj.hasOwnProperty(prop)) {
+        switch (typeof (obj[prop])) {
+          case "string":
+            index = keys.indexOf(prop);
+            if (index > -1) {
+              delete obj[prop];
+            }
+            break;
+          case "object":
+            index = keys.indexOf(prop);
+            if (index > -1) {
+              delete obj[prop];
+            } else {
+              this.removeKeys(obj[prop], keys);
+            }
+            break;
+        }
+      }
     }
   }
-  
- 
+
 }

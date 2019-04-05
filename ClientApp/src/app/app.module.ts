@@ -1,30 +1,29 @@
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MediaMatcher } from '@angular/cdk/layout';
-import { ApplicationInsightsModule, AppInsightsService } from '@markpieszak/ng-application-insights';
-import { Environment } from '../environments/environment';
+import { MediaMatcher } from "@angular/cdk/layout";
+import { HttpClientModule } from "@angular/common/http";
+import { ErrorHandler, NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { AppInsightsService, ApplicationInsightsModule } from "@markpieszak/ng-application-insights";
+import { Environment } from "../environments/environment";
 
-import { CoreModule } from './core/core.module';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { CoreModule } from "./core/core.module";
 
-import { AuthGuardService } from './core/auth-guard';
-import { SharedModule } from './shared/shared.module';
+import { AuthGuardService } from "./core/auth-guard";
+import { SharedModule } from "./shared/shared.module";
 
-
-import 'hammerjs';
+import "hammerjs";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     ApplicationInsightsModule.forRoot({
-      instrumentationKey: Environment.Application_Insights_Id
+      instrumentationKey: Environment.Application_Insights_Id,
     }),
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
     BrowserAnimationsModule,
     HttpClientModule,    
     CoreModule,
@@ -34,8 +33,8 @@ import 'hammerjs';
   providers: [
     AppInsightsService,
     AuthGuardService,
-    MediaMatcher
+    MediaMatcher,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

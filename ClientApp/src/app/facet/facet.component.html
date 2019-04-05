@@ -1,0 +1,42 @@
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let facet of facets">
+    <mat-expansion-panel-header>
+      {{ facet.key }}
+    </mat-expansion-panel-header>
+    <!-- {{ facet | json }} -->
+    <!-- <div *ngIf="facet.values[0].type =='string'">
+        <label id="facet-radio-group-label">Pick your favorite season</label>
+        <mat-radio-group 
+          aria-labelledby="facet-radio-group-label"
+          *ngFor="let value of facet.values"
+          class="facet-radio-group">
+            <mat-check-box class="facet-radio-button" [value]="value.value">{{ value.value }}</mat-check-box>
+          </mat-radio-group>
+    </div> -->
+    <div>
+
+
+      <div *ngIf="facet.values[0].type =='string'">
+        <mat-selection-list #list [(ngModel)]="selectedOptions" (ngModelChange)="onNgModelChange($event)">
+          <mat-list-option *ngFor="let value of facet.values" [value]="value.value">
+            {{ value.value }}
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
+
+      <div *ngIf="facet.values[0].type !='string'">
+        <mat-selection-list>
+          <mat-list-option>
+            {{ facet.min }}
+          </mat-list-option>
+          <mat-list-option>
+            {{ facet.max }}
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
+
+    </div>
+
+
+  </mat-expansion-panel>
+</mat-accordion>
