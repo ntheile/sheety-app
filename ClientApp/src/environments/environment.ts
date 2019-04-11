@@ -13,6 +13,8 @@ export class Environment {
     public static Application_Insights_Id = '#OverwrittenByAppSettings#';
     public static Redirect_Uri = '#OverwrittenByAppSettings#';
     public static Tenant = '#OverwrittenByAppSettings#';
+    public static isFlat = true;
+    public static debugFacets = false;
 
     public static init(environment: any = window['Environment']) {
         if (environment) {

@@ -39,6 +39,7 @@ export class AppServerAuthService {
    * @return {string} Display friendly name of current user
    */
   public getDisplayName(): string {
+    return "none";
     if (
       this.currentUser &&
       this.currentUser.given_name &&

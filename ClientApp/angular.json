@@ -24,7 +24,10 @@
               "src/assets",
               "src/data/hierarchy.json",
               "src/data/data.json",
-              "src/data/facets.json"
+              "src/data/facets.json",
+              "src/data/hierarchy.flat.json",
+              "src/data/data.flat.json",
+              "src/data/facets.flat.json"
             ],
             "styles": ["src/styles/styles.css", "src/styles/theme.scss"],
             "scripts": []

@@ -2,6 +2,8 @@ import { CdkTableModule } from "@angular/cdk/table";
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from '@angular/forms';
+import { Ignore } from './../../data/ignore';
 
 import {
     MatButtonModule,
@@ -40,6 +42,7 @@ const MATERIALCOMPONENTS = [
     MatTableModule,
     MatPaginatorModule,
     MatExpansionModule,
+    ReactiveFormsModule,
 ];
 
 @NgModule({
@@ -54,5 +57,8 @@ const MATERIALCOMPONENTS = [
         FormsModule,
         MATERIALCOMPONENTS,
     ],
+    providers: [
+        Ignore
+    ]
 })
 export class SharedModule { }

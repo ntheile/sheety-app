@@ -1,6 +1,7 @@
 export interface SearchOptions {
     data: any;
     keys: Array<any>;
+    headerKey?: string;
     showOnly: string; 
     searchTerm: string;
     omitFields: Array<any>;

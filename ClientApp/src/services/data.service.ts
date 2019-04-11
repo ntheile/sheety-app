@@ -7,6 +7,8 @@ import * as _ from "lodash";
 import { filter, reduce } from "rxjs/operators";
 import { SearchOptions } from "../data/interfaces";
 declare let underscore: any;
+import { Environment } from "../environments/environment";
+import { Ignore  } from './../data/ignore'
 
 @Injectable({
   providedIn: "root",
@@ -23,9 +25,12 @@ export class DataService {
   pubfuse = Fuse;
   facets;
   originalData;
+  currentSeachOptions;
+  currentData;
 
   constructor(
     public http: HttpClient,
+    public ignore: Ignore,
   ) {
     this.init();
   }
@@ -35,19 +40,40 @@ export class DataService {
   }
 
   async getHierarchy() {
-    this.hierarchy = await this.http.get("./../data/hierarchy.json").toPromise();
+    let url;
+    if (Environment.isFlat){
+      url = "./../data/hierarchy.flat.json"
+    } else {
+      url = "./../data/hierarchy.json"
+    }
+    this.hierarchy = await this.http.get(url).toPromise();
     return this.hierarchy;
   }
 
   async getData() {
-    this.data = await this.http.get("./../data/data.json").toPromise();
+    let url;
+    if (Environment.isFlat){
+      url = "./../data/data.flat.json"
+    } else {
+      url = "./../data/data.json"
+    }
+    this.data = await this.http.get(url).toPromise();
     this.originalData = this.data;
     return this.data;
   }
 
   async getFacets() {
+
+    let url;
+    if (Environment.isFlat){
+      url = "./../data/facets.flat.json"
+    } else {
+      url = "./../data/facets.json"
+    }
+
     if (this.getFacets) {
-      this.facets = await this.http.get("./../data/facets.json").toPromise();
+      this.facets = await this.http.get(url).toPromise(); 
+      this.facets = this.reduceFacets(this.currentData, this.facets);
       return this.facets;
     } else {
       return null;
@@ -76,6 +102,7 @@ export class DataService {
     const searchTerm = searchOptions.searchTerm;
     const omitFields = searchOptions.omitFields;
     const showOnly = searchOptions.showOnly;
+    const headerKey = searchOptions.headerKey;
     const options: any = {
       threshold: 0,
       distance: 0,
@@ -85,6 +112,7 @@ export class DataService {
       options.id = showOnly;
     }
     let data2 = null;
+    
 
     // loop the hierchary 
     //   - from the top route to the bottom . it filters down the data 
@@ -161,6 +189,8 @@ export class DataService {
       }
     }
 
+    this.currentSeachOptions = searchOptions;
+
     return filtered;
   }
 
@@ -185,12 +215,17 @@ export class DataService {
     for (const item of data) {
       if (item.properties) {
 
-        // remove dups (the "thing" need to be unique in the data structure)
+        // remove dups (the "thing" need to be unique in the data structure); if its a dup we auto remove the second duplicate
         let propsAry;
-        if (item.properties.length) {
-          propsAry = item.properties[0];
-        }
-
+        if (item.properties.length > 0 ) {
+          if (Array.isArray(item.properties[0])){
+            propsAry = item.properties[0];
+          }
+          else {
+            propsAry = item.properties;
+          }
+        } 
+       
         // map to only name and value properties
         propsAry = propsAry.map((d) => {
           const obj: any = {};
@@ -198,6 +233,8 @@ export class DataService {
           obj.value = d.value;
           return obj;
         });
+        
+        
 
         // execute query
         let isInList = false;
@@ -220,6 +257,44 @@ export class DataService {
     }
 
     return results;
+  }
+
+  async reduceFacets(data, facets){
+    
+    if (data && facets){
+      let ignoreFields = this.ignore.facets();      
+      for (let ignoreField of ignoreFields){
+        facets = facets.filter(k=> k.key !== ignoreField  );
+      }
+
+      //reduce to the facets that pertain to  only the current data set
+      let facetsWeCareAbout = [];
+      for (let item of data){
+        for (let p of item.properties){
+          if (Array.isArray(p)){
+            for (let prop of p){
+              let a = 1;  
+              facetsWeCareAbout.push(prop.name)
+            }
+          } else{
+            facetsWeCareAbout.push(p.name)
+          }
+        }
+      }
+
+      facetsWeCareAbout = _.uniq(facetsWeCareAbout);
+      
+      // remove not relevant facets to our current data set
+      for(let facet of facets){
+        if (!facetsWeCareAbout.includes(facet.key)){
+          facets = facets.filter( f=> f !== facet)
+        }
+      }
+    }
+
+
+    return facets;
+
   }
 
   removeKeys(obj, keys) {

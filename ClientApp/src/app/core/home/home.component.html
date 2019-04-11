@@ -1,40 +1,64 @@
-<div style="display:flex; flex-direction: row">
-    <mat-card style="margin-right: 20px; min-width: 320px;">
-        <h2>facets</h2>
-        <span>Should Facet: {{ shouldFacet }}</span>
+<div style="display:flex; flex-direction: row" *ngIf="currentData">
+    <mat-card style="margin-right: 20px; min-width: 320px;" *ngIf="shouldFacet || Environment.debugFacets" >
+        <h2>Refine</h2>
+        <span *ngIf="Environment.debugFacets">Should Facet: {{ shouldFacet }}</span>
         <button (click)="filter()" >filter</button>
-        <pre *ngIf="shouldFacet">
+        <pre>
             <app-facet #facets></app-facet>
         </pre>
     </mat-card>
     <mat-card>
     
-        
-        <!-- <button (click)="go()" >/home/market</button> -->
-    
         <mat-card-title>
-            <pre>
-                {{ routeParams | json }}
-            </pre>
-            <span>Depth: {{ hierarchyDepth }}</span><br/>
-            <span>Count: {{ currentData.length }}</span><br/>
+            <div *ngIf="Environment.debugFacets">
+                    <pre>
+                            {{ routeParams | json }}
+                        </pre>
+                        <span>Depth: {{ hierarchyDepth }}</span><br/>
+                        <span>Count: {{ currentData.length }}</span><br/>
+                        <span>Current Key: {{ currentKey }}</span><br/>
+            </div>
+            
             
         </mat-card-title>
     
-     
-            
-        
+
         <mat-card-content>
-            <h3>Search Options</h3>
-            <pre>
-                {{ searchOpts | json }}
-            </pre>
-              <hr/>
-            <h3>Data</h3>
-            <pre>
-                {{ currentData | json }}
-            </pre>
+            <div *ngIf="Environment.debugFacets">
+                    <h3>Search Options</h3>
+                    <pre>
+                        {{ searchOpts | json }}
+                    </pre>
+                      <hr/>
+                    <h3>Data</h3>
+            </div>
             
+               
+            <mat-accordion>
+                <mat-expansion-panel *ngFor="let item of currentData">
+                    <mat-expansion-panel-header>
+                        <div *ngIf="!dataService.currentSeachOptions.headerKey">
+                            <div *ngFor="let key of searchOpts.keys">
+                                {{ item[key] }}
+                            </div>
+                        </div> 
+                        <div *ngIf="dataService.currentSeachOptions.headerKey">
+                            {{ item[dataService.currentSeachOptions.headerKey] }}
+                        </div>
+                    </mat-expansion-panel-header>
+                    <pre *ngIf="item.properties">
+                        {{ item.properties | json }}
+                    </pre> 
+                    <pre *ngIf="!item.properties">
+                        {{ item[currentKey] | json }}
+                    </pre> 
+                </mat-expansion-panel>
+
+            </mat-accordion>
+
+            <pre *ngIf="Environment.debugFacets">
+                {{ currentData | json }}
+            </pre> 
         </mat-card-content>
     </mat-card>
     
