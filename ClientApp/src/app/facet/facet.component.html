@@ -1,6 +1,6 @@
 <form [formGroup]="formFacet" *ngIf="formFacet">
   <mat-expansion-panel *ngFor="let facet of facets; index as i">
-    <mat-expansion-panel-header>
+    <mat-expansion-panel-header (click)="facetTouched(facet.key)">
       {{ facet.key }}
     </mat-expansion-panel-header>
     <div>
@@ -12,18 +12,11 @@
           </mat-list-option>
         </mat-selection-list>
       </div>
-
-      <!-- <div *ngIf="facet.values[0].type !='string'">
-        <mat-selection-list [formControlName]="facet.key">
-          <mat-list-option>
-            {{ facet.min }}
-          </mat-list-option>
-          <mat-list-option>
-            {{ facet.max }}
-          </mat-list-option>
-        </mat-selection-list>
-      </div> -->
-
+      <div *ngIf="facet.values[0].type !='string'">
+        <p>Low value: {{ facet.min }}</p>
+        <p>High value: {{ facet.max }}</p> 
+        <ng5-slider [options]="facet.options"  [(value)]="facet.min" [(highValue)]="facet.max" [manualRefresh]="sliderRefreshHackEvent" [formControlName]="facet.key"></ng5-slider>
+      </div>
     </div>
   </mat-expansion-panel>
 

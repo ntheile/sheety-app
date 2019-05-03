@@ -206,6 +206,7 @@ export class HomeComponent implements OnInit, AfterViewInit  {
 
     async filter() {
 
+        // For
         // const filterPropsAry = [
         //     {
         //         "@context": "https://schema.org/",

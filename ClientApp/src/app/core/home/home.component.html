@@ -1,6 +1,6 @@
 <div style="display:flex; flex-direction: row" *ngIf="currentData">
     <mat-card style="margin-right: 20px; min-width: 320px;" *ngIf="shouldFacet || Environment.debugFacets" >
-        <h2>Refine</h2>
+        <h2>Filter</h2>
         <span *ngIf="Environment.debugFacets">Should Facet: {{ shouldFacet }}</span>
         <button (click)="filter()" >filter</button>
         <pre>

@@ -1,14 +1,11 @@
 import { HttpClient } from "@angular/common/http";
-import { PropertyBindingType } from "@angular/compiler";
 import { Injectable } from "@angular/core";
-import { initChangeDetectorIfExisting } from "@angular/core/src/render3/instructions";
 import * as Fuse from "fuse.js";
 import * as _ from "lodash";
-import { filter, reduce } from "rxjs/operators";
 import { SearchOptions } from "../data/interfaces";
 declare let underscore: any;
 import { Environment } from "../environments/environment";
-import { Ignore  } from './../data/ignore'
+import { Ignore } from './../data/ignore';
 
 @Injectable({
   providedIn: "root",
@@ -27,6 +24,7 @@ export class DataService {
   originalData;
   currentSeachOptions;
   currentData;
+  originalFilterData;
 
   constructor(
     public http: HttpClient,
@@ -41,7 +39,7 @@ export class DataService {
 
   async getHierarchy() {
     let url;
-    if (Environment.isFlat){
+    if (Environment.isFlat) {
       url = "./../data/hierarchy.flat.json"
     } else {
       url = "./../data/hierarchy.json"
@@ -52,7 +50,7 @@ export class DataService {
 
   async getData() {
     let url;
-    if (Environment.isFlat){
+    if (Environment.isFlat) {
       url = "./../data/data.flat.json"
     } else {
       url = "./../data/data.json"
@@ -65,14 +63,14 @@ export class DataService {
   async getFacets() {
 
     let url;
-    if (Environment.isFlat){
+    if (Environment.isFlat) {
       url = "./../data/facets.flat.json"
     } else {
       url = "./../data/facets.json"
     }
 
     if (this.getFacets) {
-      this.facets = await this.http.get(url).toPromise(); 
+      this.facets = await this.http.get(url).toPromise();
       this.facets = this.reduceFacets(this.currentData, this.facets);
       return this.facets;
     } else {
@@ -112,7 +110,7 @@ export class DataService {
       options.id = showOnly;
     }
     let data2 = null;
-    
+
 
     // loop the hierchary 
     //   - from the top route to the bottom . it filters down the data 
@@ -194,100 +192,121 @@ export class DataService {
     return filtered;
   }
 
-  async filter(data, properties) {
+  async filter(data, propertyGroups) {
 
-    const results = [];
-
-    properties = properties.map((d) => {
-      const obj: any = {};
-      obj.name = d.name;
-      obj.value = d.value;
-      return obj;
-    });
-
-    // queryBuilder
-    let queryBuilder = " q => ";
-    for (const prop of properties) {
-      queryBuilder = queryBuilder + ` q.name == ${prop.name} `;
+    // cache the original data to support filter changes 
+    if (this.originalFilterData) {
+      data = this.originalFilterData;
+    } else {
+      this.originalFilterData = data;
     }
 
-    // find by name in properties leaf
-    for (const item of data) {
-      if (item.properties) {
+    // if no filters are passed return the full dataset
+    if (propertyGroups.length == 0) {
+      return data;
+    }
 
-        // remove dups (the "thing" need to be unique in the data structure); if its a dup we auto remove the second duplicate
-        let propsAry;
-        if (item.properties.length > 0 ) {
-          if (Array.isArray(item.properties[0])){
-            propsAry = item.properties[0];
-          }
-          else {
-            propsAry = item.properties;
-          }
-        } 
-       
-        // map to only name and value properties
-        propsAry = propsAry.map((d) => {
-          const obj: any = {};
-          obj.name = d.name;
-          obj.value = d.value;
-          return obj;
-        });
-        
-        
+    let results = [];
 
-        // execute query
-        let isInList = false;
-        for (const prop of properties) {
-          const result  = propsAry.filter( (f) => f.name == prop.name && f.value == prop.value );
-          if (result.length > 0) {
-            isInList = true;
+
+    // operation within each Group (AND or OR)
+    for (let propertyGroup of propertyGroups) {
+
+      let groupResults = [];
+      let removeGroup = [];
+
+
+      let properties = propertyGroup.properties.map((d) => {
+        const obj: any = {};
+        obj.name = d.name;
+        obj.value = d.value;
+        return obj;
+      });
+
+      // find by name in properties leaf
+      for (const item of data) {
+        if (item.properties) {
+
+          // remove dups (the "thing" need to be unique in the data structure); if its a dup we auto remove the second duplicate
+          let propsAry;
+          if (item.properties.length > 0) {
+            if (Array.isArray(item.properties[0])) {
+              propsAry = item.properties[0];
+            }
+            else {
+              propsAry = item.properties;
+            }
+          }
+
+          // map to only name and value properties
+          propsAry = propsAry.map((d) => {
+            const obj: any = {};
+            obj.name = d.name;
+            obj.value = d.value;
+            return obj;
+          });
+
+          // execute query for OR logicalOperator
+          if (propertyGroup.type == 'number') {
+            let min = propertyGroup.selectedMin;
+            let max = propertyGroup.selectedMax;
+            const result = propsAry.filter((f) => f.name == propertyGroup.name && f.value >= min && f.value <= max);
+            if (result.length > 0) {
+              groupResults.push(item);
+            }
           } else {
-            isInList = false;
-            break;
+            let isInList = false;
+            for (const prop of properties) {
+              if (prop.name === propertyGroup.name) {
+                const result = propsAry.filter((f) => f.name == prop.name && f.value == prop.value);
+                if (result.length > 0) {
+                  groupResults.push(item);
+                }
+              }
+            }
           }
+          // @TODO execute query for AND logicalOperator, for example in a car you want a seat color of Black AND White
         }
-
-        if (isInList) {
-          results.push(item);
-        }
-        
-        const a = 1;
       }
+      results.push(groupResults);
+
     }
 
-    return results;
+    // AND operation (intersection) against each group results
+    let finalResults = _.intersection(...results);
+    return finalResults;
+
   }
 
-  async reduceFacets(data, facets){
-    
-    if (data && facets){
-      let ignoreFields = this.ignore.facets();      
-      for (let ignoreField of ignoreFields){
-        facets = facets.filter(k=> k.key !== ignoreField  );
+  async reduceFacets(data, facets) {
+
+    if (data && facets) {
+      let ignoreFields = this.ignore.facets();
+      for (let ignoreField of ignoreFields) {
+        facets = facets.filter(k => k.key !== ignoreField);
       }
 
       //reduce to the facets that pertain to  only the current data set
       let facetsWeCareAbout = [];
-      for (let item of data){
-        for (let p of item.properties){
-          if (Array.isArray(p)){
-            for (let prop of p){
-              let a = 1;  
+      for (let item of data) {
+        for (let p of item.properties) {
+          if (Array.isArray(p)) {
+            for (let prop of p) {
+              let a = 1;
               facetsWeCareAbout.push(prop.name)
             }
-          } else{
+          } else {
             facetsWeCareAbout.push(p.name)
           }
         }
       }
 
       facetsWeCareAbout = _.uniq(facetsWeCareAbout);
-      
+
       // remove not relevant facets to our current data set
-      for(let facet of facets){
-        if (!facetsWeCareAbout.includes(facet.key)){
-          facets = facets.filter( f=> f !== facet)
+      for (let facet of facets) {
+        if (!facetsWeCareAbout.includes(facet.key)) {
+          facets = facets.filter(f => f !== facet)
         }
       }
     }

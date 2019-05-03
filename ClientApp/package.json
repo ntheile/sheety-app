@@ -50,6 +50,7 @@
     "fuse.js": "^3.4.2",
     "hammerjs": "^2.0.8",
     "intl": "^1.2.5",
+    "ng5-slider": "^1.1.14",
     "ngx-json-viewer": "^2.4.0",
     "normalize.css": "^7.0.0",
     "rxjs": "^6.3.2",
