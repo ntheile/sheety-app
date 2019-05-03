@@ -24,6 +24,7 @@ import {
     MatTableModule,
     MatToolbarModule,
     MatSliderModule,
+    MatChipsModule,
 } from "@angular/material";
 
 const MATERIALCOMPONENTS = [
@@ -46,7 +47,8 @@ const MATERIALCOMPONENTS = [
     MatExpansionModule,
     ReactiveFormsModule,
     MatSliderModule,
-    Ng5SliderModule
+    Ng5SliderModule,
+    MatChipsModule
 ];
 
 @NgModule({

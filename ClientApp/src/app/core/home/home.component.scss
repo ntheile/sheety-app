@@ -1,0 +1,124 @@
+@import '../styles/helpers.scss';
+
+.product-list-container {
+    margin-top: 45px;
+
+    .page-title {
+        margin: 14px 0 0;
+        text-align: center;
+        font-size: 20px;
+        color: $black;
+        letter-spacing: 0.15px;
+    }
+
+    .page-subtitle {
+        margin: 4px 0 0;
+        text-align: center;
+        font-size: 14px;
+        color: $black-opacity-57;
+        letter-spacing: 0.1px;
+    }
+
+    .remove-chips-text {
+        font-size: 14px;
+        color: $black-opacity-57;
+        text-align: center;
+        line-height: 20px;
+        margin: 0;
+        font-weight: 400;
+    }
+
+    .chip-list {
+        margin: 18px 0 20px 0;
+
+        mat-chip.chip {
+            background: #EEEEEE;
+            margin: 4px 5px;
+            color: $black-opacity-54;
+            font-size: 14px;
+        }
+    }
+
+    .productlist-cards {
+        border-top: 2px solid $red;
+        margin-bottom: 15px;
+        padding: 0;
+        border-radius: 0;
+        cursor: pointer;
+
+        .mat-list .mat-list-item.mat-2-line {
+            height: 45px;
+        }
+
+        .card-content {
+            padding: 10px;
+            min-height: 20px;
+            align-items: center;
+
+            a, a:visited, a:hover, a:active {
+                color: inherit !important;
+                text-decoration: none;
+            }
+
+            .productname {
+                margin: 0px 10px 0px 0px;
+                line-height: 20px;
+                vertical-align: middle;
+                overflow: hidden;
+                font-size: 15px;
+            }
+
+            .properties-list{
+
+                h3 {
+                    font-size: 20px;
+                }
+                
+                h4 {
+                   font-size: 17px;  
+                }
+        
+                p {
+                    font-size: 15px;
+                }
+            }         
+
+            .background {
+                @include gradient-vertical($grey, $grey-light);
+                position: absolute; 
+                right: 0; 
+                margin-right: 17px;
+
+                mat-icon {
+                    color: white;
+                }
+            }
+        }
+    }
+
+    body {
+        font-family: "Open Sans", sans-serif;
+        line-height: 1;
+      }
+}
+
+.center-chips {
+    text-align: center;
+    justify-content: center;
+}
+
+/* This is so that the tooltip will have a new line per resin */
+::ng-deep .mat-tooltip  {
+    white-space: pre-line;
+}
+
+// @media only screen and (min-width: $gt-xs) {
+//     .product-list-container {
+//         margin-top: 0;
+//         padding: 0 20px;
+
+//         .page-title {
+//             margin: 0;
+//         }
+//     }
+// }

@@ -7,7 +7,7 @@
 
 
 <mat-sidenav-container>
-    <mat-sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" position="start" [opened]="!mobileQuery.matches" #sidenav class="example-sidenav">
+    <!-- <mat-sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" position="start" [opened]="!mobileQuery.matches" #sidenav class="example-sidenav">
         <img class="nav-logo" src="/assets/dow-logo.png" />
         <mat-list>
             <mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
@@ -21,8 +21,8 @@
             </mat-list-item>
         </mat-list>
         
-    </mat-sidenav>
-    <div class="body-content">
+    </mat-sidenav> -->
+    <div class="body-content" style=" display: flex;justify-content: center;align-items: center;">
         <router-outlet></router-outlet>
     </div>
     <footer>

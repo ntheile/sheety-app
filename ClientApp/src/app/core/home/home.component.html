@@ -1,8 +1,9 @@
 <div style="display:flex; flex-direction: row" *ngIf="currentData">
     <mat-card style="margin-right: 20px; min-width: 320px;" *ngIf="shouldFacet || Environment.debugFacets" >
-        <h2>Filter</h2>
         <span *ngIf="Environment.debugFacets">Should Facet: {{ shouldFacet }}</span>
-        <button (click)="filter()" >filter</button>
+        <h2 style="float: left;">Filter</h2>
+        <button (click)="filter()" mat-raised-button color="primary"  style="float: right">filter</button>
+        <br/>
         <pre>
             <app-facet #facets></app-facet>
         </pre>
@@ -55,6 +56,66 @@
                 </mat-expansion-panel>
 
             </mat-accordion>
+
+
+            <!-- <div class="productlist-cards-container" fxLayout="row wrap" fxLayout.gt-md="column" fxLayoutAlign="space-around none"
+            fxLayoutAlign.gt-md="space-between none">
+            <mat-card *ngFor="let item of currentData" fxFlex="100" fxFlex.gt-md="49" class="productlist-cards">
+                <mat-card-content>
+                    <div class="card-content" fxLayout="row">
+                        <div class="reveal-button">
+                            <p>
+                                <button mat-icon-button>
+                                    <mat-icon>expand_more</mat-icon>
+                                </button>
+                                <button mat-icon-button>
+                                    <mat-icon>expand_less</mat-icon>
+                                </button>
+                            </p>
+                        </div>
+                        <div class="productname" (click)="setIsVisible(product)">
+                            <p>{{ item[key] }}</p>
+                        </div>
+                        <mat-chip-list class="searchLinks">
+                          
+                            <mat-chip (click)="TDSLinkNavigation(product)">
+                                Technical Data Sheet
+                            </mat-chip> 
+                        </mat-chip-list>
+                    </div>
+                    <div fxLayoutGap="10px">
+                        <mat-list class="properties-list" *ngIf="product.isVisible">
+                            <h3 mat-subheader>Properties</h3>
+                            <div layout="wrap">
+                                <div fxFlex="50">
+                                    <div *ngFor="let key of Object.keys(product.properties); index as i">
+                                        <mat-list-item *ngIf="i % 2 === 0">
+                                            <h4 mat-line> {{ product.properties[i].name  | uppercase }} </h4>
+                                            <p mat-line> {{ product.properties[i].value }} </p>
+                                            <mat-divider></mat-divider>
+                                        </mat-list-item>
+                                    </div>
+                                </div>
+                                <div fxFlex="50">
+                                    <div *ngFor="let property of Object.entries(product.properties); index as i">
+                                        <mat-list-item *ngIf="i % 2 === 1">
+                                            <h4 mat-line> {{ product.properties[i].name  | uppercase }} </h4>
+                                            <p mat-line> {{ product.properties[i].value }} </p>
+                                            <mat-divider></mat-divider>
+                                        </mat-list-item>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-list>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div> -->
+
+
+            <p *ngIf="currentData.length == 0" style="width:400px; text-align: center">
+                No data found
+            </p>
 
             <pre *ngIf="Environment.debugFacets">
                 {{ currentData | json }}
