@@ -1,0 +1,20 @@
+{
+  "name": "excel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node run.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "d3-array": "^2.0.3",
+    "d3-collection": "^1.0.7",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.3",
+    "underscore": "^1.9.1",
+    "xlsx": "^0.14.1"
+  }
+}

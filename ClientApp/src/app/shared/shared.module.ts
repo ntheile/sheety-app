@@ -5,6 +5,8 @@ import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from '@angular/forms';
 import { Ignore } from './../../data/ignore';
 import { Ng5SliderModule } from 'ng5-slider';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 import {
     MatButtonModule,
@@ -25,6 +27,7 @@ import {
     MatToolbarModule,
     MatSliderModule,
     MatChipsModule,
+    MatGridListModule,
 } from "@angular/material";
 
 const MATERIALCOMPONENTS = [
@@ -48,7 +51,9 @@ const MATERIALCOMPONENTS = [
     ReactiveFormsModule,
     MatSliderModule,
     Ng5SliderModule,
-    MatChipsModule
+    MatChipsModule,
+    MatGridListModule,
+    FlexLayoutModule
 ];
 
 @NgModule({

@@ -4,12 +4,11 @@ import { ReadFromInjectorFn } from "@angular/core/src/render3/di";
 import { ActivatedRoute, Router, UrlHandlingStrategy } from "@angular/router";
 import * as d3 from "d3-collection";
 import * as _ from "lodash";
-import { retry } from "rxjs/operators";
 import { Environment } from "../../../environments/environment";
 import { DataService } from "../../../services/data.service";
 import { FacetComponent } from "../../facet/facet.component";
 import { SearchOptions } from "./../../../data/interfaces";
-import { unescapeIdentifier } from "@angular/compiler";
+
 
 @Component({
     selector: "app-home",
@@ -226,6 +225,15 @@ export class HomeComponent implements OnInit, AfterViewInit  {
 
     public go() {
         this.router.navigate(["/home/market"]);
+    }
+
+    nav(page){
+        let route = decodeURI(this.router.url);
+        if (!route.includes('search')){
+            route = "/search" + route;
+        }
+        route = route + "/" + page;
+        this.router.navigate([route]);
     }
 
 }
