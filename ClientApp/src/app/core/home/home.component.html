@@ -1,6 +1,6 @@
-<div *ngIf="currentData" class="home-page">
-    <div fxLayout="row wrap" fxLayoutAlign="center stretch">
-        <mat-card style="margin-right: 20px; margin-bottom:20px; min-width: 200px !important" *ngIf="shouldFacet || Environment.debugFacets">
+<div *ngIf="currentData" class="home-page" >
+    <div fxLayout='row wrap' fxLayoutAlign="space-evenly stretch">
+        <mat-card fxFlex="30%" fxFlex.xs="100%" *ngIf="shouldFacet || Environment.debugFacets" style="margin-bottom: 20px">
             <span *ngIf="Environment.debugFacets">Should Facet: {{ shouldFacet }}</span>
             <h2 style="float: left;">Filter</h2>
             <button (click)="filter()" mat-raised-button color="primary" style="float: right">filter</button>
@@ -9,7 +9,7 @@
                 <app-facet #facets></app-facet>
             </pre>
         </mat-card>
-        <mat-card style="min-width: 60% !important">
+        <mat-card fxFlex="60%" fxFlex.xs="100%" *ngIf="shouldFacet">
             <mat-card-title>
                 <div *ngIf="Environment.debugFacets">
                     <pre>
@@ -20,7 +20,7 @@
                     <span>Current Key: {{ currentKey }}</span><br />
                 </div>
             </mat-card-title>
-            <mat-card-content>
+            <mat-card-content >
                 <div *ngIf="Environment.debugFacets">
                     <h3>Search Options</h3>
                     <pre>
@@ -29,15 +29,15 @@
                     <hr />
                     <h3>Data</h3>
                 </div>
-                <mat-accordion *ngIf="shouldFacet">
-                    <mat-expansion-panel *ngFor="let item of currentData">
+                <mat-accordion *ngIf="shouldFacet"  >
+                    <mat-expansion-panel *ngFor="let item of currentData" >
                         <mat-expansion-panel-header>
                             <div *ngIf="!dataService.currentSeachOptions.headerKey">
-                                <div *ngFor="let key of searchOpts.keys">
+                                <div *ngFor="let key of searchOpts.keys" class="limit-text">
                                     {{ item[key] }}
                                 </div>
                             </div>
-                            <div *ngIf="dataService.currentSeachOptions.headerKey">
+                            <div *ngIf="dataService.currentSeachOptions.headerKey" class="limit-text">
                                 {{ item[dataService.currentSeachOptions.headerKey] }}
                             </div>
                         </mat-expansion-panel-header>
@@ -116,21 +116,6 @@
 
                 </mat-accordion>
 
-                <!-- list of clickable cards -->
-                <div *ngIf="!shouldFacet">
-                    <div *ngFor="let item of currentData">
-                        <div *ngIf="!dataService.currentSeachOptions.headerKey">
-                            <mat-card *ngFor="let key of searchOpts.keys" (click)="nav(item[key])" style="cursor:pointer">
-                                {{ item[key] }}
-                            </mat-card>
-                        </div>
-                        <mat-card *ngIf="dataService.currentSeachOptions.headerKey" (click)="nav(item[dataService.currentSeachOptions.headerKey])" style="cursor:pointer">
-                            {{ item[dataService.currentSeachOptions.headerKey] }}
-                        </mat-card>
-                    </div>
-                </div>
-
-
                 <p *ngIf="currentData.length == 0" style=" text-align: center">
                     No data found
                 </p>
@@ -141,6 +126,19 @@
             </mat-card-content>
         </mat-card>
     </div>
-
+    <!-- list of clickable cards -->
+    <div *ngIf="!shouldFacet" style="display: flex; flex-wrap:wrap; align-items: center; justify-content: center">
+        <div *ngFor="let item of currentData" style="margin: 16px 16px 16px 16px">
+            <div *ngIf="!dataService.currentSeachOptions.headerKey">
+                <mat-card *ngFor="let key of searchOpts.keys" (click)="nav(item[key])" class="card-category">
+                    <h2>{{ item[key] }}</h2>
+                </mat-card>
+            </div>
+            <mat-card *ngIf="dataService.currentSeachOptions.headerKey" (click)="nav(item[dataService.currentSeachOptions.headerKey])"
+                class="card-category">
+                <h2>{{ item[dataService.currentSeachOptions.headerKey] }}</h2>
+            </mat-card>
+        </div>
+    </div>
 
 </div>

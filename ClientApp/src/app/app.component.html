@@ -1,13 +1,16 @@
-<button mat-icon-button class="menu-btn" (click)="sidenav.toggle()">
-    <i class="material-icons">&#xE5D2;</i>
-  </button>
-<mat-toolbar color="primary">
-    <app-header></app-header>
-</mat-toolbar>
+<div>
 
 
-<mat-sidenav-container>
-    <!-- <mat-sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" position="start" [opened]="!mobileQuery.matches" #sidenav class="example-sidenav">
+    <button mat-icon-button class="menu-btn" (click)="sidenav.toggle()">
+        <i class="material-icons">&#xE5D2;</i>
+    </button>
+    <mat-toolbar color="primary">
+        <app-header></app-header>
+    </mat-toolbar>
+
+
+    <mat-sidenav-container>
+        <!-- <mat-sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" position="start" [opened]="!mobileQuery.matches" #sidenav class="example-sidenav">
         <img class="nav-logo" src="/assets/dow-logo.png" />
         <mat-list>
             <mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
@@ -22,10 +25,11 @@
         </mat-list>
         
     </mat-sidenav> -->
-    <div class="body-content">
-        <router-outlet ></router-outlet>
-    </div>
-    <footer>
-        <app-footer></app-footer>
-    </footer>
-</mat-sidenav-container>
+        <div class="body-content">
+            <router-outlet></router-outlet>
+        </div>
+        <footer>
+            <app-footer></app-footer>
+        </footer>
+    </mat-sidenav-container>
+</div>

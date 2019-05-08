@@ -1,6 +1,5 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
-import { ReadFromInjectorFn } from "@angular/core/src/render3/di";
 import { ActivatedRoute, Router, UrlHandlingStrategy } from "@angular/router";
 import * as d3 from "d3-collection";
 import * as _ from "lodash";
@@ -8,7 +7,6 @@ import { Environment } from "../../../environments/environment";
 import { DataService } from "../../../services/data.service";
 import { FacetComponent } from "../../facet/facet.component";
 import { SearchOptions } from "./../../../data/interfaces";
-
 
 @Component({
     selector: "app-home",
@@ -122,14 +120,12 @@ export class HomeComponent implements OnInit, AfterViewInit  {
                 if (searchOptions.keys.includes('products.name') && searchOptions.searchTerm !== null) {
                   list = list[0].products.filter(product=> product.name == keyword);
                 }
-
                 if (Environment.isFlat !== true){
                     if (searchOptions.keys.includes('sheet.name') && searchOptions.searchTerm !== null) {
                         // list = list[0].products.filter(product=> product.name == keyword);
                         list = list[0].products;
                     }
                 }
-
                 return list;
             }
         };
@@ -144,63 +140,11 @@ export class HomeComponent implements OnInit, AfterViewInit  {
             }
         } catch (e) {}
 
-
         if (this.shouldFacet){
             setTimeout( async ()=>{
                 await this.facets.getFacets();
-            },500 )
+            }, 500 )
         }
-        
-
-     
-
-        // Manual search Logic for testing
-        // search2(data, keys, showOnly, searchTerm, omitFields )
-        // // 1) Root
-        // // /search
-        // if (_.isEmpty(this.routeParams)) {
-        //    this.currentData =  await this.dataService.search2(this.data, ['market'], null, null, ['products']);
-        // } else {
-
-        //     // 2) Middle
-        //     // /search/:market
-        //     // /search/rigids
-        //     if (this.hierarchyDepth === 1) {
-        //         this.currentData = await this.dataService.search2(this.data, ['market'], null, 'Rigid', ['products']);
-        //     }
-            
-        //     // 3) Middle
-        //     // /search/:market/:product
-        //     // /search/rigids/Dowlex  (Master = null child - 1)
-        //     if (this.hierarchyDepth === 2) {
-        //         this.currentData = await this.dataService.search2(this.data, ['products.name'], 'products', 'DOWLEXTM 2629UE', ['properties']);
-        //         // await this.dataService.search2(this.data, ['products.name'], 'products', 'DOWLEX', null); // fuzzy
-        //     }
-           
-        //     // 4) Details
-        //     // /search/:market/:product/:properties
-        //     // /market/rigids/Dowlex/properties (details = null child)
-        //     if (this.hierarchyDepth === 3) {
-        //         this.currentData = await this.dataService.search2(this.data, ['products.name'], 'products', 'DOWLEXTM 2629UE', null);
-        //     }
-        // }
-
-        // this.currentNodeData = eval(nodeEval);
-        // this.dataService.getDataAt(this.data, 2, 'products');
-        // this.currentData = await this.getChildDataAtNode(this.currentNodeData, this.routeParams);
-        
-        // let nested = d3.nest()
-        //     .key(d => d["Trade Product"])
-        //     .entries(this.currentData);
-
-            // .rollup( (leaves) => { 
-            //     return { 
-            //     "min": d3.min(leaves, (d) => { return parseFloat(d.totalpop) } ), 
-            //     "max": d3.max(leaves, (d) => { return parseFloat(d.totalpop) } ) 
-            //     } 
-            // })
-
-
         return this.currentData;
     }
 
@@ -233,7 +177,11 @@ export class HomeComponent implements OnInit, AfterViewInit  {
             route = "/search" + route;
         }
         route = route + "/" + page;
-        this.router.navigate([route]);
+        this.router.navigate([route]).then( ()=>{
+            // @todo fix reload hack. i.e sometimes data does not load properly if if it reloaded
+            location.reload();
+        } );
+        
     }
 
 }

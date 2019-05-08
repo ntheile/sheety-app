@@ -112,6 +112,22 @@
     white-space: pre-line;
 }
 
+.card-category {
+    cursor:pointer; 
+    width: 200px; 
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.limit-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 380px;
+}
 // @media only screen and (min-width: $gt-xs) {
 //     .product-list-container {
 //         margin-top: 0;
