@@ -1,6 +1,5 @@
 <div>
 
-
     <button mat-icon-button class="menu-btn" (click)="sidenav.toggle()">
         <i class="material-icons">&#xE5D2;</i>
     </button>
@@ -11,20 +10,19 @@
 
     <mat-sidenav-container>
         <!-- <mat-sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" position="start" [opened]="!mobileQuery.matches" #sidenav class="example-sidenav">
-        <img class="nav-logo" src="/assets/dow-logo.png" />
-        <mat-list>
-            <mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                <span class="med-bold font-size-14">Home</span>
-            </mat-list-item>
-            <mat-list-item routerLink="/showcase" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                <span class="med-bold font-size-14">Showcase</span>
-            </mat-list-item>
-            <mat-list-item routerLink="/todo" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                <span class="med-bold font-size-14">Todo</span>
-            </mat-list-item>
-        </mat-list>
-        
-    </mat-sidenav> -->
+            <img class="nav-logo" src="/assets/dow-logo.png" />
+            <mat-list>
+                <mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                    <span class="med-bold font-size-14">Home</span>
+                </mat-list-item>
+                <mat-list-item routerLink="/showcase" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                    <span class="med-bold font-size-14">Showcase</span>
+                </mat-list-item>
+                <mat-list-item routerLink="/todo" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                    <span class="med-bold font-size-14">Todo</span>
+                </mat-list-item>
+            </mat-list>    
+        </mat-sidenav> -->
         <div class="body-content">
             <router-outlet></router-outlet>
         </div>

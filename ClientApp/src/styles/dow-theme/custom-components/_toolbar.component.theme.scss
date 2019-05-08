@@ -18,28 +18,28 @@
     }
 }
 .mat-toolbar {
-    &.mat-primary:before {
-        content: '';
-        width: 115px;
-        height: 75px;
-        margin-left: 40px;
-        background: url('~/../src/assets/dow-logo.png') center center no-repeat;
-        background-size: contain;
-        margin-right: 84px;
-        @media (max-width: 1024px) {
-            display: none;
-        }
-    }
-    &.mat-accent:before {
-        content: '';
-        width: 115px;
-        height: 75px;
-        margin-left: 40px;
-        background: url('~/../src/assets/dow-logo.png') center center no-repeat;
-        background-size: contain;
-        margin-right: 84px;
-        @media (max-width: 1024px) {
-            display: none;
-        }
-    }
+    // &.mat-primary:before {
+    //     content: '';
+    //     width: 115px;
+    //     height: 75px;
+    //     margin-left: 40px;
+    //     background: url('~/../src/assets/dow-logo.png') center center no-repeat;
+    //     background-size: contain;
+    //     margin-right: 84px;
+    //     @media (max-width: 1024px) {
+    //         display: none;
+    //     }
+    // }
+    // &.mat-accent:before {
+    //     content: '';
+    //     width: 115px;
+    //     height: 75px;
+    //     margin-left: 40px;
+    //     background: url('~/../src/assets/dow-logo.png') center center no-repeat;
+    //     background-size: contain;
+    //     margin-right: 84px;
+    //     @media (max-width: 1024px) {
+    //         display: none;
+    //     }
+    // }
 }

@@ -119,6 +119,11 @@ export class FacetComponent implements OnInit {
     return selected;
   }
 
+  unselectFacet(facet){
+    let f = this.formFacet;
+    let a = 1;
+  } 
+
   facetTouched(facet){
     if (!this.facetsTouchedAry.includes(facet)){
       this.facetsTouchedAry.push(facet);

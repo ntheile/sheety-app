@@ -1,9 +1,15 @@
-<div *ngIf="currentData" class="home-page" >
+<div *ngIf="currentData" class="home-page">
+    <div *ngIf="routeParams" fxLayout='row wrap' fxLayoutAlign="center center" style="margin-left: 16px; margin-bottom: 10px;" >
+        <span *ngFor="let breadcrumb of breadcrumbs" >
+            <a  [href]="breadcrumb.href">{{ breadcrumb.label  }}</a> /
+        </span> 
+    </div>
     <div fxLayout='row wrap' fxLayoutAlign="space-evenly stretch">
         <mat-card fxFlex="30%" fxFlex.xs="100%" *ngIf="shouldFacet || Environment.debugFacets" style="margin-bottom: 20px">
             <span *ngIf="Environment.debugFacets">Should Facet: {{ shouldFacet }}</span>
             <h2 style="float: left;">Filter</h2>
-            <button (click)="filter()" mat-raised-button color="primary" style="float: right">filter</button>
+            <button (click)="filter()" mat-raised-button color="primary" style="float: right">Filter </button>
+            <span style="float: right; cursor: pointer;" onclick="location.reload()">clear &nbsp;&nbsp;&nbsp; </span>
             <br />
             <pre>
                 <app-facet #facets></app-facet>
@@ -20,7 +26,7 @@
                     <span>Current Key: {{ currentKey }}</span><br />
                 </div>
             </mat-card-title>
-            <mat-card-content >
+            <mat-card-content>
                 <div *ngIf="Environment.debugFacets">
                     <h3>Search Options</h3>
                     <pre>
@@ -29,8 +35,8 @@
                     <hr />
                     <h3>Data</h3>
                 </div>
-                <mat-accordion *ngIf="shouldFacet"  >
-                    <mat-expansion-panel *ngFor="let item of currentData" >
+                <mat-accordion *ngIf="shouldFacet">
+                    <mat-expansion-panel *ngFor="let item of currentData">
                         <mat-expansion-panel-header>
                             <div *ngIf="!dataService.currentSeachOptions.headerKey">
                                 <div *ngFor="let key of searchOpts.keys" class="limit-text">

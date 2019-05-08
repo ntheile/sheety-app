@@ -26,6 +26,8 @@ export class HomeComponent implements OnInit, AfterViewInit  {
     currentKey = "this.hierarchy";
     Environment = Environment;
     public d3 = d3;
+    filterPropsAry;
+    breadcrumbs = [];
     
     @ViewChild(FacetComponent) facets;
     
@@ -104,6 +106,8 @@ export class HomeComponent implements OnInit, AfterViewInit  {
             }
         }
 
+        this.breadcrumbs = this.generateBreadcrumbs(this.routeParams);
+
         this.dataService.stopDepth = 0;
         const searchOptions: SearchOptions  =  {
             data: this.data, 
@@ -161,9 +165,9 @@ export class HomeComponent implements OnInit, AfterViewInit  {
         //     },
         // ];
 
-        let filterPropsAry = this.facets.getSelectedFilters();
+        this.filterPropsAry = this.facets.getSelectedFilters();
 
-        const filtered = await this.dataService.filter(this.currentData, filterPropsAry);
+        const filtered = await this.dataService.filter(this.currentData, this.filterPropsAry);
         this.currentData = filtered;
     }
 
@@ -182,6 +186,29 @@ export class HomeComponent implements OnInit, AfterViewInit  {
             location.reload();
         } );
         
+    }
+
+    generateBreadcrumbs(routeParams){
+        let breadcrumbs = [{
+            label: 'home',
+            href: '/search'
+        }];
+        for (let i = 0; i < Object.keys(routeParams).length; i++ ){
+            let label = routeParams[Object.keys(routeParams)[i]];
+            let breadcrumbBuilder = "/search/";
+            if (i == 0){
+                breadcrumbBuilder = breadcrumbBuilder + label
+            } else {
+                for (let ii = 0; ii <= i ; ii++ ){
+                    breadcrumbBuilder = breadcrumbBuilder + routeParams[Object.keys(routeParams)[ii]] + "/";
+                }
+            }
+            breadcrumbs.push({
+                label: label,
+                href: breadcrumbBuilder
+            });            
+        }
+        return breadcrumbs;
     }
 
 }
