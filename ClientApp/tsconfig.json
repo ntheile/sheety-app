@@ -6,8 +6,9 @@
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": true,    
     "target": "es5",
+    "allowJs": true,
     "downlevelIteration": true,
     "typeRoots": [
       "node_modules/@types"
@@ -15,6 +16,9 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+     
+    }
   }
 }

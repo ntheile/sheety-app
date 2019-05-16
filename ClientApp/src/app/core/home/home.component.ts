@@ -7,6 +7,14 @@ import { Environment } from "../../../environments/environment";
 import { DataService } from "../../../services/data.service";
 import { FacetComponent } from "../../facet/facet.component";
 import { SearchOptions } from "./../../../data/interfaces";
+// @todo make this dynamic
+// import * as reducer from './../../../data/samples/products-emeai-flat/reducer.js'; 
+// import * as transformer from './../../../data/samples/products-emeai-flat/transformer.js';
+// import * as reducer from './../../../data/samples/products-plastics-nested/reducer.js'; 
+// import * as transformer from './../../../data/samples/products-plastics-nested/transformer.js';
+import * as reducer from './../../../data/samples/cars/reducer.js'; 
+import * as transformer from './../../../data/samples/cars/transformer.js';
+
 
 @Component({
     selector: "app-home",
@@ -73,41 +81,8 @@ export class HomeComponent implements OnInit, AfterViewInit  {
             searchTerm = this.routeParams[Object.keys(this.routeParams)[Object.keys(this.routeParams).length - 1 ]]; // last obj
         }
 
-        let transformFunction;
-        if (Environment.isFlat){
-            transformFunction = function (searchOptions) {
-                searchOptions.omitFields = null;
-                return searchOptions;
-            }
-        } else {
-            transformFunction =  function (searchOptions) {
-               
-                if (searchOptions.keys.includes('market') && searchOptions.searchTerm !== null) {
-                    searchOptions.omitFields = ['products.properties'];
-                    searchOptions.headerKey = "sheet";
-                    // searchOptions.showOnly = 'products.name';
-                }
-
-                if (searchOptions.keys.includes('products.name') && searchOptions.searchTerm !== null) {
-                    searchOptions.omitFields = null;
-                    searchOptions.keys.push('market');
-                    searchOptions.headerKey = "name";
-
-                }
-
-                if (searchOptions.keys.includes('sheet.name') && searchOptions.searchTerm !== null) {
-                    searchOptions.keys.push('sheet');
-                    //searchOptions.omitFields = ['products.properties'];
-                    searchOptions.headerKey = "name";
-                }
-                
-                
-                return searchOptions;
-            }
-        }
-
+       
         this.breadcrumbs = this.generateBreadcrumbs(this.routeParams);
-
         this.dataService.stopDepth = 0;
         const searchOptions: SearchOptions  =  {
             data: this.data, 
@@ -119,19 +94,8 @@ export class HomeComponent implements OnInit, AfterViewInit  {
             depth: this.hierarchyDepth,
             routeParms: this.routeParams,
             nextSearchOptions: null,
-            transform: transformFunction,
-            reducer: function (list, keyword) {
-                if (searchOptions.keys.includes('products.name') && searchOptions.searchTerm !== null) {
-                  list = list[0].products.filter(product=> product.name == keyword);
-                }
-                if (Environment.isFlat !== true){
-                    if (searchOptions.keys.includes('sheet.name') && searchOptions.searchTerm !== null) {
-                        // list = list[0].products.filter(product=> product.name == keyword);
-                        list = list[0].products;
-                    }
-                }
-                return list;
-            }
+            transform: transformer.transform,
+            reducer: reducer.reduce
         };
         this.searchOpts = _.cloneDeep(searchOptions);
         this.searchOpts.data = this.data.length;

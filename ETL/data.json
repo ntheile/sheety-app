@@ -1,1 +1,134 @@
-[{"Name":"charger","properties":[[{"@context":"https://schema.org/","@type":"car","name":"sheet","value":"cars","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Name","value":"charger","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Brand","value":"Dodge","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Color","value":"white","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Type","value":"car","type":"string"}]],"@context":"https://schema.org/","@type":"vehicle"},{"Name":"F150","properties":[[{"@context":"https://schema.org/","@type":"car","name":"sheet","value":"cars","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Name","value":"F150","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Brand","value":"Ford","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Color","value":"red","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Type","value":"truck","type":"string"}]],"@context":"https://schema.org/","@type":"vehicle"},{"Name":"Terrain","properties":[[{"@context":"https://schema.org/","@type":"car","name":"sheet","value":"cars","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Name","value":"Terrain","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Brand","value":"GMC","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Color","value":"black","type":"string"},{"@context":"https://schema.org/","@type":"car","name":"Type","value":"SUV","type":"string"}]],"@context":"https://schema.org/","@type":"vehicle"}]
+[
+    {
+        "Name": "charger",
+        "properties": [
+            [
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "sheet",
+                    "value": "cars",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Name",
+                    "value": "charger",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Brand",
+                    "value": "Dodge",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Color",
+                    "value": "white",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Type",
+                    "value": "car",
+                    "type": "string"
+                }
+            ]
+        ],
+        "@context": "https://schema.org/",
+        "@type": "vehicle"
+    },
+    {
+        "Name": "F150",
+        "properties": [
+            [
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "sheet",
+                    "value": "cars",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Name",
+                    "value": "F150",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Brand",
+                    "value": "Ford",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Color",
+                    "value": "red",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Type",
+                    "value": "truck",
+                    "type": "string"
+                }
+            ]
+        ],
+        "@context": "https://schema.org/",
+        "@type": "vehicle"
+    },
+    {
+        "Name": "Terrain",
+        "properties": [
+            [
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "sheet",
+                    "value": "cars",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Name",
+                    "value": "Terrain",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Brand",
+                    "value": "GMC",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Color",
+                    "value": "black",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "car",
+                    "name": "Type",
+                    "value": "SUV",
+                    "type": "string"
+                }
+            ]
+        ],
+        "@context": "https://schema.org/",
+        "@type": "vehicle"
+    }
+]

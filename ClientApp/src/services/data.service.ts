@@ -38,37 +38,20 @@ export class DataService {
   }
 
   async getHierarchy() {
-    let url;
-    if (Environment.isFlat) {
-      url = "./../data/hierarchy.flat.json"
-    } else {
-      url = "./../data/hierarchy.json"
-    }
+    let url = Environment.transformFolder + 'hierarchy.json';
     this.hierarchy = await this.http.get(url).toPromise();
     return this.hierarchy;
   }
 
   async getData() {
-    let url;
-    if (Environment.isFlat) {
-      url = "./../data/data.flat.json"
-    } else {
-      url = "./../data/data.json"
-    }
+    let url = Environment.transformFolder + 'data.json';
     this.data = await this.http.get(url).toPromise();
     this.originalData = this.data;
     return this.data;
   }
 
   async getFacets() {
-
-    let url;
-    if (Environment.isFlat) {
-      url = "./../data/facets.flat.json"
-    } else {
-      url = "./../data/facets.json"
-    }
-
+    let url = Environment.transformFolder + 'facets.json';
     if (this.getFacets) {
       this.facets = await this.http.get(url).toPromise();
       this.facets = this.reduceFacets(this.currentData, this.facets);
@@ -77,23 +60,26 @@ export class DataService {
       return null;
     }
   }
-
+ 
+  //
+  // 
   // keys = ['market'],
   // showOnly = 'sheet' || null
   // searchTerm = null || 'Rigids'
   // omitFields = ['products']
-
+  // or
   // keys = ['products.name'],
   // showOnly = null
   // omitFields = ['properties']
   // searchTerm = 'DOWLEXTM 2629UE'
-
+  //
+  //
   async search(searchOptions: SearchOptions) {
 
     // Transformer 
     //   - good for custom logic if reading from goofy structured spreadsheets/json
     if (searchOptions.transform) {
-      searchOptions = searchOptions.transform(searchOptions);
+      searchOptions = searchOptions.transform(searchOptions, Environment);
     }
     let data = searchOptions.data;
     const keys = searchOptions.keys;
@@ -172,7 +158,7 @@ export class DataService {
 
     // Reducer (filters the array some more)
     if (searchOptions.reducer) {
-      const reduced = searchOptions.reducer(filtered, searchTerm);
+      const reduced = searchOptions.reducer(filtered, searchTerm, searchOptions, Environment);
       filtered = reduced;
     }
 

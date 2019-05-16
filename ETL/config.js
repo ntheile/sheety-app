@@ -1,17 +1,18 @@
-// Excel Transform Config
-ignoreSheets = []
-rootKeys = ["Name"]
-rootProps = ["Name"];
-ignoreProps = [];
-idTokenized = "${Name}";
+// Excel Transform Config 
+// (Excel to JSON-LD (Hierarchial Linked Data Transformer) )
+ignoreSheets = []; // Array of sheet names to ignore in the ETL
+rootKeys = ["Name"]; // I.E the Thing you are trying to facet like a Product , this should be the column name of that THING
+rootProps = ["Name"]; // The thing your are faceting 
+ignoreProps = []; // Array of excel columns names to skip 
+idTokenized = "${Name}"; // This evaluates as string interpolation. Make the ID something globally unique. Like for a product "dow/product/plastics/activecomfort/dowlex50"
 
 // FLAT
-jsonNesting = { 
-    name: null, // root has no name
+config = { 
+    name: null, // flat root has no name
     rootKeys: [
         { key: "Name",  title: "Name" }
     ],
-    staticProps: [
+    staticProps: [ // these props are injected, you can use string interpolation in the value like this ${Name}
         { key: "@context", value: "https://schema.org/" },
         { key: "@type", value: "Vehicle" }
     ],
@@ -29,7 +30,7 @@ jsonNesting = {
 };
 
 // // NESTED
-// jsonNesting = { 
+// config = { 
 //     name: "market", // root has no name
 //     rootKeys: [
 //         { key: "sheet",  title: "sheet" }, // grouped by sheet as the top level of the hierarchy
@@ -85,5 +86,5 @@ module.exports = {
     rootProps: rootProps,
     ignoreProps: ignoreProps,
     idTokenized: idTokenized,
-    jsonNesting: jsonNesting
+    jsonNesting: config
 }

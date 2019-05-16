@@ -1,0 +1,81 @@
+{
+    "name": "market", 
+    "rootKeys": [
+        { 
+            "key": "sheet",  "title": "sheet"
+        }
+    ],
+    "staticProps": [
+        {
+            "key": "market", "value": "${Market segment}"
+        }
+    ],
+    "child": {
+        "name": "sheet",
+        "rootKeys": { 
+            "key": "sheet",  "title": "sheet"
+        },
+        "staticProps": [
+            {
+                "key": "@context", "value": "https://schema.org/"
+            },
+            {
+                "key": "@type", "value": "Product"
+            },
+            {
+                "key": "name", "value": "${Product name}"
+            },
+            {
+                "key": "application", "value": "${Application}"
+            }
+        ],
+        "child": {
+            "name": "products",
+            "rootKeys": null,
+            "staticProps": [
+                {
+                    "key": "@context", "value": "https://schema.org/"
+                },
+                {
+                    "key": "@type", "value": "Product"
+                },
+                {
+                    "key": "name", "value": "${Product name}"
+                },
+                {
+                    "key": "application", "value": "${Application}"
+                }
+            ],
+            "child": {
+                "name": "properties", 
+                "id": "https://dow.com/en-us/industries/packaging/${Market segment}/${Application}/${Sub-Application}/${Functionality}/${Product Name}",
+                "rootKeys": null,
+                "ignoreColumns": [
+                    "Product Name "
+                ], 
+                "ui": {
+                    "ignoreFacets": [
+                        "basis weight (gsm)",
+                        "Elastic recovery"
+                    ], 
+                    "advancedFacets": [
+                        "Density"
+                    ], 
+                    "hide": [
+                        "Melt Index g/10min"
+                    ]
+                },
+                "genericTransform": true, 
+                "staticProps": [
+                    {
+                        "key": "@context", "value": "https://schema.org/"
+                    },
+                    {
+                        "key": "@type", "value": "ProductValue"
+                    }
+                ]
+            }
+
+        }
+    }
+}

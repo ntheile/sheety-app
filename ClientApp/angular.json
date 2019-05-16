@@ -22,15 +22,26 @@
             },
             "assets": [
               "src/assets",
-              "src/data/hierarchy.json",
-              "src/data/data.json",
-              "src/data/facets.json",
-              "src/data/hierarchy.flat.json",
-              "src/data/data.flat.json",
-              "src/data/facets.flat.json"
+              "src/data/samples/products-emeai-flat/reducer.js",
+              "src/data/samples/products-emeai-flat/transformer.js",
+              "src/data/samples/products-emeai-flat/hierarchy.json",
+              "src/data/samples/products-emeai-flat/data.json",
+              "src/data/samples/products-emeai-flat/facets.json",
+              "src/data/samples/products-plastics-nested/reducer.js",
+              "src/data/samples/products-plastics-nested/transformer.js",
+              "src/data/samples/products-plastics-nested/hierarchy.json",
+              "src/data/samples/products-plastics-nested/data.json",
+              "src/data/samples/products-plastics-nested/facets.json",
+              "src/data/samples/cars/reducer.js",
+              "src/data/samples/cars/transformer.js",
+              "src/data/samples/cars/hierarchy.json",
+              "src/data/samples/cars/data.json",
+              "src/data/samples/cars/facets.json"
             ],
             "styles": ["src/styles/styles.css", "src/styles/theme.scss"],
-            "scripts": []
+            "scripts": [
+              
+            ]
           },
           "configurations": {
             "hmr": {
