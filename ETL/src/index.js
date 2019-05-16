@@ -1,11 +1,11 @@
 XLSX = require('xlsx');
-config = require('./config');
+config = require('../config');
 utils = require('./utils');
 fs = require('fs');
 
 // Loop each sheet and transform the data
 var database = [];
-workbook = load('products.xlsx');
+workbook = load('../data.xlsx');
 sheetNames = workbook.SheetNames;
 
 // flatten
@@ -22,7 +22,7 @@ for (sheet of sheetNames) {
 database = transform(database);
 
 var jsonStr = JSON.stringify(database);
-fs.writeFile('products.json', jsonStr, 'utf8', function(){ });
+fs.writeFile('../data.json', jsonStr, 'utf8', function(){ });
 
 console.log('Transform completed successfully!');
 

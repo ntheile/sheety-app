@@ -14,7 +14,8 @@
     "vstsTest": "ng test --code-coverage --watch=false --single-run=true --code-coverage",
     "posttest": "node ./post-process-coverage.js",
     "postvstsTest": "node ./post-process-coverage.js",
-    "gzip": "gzip -h"
+    "gzip": "gzip -h",
+    "etl": "cd ../ETL/src && node index && node genFacetsProperties"
   },
   "husky": {
     "hooks": {

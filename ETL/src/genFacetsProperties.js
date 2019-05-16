@@ -1,6 +1,6 @@
 var _ = require('underscore');
-var productsJson = require("./products.json");
-config = require('./config');
+var productsJson = require("../data.json");
+config = require('../config');
 fs = require('fs');
 d3 = require('d3-collection');
 d3Ary = require('d3-array');
@@ -91,7 +91,7 @@ function main() {
     }
 
     var jsonStr = JSON.stringify(facets);
-    fs.writeFile('facets.json', jsonStr, 'utf8', function () { });
+    fs.writeFile('../facets.json', jsonStr, 'utf8', function () { });
 
     console.log('Facets completed successfully!');
 }
@@ -104,6 +104,7 @@ function findPropertiesLeaf(data) {
 
     for (let child of data) {
 
+        var a = 1;
         for (let key of Object.keys(child)) {
             if (key == "properties") {
                 let hey = 'ya';
