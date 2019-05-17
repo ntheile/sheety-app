@@ -67,7 +67,7 @@
                                     <div layout="wrap">
                                         <div fxFlex="50">
                                             <div *ngFor="let prop of properties; index as i">
-                                                <mat-list-item *ngIf="i % 2 === 0">
+                                                <mat-list-item *ngIf="i % 2 === 0 && !ignoreProps.includes(prop.name)" >
                                                     <h4 mat-line> {{ prop.name }} </h4>
                                                     <p mat-line> {{ prop.value }} </p>
                                                     <mat-divider></mat-divider>
@@ -76,7 +76,7 @@
                                         </div>
                                         <div fxFlex="50">
                                             <div *ngFor="let prop of properties; index as i">
-                                                <mat-list-item *ngIf="i % 2 === 1">
+                                                <mat-list-item *ngIf="i % 2 === 1 && !ignoreProps.includes(prop.name)">
                                                     <h4 mat-line> {{ prop.name }} </h4>
                                                     <p mat-line> {{ prop.value }} </p>
                                                     <mat-divider></mat-divider>
@@ -96,7 +96,7 @@
                                     <div layout="wrap">
                                         <div fxFlex="50">
                                             <div *ngFor="let prop of properties; index as i">
-                                                <mat-list-item *ngIf="i % 2 === 0">
+                                                <mat-list-item *ngIf="i % 2 === 0 && !ignoreProps.includes(prop.name)">
                                                     <h4 mat-line> {{ prop.name }} </h4>
                                                     <p mat-line> {{ prop.value }} </p>
                                                     <mat-divider></mat-divider>
@@ -105,7 +105,7 @@
                                         </div>
                                         <div fxFlex="50">
                                             <div *ngFor="let prop of properties; index as i">
-                                                <mat-list-item *ngIf="i % 2 === 1">
+                                                <mat-list-item *ngIf="i % 2 === 1 && !ignoreProps.includes(prop.name)">
                                                     <h4 mat-line> {{ prop.name }} </h4>
                                                     <p mat-line> {{ prop.value }} </p>
                                                     <mat-divider></mat-divider>

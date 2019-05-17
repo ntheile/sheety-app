@@ -8,12 +8,12 @@ import { DataService } from "../../../services/data.service";
 import { FacetComponent } from "../../facet/facet.component";
 import { SearchOptions } from "./../../../data/interfaces";
 // @todo make this dynamic
-// import * as reducer from './../../../data/samples/products-emeai-flat/reducer.js'; 
-// import * as transformer from './../../../data/samples/products-emeai-flat/transformer.js';
+import * as reducer from './../../../data/samples/products-emeai-flat/reducer.js'; 
+import * as transformer from './../../../data/samples/products-emeai-flat/transformer.js';
 // import * as reducer from './../../../data/samples/products-plastics-nested/reducer.js'; 
 // import * as transformer from './../../../data/samples/products-plastics-nested/transformer.js';
-import * as reducer from './../../../data/samples/cars/reducer.js'; 
-import * as transformer from './../../../data/samples/cars/transformer.js';
+// import * as reducer from './../../../data/samples/cars/reducer.js'; 
+// import * as transformer from './../../../data/samples/cars/transformer.js';
 // import * as reducer from './../../../data/samples/cars-nested/reducer.js'; 
 // import * as transformer from './../../../data/samples/cars-nested/transformer.js';
 
@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit, AfterViewInit  {
     public d3 = d3;
     filterPropsAry;
     breadcrumbs = [];
+    ignoreProps = Environment.config.ignoreProps;
     
     @ViewChild(FacetComponent) facets;
     

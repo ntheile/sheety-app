@@ -5,35 +5,35 @@
             [
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "sheet",
                     "value": "cars",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Name",
                     "value": "charger",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Brand",
                     "value": "Dodge",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Color",
                     "value": "white",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Type",
                     "value": "car",
                     "type": "string"
@@ -49,35 +49,35 @@
             [
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "sheet",
                     "value": "cars",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Name",
                     "value": "F150",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Brand",
                     "value": "Ford",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Color",
                     "value": "red",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Type",
                     "value": "truck",
                     "type": "string"
@@ -93,37 +93,169 @@
             [
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "sheet",
                     "value": "cars",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Name",
                     "value": "Terrain",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Brand",
                     "value": "GMC",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Color",
                     "value": "black",
                     "type": "string"
                 },
                 {
                     "@context": "https://schema.org/",
-                    "@type": "car",
+                    "@type": "vehicleproperties",
                     "name": "Type",
                     "value": "SUV",
+                    "type": "string"
+                }
+            ]
+        ],
+        "@context": "https://schema.org/",
+        "@type": "vehicle"
+    },
+    {
+        "Name": "Caravan",
+        "properties": [
+            [
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "sheet",
+                    "value": "cars",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Name",
+                    "value": "Caravan",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Brand",
+                    "value": "Dodge",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Color",
+                    "value": "Pink",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Type",
+                    "value": "Van",
+                    "type": "string"
+                }
+            ]
+        ],
+        "@context": "https://schema.org/",
+        "@type": "vehicle"
+    },
+    {
+        "Name": "Cruise",
+        "properties": [
+            [
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "sheet",
+                    "value": "commercial",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Name",
+                    "value": "Cruise",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Brand",
+                    "value": "GM",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Color",
+                    "value": "yellow",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Type",
+                    "value": "Commercial",
+                    "type": "string"
+                }
+            ]
+        ],
+        "@context": "https://schema.org/",
+        "@type": "vehicle"
+    },
+    {
+        "Name": "VanLine",
+        "properties": [
+            [
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "sheet",
+                    "value": "commercial",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Name",
+                    "value": "VanLine",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Brand",
+                    "value": "Mercedes",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Color",
+                    "value": "black",
+                    "type": "string"
+                },
+                {
+                    "@context": "https://schema.org/",
+                    "@type": "vehicleproperties",
+                    "name": "Type",
+                    "value": "Commercial",
                     "type": "string"
                 }
             ]

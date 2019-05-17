@@ -7,11 +7,16 @@ TODO
    - [X] move hierarchy.json to the config file
    - [X] npm run etl -path "src/data/cars-nested" 
    - [X] move npm run etl to etl package.json
-- [ ] ignore column and facets properies logic 
+   - [X] ignoreProps
 - [ ] filter facet down when in a nested type
-- [ ] AND or LOGIC
+- [ ] AND or LOGIC documentations
 - [ ] documentation wiki 
 
-
+- UI
+  - [ ] Templating logic for custom UI on nested datasets, if the user wants super custom UI then the can <div *ngIf="currentKey ==='CarBrand'" > <app-brand-component data="currentData"><app-brand-component> </div>
+      - [ ] ThingContainerComponent
+         - [ ]  ThingListComponent
+            - [ ] ThingItemComponent
+               - [ ] ThingPropertyComponent
 
 

@@ -1,1 +1,198 @@
-[{"key":"sheet","values":[{"@id":"GMC/Terrain","@context":"https://schema.org/","@type":"vehicleproperties","name":"sheet","value":"cars","type":"string","Brand":"GMC"}]},{"key":"Name","values":[{"@id":"Dodge/charger","@context":"https://schema.org/","@type":"vehicleproperties","name":"Name","value":"charger","type":"string","Brand":"Dodge"},{"@id":"Ford/F150","@context":"https://schema.org/","@type":"vehicleproperties","name":"Name","value":"F150","type":"string","Brand":"Ford"},{"@id":"GMC/Terrain","@context":"https://schema.org/","@type":"vehicleproperties","name":"Name","value":"Terrain","type":"string","Brand":"GMC"}]},{"key":"Brand","values":[{"@id":"Dodge/charger","@context":"https://schema.org/","@type":"vehicleproperties","name":"Brand","value":"Dodge","type":"string","Brand":"Dodge"},{"@id":"Ford/F150","@context":"https://schema.org/","@type":"vehicleproperties","name":"Brand","value":"Ford","type":"string","Brand":"Ford"},{"@id":"GMC/Terrain","@context":"https://schema.org/","@type":"vehicleproperties","name":"Brand","value":"GMC","type":"string","Brand":"GMC"}]},{"key":"Color","values":[{"@id":"Dodge/charger","@context":"https://schema.org/","@type":"vehicleproperties","name":"Color","value":"white","type":"string","Brand":"Dodge"},{"@id":"Ford/F150","@context":"https://schema.org/","@type":"vehicleproperties","name":"Color","value":"red","type":"string","Brand":"Ford"},{"@id":"GMC/Terrain","@context":"https://schema.org/","@type":"vehicleproperties","name":"Color","value":"black","type":"string","Brand":"GMC"}]},{"key":"Type","values":[{"@id":"Dodge/charger","@context":"https://schema.org/","@type":"vehicleproperties","name":"Type","value":"car","type":"string","Brand":"Dodge"},{"@id":"Ford/F150","@context":"https://schema.org/","@type":"vehicleproperties","name":"Type","value":"truck","type":"string","Brand":"Ford"},{"@id":"GMC/Terrain","@context":"https://schema.org/","@type":"vehicleproperties","name":"Type","value":"SUV","type":"string","Brand":"GMC"}]}]
+[
+    {
+        "key": "sheet",
+        "values": [
+            {
+                "@id": "Chevy/Camero",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "sheet",
+                "value": "cars",
+                "type": "string",
+                "Brand": "Chevy"
+            }
+        ]
+    },
+    {
+        "key": "Name",
+        "values": [
+            {
+                "@id": "Dodge/charger",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Name",
+                "value": "charger",
+                "type": "string",
+                "Brand": "Dodge"
+            },
+            {
+                "@id": "Ford/F150",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Name",
+                "value": "F150",
+                "type": "string",
+                "Brand": "Ford"
+            },
+            {
+                "@id": "Ford/Mustang",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Name",
+                "value": "Mustang",
+                "type": "string",
+                "Brand": "Ford"
+            },
+            {
+                "@id": "GMC/Terrain",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Name",
+                "value": "Terrain",
+                "type": "string",
+                "Brand": "GMC"
+            },
+            {
+                "@id": "Chevy/Camero",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Name",
+                "value": "Camero",
+                "type": "string",
+                "Brand": "Chevy"
+            }
+        ]
+    },
+    {
+        "key": "Brand",
+        "values": [
+            {
+                "@id": "Dodge/charger",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Brand",
+                "value": "Dodge",
+                "type": "string",
+                "Brand": "Dodge"
+            },
+            {
+                "@id": "Ford/Mustang",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Brand",
+                "value": "Ford",
+                "type": "string",
+                "Brand": "Ford"
+            },
+            {
+                "@id": "GMC/Terrain",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Brand",
+                "value": "GMC",
+                "type": "string",
+                "Brand": "GMC"
+            },
+            {
+                "@id": "Chevy/Camero",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Brand",
+                "value": "Chevy",
+                "type": "string",
+                "Brand": "Chevy"
+            }
+        ]
+    },
+    {
+        "key": "Color",
+        "values": [
+            {
+                "@id": "Dodge/charger",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Color",
+                "value": "white",
+                "type": "string",
+                "Brand": "Dodge"
+            },
+            {
+                "@id": "Ford/F150",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Color",
+                "value": "red",
+                "type": "string",
+                "Brand": "Ford"
+            },
+            {
+                "@id": "Ford/Mustang",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Color",
+                "value": "Gray",
+                "type": "string",
+                "Brand": "Ford"
+            },
+            {
+                "@id": "GMC/Terrain",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Color",
+                "value": "black",
+                "type": "string",
+                "Brand": "GMC"
+            },
+            {
+                "@id": "Chevy/Camero",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Color",
+                "value": "White",
+                "type": "string",
+                "Brand": "Chevy"
+            }
+        ]
+    },
+    {
+        "key": "Type",
+        "values": [
+            {
+                "@id": "Dodge/charger",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Type",
+                "value": "car",
+                "type": "string",
+                "Brand": "Dodge"
+            },
+            {
+                "@id": "Ford/F150",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Type",
+                "value": "truck",
+                "type": "string",
+                "Brand": "Ford"
+            },
+            {
+                "@id": "Chevy/Camero",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Type",
+                "value": "Car",
+                "type": "string",
+                "Brand": "Chevy"
+            },
+            {
+                "@id": "GMC/Terrain",
+                "@context": "https://schema.org/",
+                "@type": "vehicleproperties",
+                "name": "Type",
+                "value": "SUV",
+                "type": "string",
+                "Brand": "GMC"
+            }
+        ]
+    }
+]
