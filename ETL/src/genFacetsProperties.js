@@ -1,6 +1,7 @@
 var _ = require('underscore');
-var productsJson = require("../data.json");
-config = require('../config');
+var configPath = process.argv[3]; // node index -configPath ../../ClientApp/src/data/samples/cars-nested
+config = require(configPath + '/config');
+var productsJson = require(config.outputDir + "/data.json");
 fs = require('fs');
 d3 = require('d3-collection');
 d3Ary = require('d3-array');
@@ -12,31 +13,7 @@ propsArray = [];
 function main() {
     facetsAry = [];
 
-
-
     findPropertiesLeaf(productsJson);
-
-    // var markets =  [...new Set( productsJson.map( m=> m.market ) )]; 
-
-    // for (let market of markets){
-
-    //     var applications = productsJson.filter( m=> m.market == market ).map( s=> s.sheet )
-
-    //     for (let application of applications){
-    //         facets = genFacet(market, application);
-    //         if (facets.length > 0){
-    //             facetsAry.push(
-    //                 {
-    //                     market: market,
-    //                     application: application,
-    //                     facets: facets
-    //                 }
-    //             );
-    //         }
-    //     }
-
-    // }
-
 
     // break into nested heirarchy, one for each property
     let facets = d3.nest().key(d => d.name).rollup((leaves) => {
@@ -54,11 +31,7 @@ function main() {
                 numbersArray.push({ [facetProps.value.name]:  facet.value });
                 break;
             }
-            let a = 1;
         }
-
-        let b = 1;
-
     }
 
     // find min max for numbers
@@ -91,16 +64,14 @@ function main() {
     }
 
     var jsonStr = JSON.stringify(facets);
-    fs.writeFile('../facets.json', jsonStr, 'utf8', function () { });
+    // fs.writeFile('../facets.json', jsonStr, 'utf8', function () { });
+    fs.writeFile( config.outputDir + '/facets.json', jsonStr, 'utf8', function () { });
 
     console.log('Facets completed successfully!');
 }
 
 
 function findPropertiesLeaf(data) {
-
-
-
 
     for (let child of data) {
 
@@ -192,7 +163,6 @@ function genFacet(market, application) {
 
 
 }
-
 
 main();
 

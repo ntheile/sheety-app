@@ -14,6 +14,8 @@ import { SearchOptions } from "./../../../data/interfaces";
 // import * as transformer from './../../../data/samples/products-plastics-nested/transformer.js';
 import * as reducer from './../../../data/samples/cars/reducer.js'; 
 import * as transformer from './../../../data/samples/cars/transformer.js';
+// import * as reducer from './../../../data/samples/cars-nested/reducer.js'; 
+// import * as transformer from './../../../data/samples/cars-nested/transformer.js';
 
 
 @Component({

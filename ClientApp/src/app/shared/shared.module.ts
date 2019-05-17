@@ -3,7 +3,6 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from '@angular/forms';
-import { Ignore } from './../../data/ignore';
 import { Ng5SliderModule } from 'ng5-slider';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -69,7 +68,7 @@ const MATERIALCOMPONENTS = [
         MATERIALCOMPONENTS,
     ],
     providers: [
-        Ignore
+
     ]
 })
 export class SharedModule { }

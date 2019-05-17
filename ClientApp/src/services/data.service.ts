@@ -5,7 +5,6 @@ import * as _ from "lodash";
 import { SearchOptions } from "../data/interfaces";
 declare let underscore: any;
 import { Environment } from "../environments/environment";
-import { Ignore } from './../data/ignore';
 
 @Injectable({
   providedIn: "root",
@@ -28,7 +27,6 @@ export class DataService {
 
   constructor(
     public http: HttpClient,
-    public ignore: Ignore,
   ) {
     this.init();
   }
@@ -38,8 +36,7 @@ export class DataService {
   }
 
   async getHierarchy() {
-    let url = Environment.transformFolder + 'hierarchy.json';
-    this.hierarchy = await this.http.get(url).toPromise();
+    this.hierarchy = Environment.config.jsonNesting;
     return this.hierarchy;
   }
 
@@ -267,7 +264,7 @@ export class DataService {
   async reduceFacets(data, facets) {
 
     if (data && facets) {
-      let ignoreFields = this.ignore.facets();
+      let ignoreFields = Environment.config.ignoreFacets;
       for (let ignoreField of ignoreFields) {
         facets = facets.filter(k => k.key !== ignoreField);
       }
