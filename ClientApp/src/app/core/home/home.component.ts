@@ -142,18 +142,7 @@ export class HomeComponent implements OnInit, AfterViewInit  {
         this.router.navigate(["/home/market"]);
     }
 
-    nav(page){
-        let route = decodeURI(this.router.url);
-        if (!route.includes('search')){
-            route = "/search" + route;
-        }
-        route = route + "/" + page;
-        this.router.navigate([route]).then( ()=>{
-            // @todo fix reload hack. i.e sometimes data does not load properly if if it reloaded
-            location.reload();
-        } );
-        
-    }
+  
 
     generateBreadcrumbs(routeParams){
         let breadcrumbs = [{

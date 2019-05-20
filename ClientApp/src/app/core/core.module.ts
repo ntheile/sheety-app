@@ -14,7 +14,7 @@ import { ThingContainerComponent } from './../thing/thing-container.component';
 import { ThingListComponent } from './../thing/thing-list/thing-list.component';
 import { ThingItemComponent } from './../thing/thing-item/thing-item.component';
 import { ThingPropertiesComponent } from './../thing/thing-properties/thing-properties.component';
-
+import { ThingCategoryComponent } from './../thing/thing-category/thing-category.component';
 
 
 @NgModule({
@@ -31,7 +31,8 @@ import { ThingPropertiesComponent } from './../thing/thing-properties/thing-prop
         ThingContainerComponent,
         ThingListComponent,
         ThingItemComponent,
-        ThingPropertiesComponent
+        ThingPropertiesComponent,
+        ThingCategoryComponent
     ],
     declarations: [
         HomeComponent,
@@ -43,7 +44,8 @@ import { ThingPropertiesComponent } from './../thing/thing-properties/thing-prop
         ThingContainerComponent,
         ThingListComponent,
         ThingItemComponent,
-        ThingPropertiesComponent
+        ThingPropertiesComponent,
+        ThingCategoryComponent
     ],
     providers: [
         AppServerAuthService,

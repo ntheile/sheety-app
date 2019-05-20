@@ -13,10 +13,10 @@ TODO
 - [ ] documentation wiki 
 
 - UI
-  - [ ] Templating logic for custom UI on nested datasets, if the user wants super custom UI then the can <div *ngIf="currentKey ==='CarBrand'" > <app-brand-component data="currentData"><app-brand-component> </div>
-      - [ ] ThingContainerComponent
-         - [ ]  ThingListComponent
-            - [ ] ThingItemComponent
-               - [ ] ThingPropertyComponent
+  - [X] Templating logic for custom UI on nested datasets, if the user wants super custom UI then the can <div *ngIf="currentKey ==='CarBrand'" > <app-brand-component data="currentData"><app-brand-component> </div>
+      - [X] ThingContainerComponent
+         - [X]  ThingListComponent
+            - [X] ThingItemComponent
+               - [X] ThingPropertyComponent
 
 - [ ] NPM package excel2jsonld

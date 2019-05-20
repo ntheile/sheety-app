@@ -31,19 +31,14 @@
         </mat-card>
     </div>
 
-    <!-- list of clickable cards -->
-    <div *ngIf="!shouldFacet" style="display: flex; flex-wrap:wrap; align-items: center; justify-content: center">
-        <div *ngFor="let item of currentData" style="margin: 16px 16px 16px 16px">
-            <div *ngIf="!dataService.currentSeachOptions.headerKey">
-                <mat-card *ngFor="let key of searchOpts.keys" (click)="nav(item[key])" class="card-category">
-                    <h2>{{ item[key] }}</h2>
-                </mat-card>
-            </div>
-            <mat-card *ngIf="dataService.currentSeachOptions.headerKey" (click)="nav(item[dataService.currentSeachOptions.headerKey])"
-                class="card-category">
-                <h2>{{ item[dataService.currentSeachOptions.headerKey] }}</h2>
-            </mat-card>
-        </div>
-    </div>
+    <!-- list of items in categories for nested data  -->
+    <app-thing-category *ngIf="!shouldFacet"
+        [(currentData)]="currentData" 
+        [(routeParams)]="routeParams" 
+        [(hierarchyDepth)]="hierarchyDepth"
+        [(currentKey)]="currentKey"
+        [(searchOpts)]="searchOpts"
+        [(shouldFacet)]="shouldFacet">
+    </app-thing-category>
 
 </div>
