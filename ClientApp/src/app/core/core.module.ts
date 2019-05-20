@@ -10,6 +10,12 @@ import { ForbiddenComponent } from "./forbidden/forbidden.component";
 import { HeaderComponent } from "./header/header.component";
 import { HomeComponent } from "./home/home.component";
 import { LoggedOutComponent } from "./loggedout/loggedout.component";
+import { ThingContainerComponent } from './../thing/thing-container.component';
+import { ThingListComponent } from './../thing/thing-list/thing-list.component';
+import { ThingItemComponent } from './../thing/thing-item/thing-item.component';
+import { ThingPropertiesComponent } from './../thing/thing-properties/thing-properties.component';
+
+
 
 @NgModule({
     imports: [
@@ -22,6 +28,10 @@ import { LoggedOutComponent } from "./loggedout/loggedout.component";
         ForbiddenComponent,
         LoggedOutComponent,
         FacetComponent,
+        ThingContainerComponent,
+        ThingListComponent,
+        ThingItemComponent,
+        ThingPropertiesComponent
     ],
     declarations: [
         HomeComponent,
@@ -30,6 +40,10 @@ import { LoggedOutComponent } from "./loggedout/loggedout.component";
         ForbiddenComponent,
         LoggedOutComponent,
         FacetComponent,
+        ThingContainerComponent,
+        ThingListComponent,
+        ThingItemComponent,
+        ThingPropertiesComponent
     ],
     providers: [
         AppServerAuthService,

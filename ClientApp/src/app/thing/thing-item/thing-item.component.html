@@ -1,0 +1,41 @@
+<section>
+      <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                  <div *ngIf="!dataService.currentSeachOptions.headerKey">
+                        <div *ngFor="let key of searchOpts.keys" class="limit-text">
+                              {{ item[key] }}
+                        </div>
+                  </div>
+                  <div *ngIf="dataService.currentSeachOptions.headerKey" class="limit-text">
+                        {{ item[dataService.currentSeachOptions.headerKey] }}
+                  </div>
+            </mat-expansion-panel-header>
+
+            <div *ngIf="item.properties">
+                  <div *ngFor="let currProperties of item.properties; index as j">
+                        <div fxLayoutGap="10px" *ngIf="currProperties as properties">
+                              <mat-list class="properties-list">
+                                    <h3 mat-subheader>Properties {{j + 1}}</h3>
+                                    <div layout="wrap">
+                                          <div fxFlex="50">
+                                                <div *ngFor="let prop of properties; index as i">
+                                                      <app-thing-properties [prop]="prop" [i]="i"
+                                                            *ngIf="i % 2 === 0 && !ignoreProps.includes(prop.name)">
+                                                      </app-thing-properties>
+                                                </div>
+                                          </div>
+                                          <div fxFlex="50">
+                                                <div *ngFor="let prop of properties; index as i">
+                                                      <app-thing-properties [prop]="prop" [i]="i"
+                                                            *ngIf="i % 2 === 1 && !ignoreProps.includes(prop.name)">
+                                                      </app-thing-properties>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </mat-list>
+                        </div>
+                        <hr />
+                  </div>
+            </div>
+      </mat-expansion-panel>
+</section>

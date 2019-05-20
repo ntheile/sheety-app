@@ -1,9 +1,11 @@
 <div *ngIf="currentData" class="home-page">
+
     <div *ngIf="routeParams" fxLayout='row wrap' fxLayoutAlign="center center" style="margin-left: 16px; margin-bottom: 10px;" >
         <span *ngFor="let breadcrumb of breadcrumbs" >
             <a  [href]="breadcrumb.href">{{ breadcrumb.label  }}</a> /
         </span> 
     </div>
+
     <div fxLayout='row wrap' fxLayoutAlign="space-evenly stretch">
         <mat-card fxFlex="30%" fxFlex.xs="100%" *ngIf="shouldFacet || Environment.debugFacets" style="margin-bottom: 20px">
             <span *ngIf="Environment.debugFacets">Should Facet: {{ shouldFacet }}</span>
@@ -16,122 +18,19 @@
             </pre>
         </mat-card>
         <mat-card fxFlex="60%" fxFlex.xs="100%" *ngIf="shouldFacet">
-            <mat-card-title>
-                <div *ngIf="Environment.debugFacets">
-                    <pre>
-                        {{ routeParams | json }}
-                    </pre>
-                    <span>Depth: {{ hierarchyDepth }}</span><br />
-                    <span>Count: {{ currentData.length }}</span><br />
-                    <span>Current Key: {{ currentKey }}</span><br />
-                </div>
-            </mat-card-title>
-            <mat-card-content>
-                <div *ngIf="Environment.debugFacets">
-                    <h3>Search Options</h3>
-                    <pre>
-                        {{ searchOpts | json }}
-                    </pre>
-                    <hr />
-                    <h3>Data</h3>
-                </div>
-                <mat-accordion *ngIf="shouldFacet">
-                    <mat-expansion-panel *ngFor="let item of currentData">
-                        <mat-expansion-panel-header>
-                            <div *ngIf="!dataService.currentSeachOptions.headerKey">
-                                <div *ngFor="let key of searchOpts.keys" class="limit-text">
-                                    {{ item[key] }}
-                                </div>
-                            </div>
-                            <div *ngIf="dataService.currentSeachOptions.headerKey" class="limit-text">
-                                {{ item[dataService.currentSeachOptions.headerKey] }}
-                            </div>
-                        </mat-expansion-panel-header>
 
-                        <!-- <pre *ngIf="item.properties">
-                            {{ item.properties | json }} 
-                        </pre>  -->
-                        <!-- <pre *ngIf="!item.properties">
-                            {{ item[currentKey] | json }}
-                        </pre>  -->
-                        <!-- <pre *ngIf="item.properties[0][0] as hasDuplicateKeys;">
-                            has two or more props per key
-                            {{ hasDuplicateKeys }}
-                        </pre>  -->
-
-                        <!-- for weird data with duplicate things (aka no unique primary key) -->
-                        <div *ngIf="item.properties && item.properties[0][0]">
-                            <div fxLayoutGap="10px" *ngIf="item.properties[0] as properties">
-                                <mat-list class="properties-list">
-                                    <h3 mat-subheader>Properties</h3>
-                                    <div layout="wrap">
-                                        <div fxFlex="50">
-                                            <div *ngFor="let prop of properties; index as i">
-                                                <mat-list-item *ngIf="i % 2 === 0 && !ignoreProps.includes(prop.name)" >
-                                                    <h4 mat-line> {{ prop.name }} </h4>
-                                                    <p mat-line> {{ prop.value }} </p>
-                                                    <mat-divider></mat-divider>
-                                                </mat-list-item>
-                                            </div>
-                                        </div>
-                                        <div fxFlex="50">
-                                            <div *ngFor="let prop of properties; index as i">
-                                                <mat-list-item *ngIf="i % 2 === 1 && !ignoreProps.includes(prop.name)">
-                                                    <h4 mat-line> {{ prop.name }} </h4>
-                                                    <p mat-line> {{ prop.value }} </p>
-                                                    <mat-divider></mat-divider>
-                                                </mat-list-item>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </mat-list>
-                            </div>
-                        </div>
-
-                        <!-- for normailzed data-->
-                        <div *ngIf="item.properties">
-                            <div fxLayoutGap="10px" *ngIf="item.properties as properties">
-                                <mat-list class="properties-list">
-                                    <h3 mat-subheader>Properties</h3>
-                                    <div layout="wrap">
-                                        <div fxFlex="50">
-                                            <div *ngFor="let prop of properties; index as i">
-                                                <mat-list-item *ngIf="i % 2 === 0 && !ignoreProps.includes(prop.name)">
-                                                    <h4 mat-line> {{ prop.name }} </h4>
-                                                    <p mat-line> {{ prop.value }} </p>
-                                                    <mat-divider></mat-divider>
-                                                </mat-list-item>
-                                            </div>
-                                        </div>
-                                        <div fxFlex="50">
-                                            <div *ngFor="let prop of properties; index as i">
-                                                <mat-list-item *ngIf="i % 2 === 1 && !ignoreProps.includes(prop.name)">
-                                                    <h4 mat-line> {{ prop.name }} </h4>
-                                                    <p mat-line> {{ prop.value }} </p>
-                                                    <mat-divider></mat-divider>
-                                                </mat-list-item>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </mat-list>
-                            </div>
-                        </div>
-
-
-                    </mat-expansion-panel>
-
-                </mat-accordion>
-
-                <p *ngIf="currentData.length == 0" style=" text-align: center">
-                    No data found
-                </p>
-
-                <pre *ngIf="Environment.debugFacets">
-                    {{ currentData | json }}
-                </pre>
-            </mat-card-content>
+            <app-thing-container
+                [(currentData)]="currentData" 
+                [(routeParams)]="routeParams" 
+                [(hierarchyDepth)]="hierarchyDepth"
+                [(currentKey)]="currentKey"
+                [(searchOpts)]="searchOpts"
+                [(shouldFacet)]="shouldFacet">
+            </app-thing-container>
+            
         </mat-card>
     </div>
+
     <!-- list of clickable cards -->
     <div *ngIf="!shouldFacet" style="display: flex; flex-wrap:wrap; align-items: center; justify-content: center">
         <div *ngFor="let item of currentData" style="margin: 16px 16px 16px 16px">

@@ -12,9 +12,7 @@ let appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [] },
   { path: 'home', component: HomeComponent, canActivate: [] },
   { path: 'loggedout', component: LoggedOutComponent, canActivate: [] },
-  { path: 'forbidden', component: ForbiddenComponent },
-  { path: 'showcase', loadChildren: './showcase/showcase.module#ShowcaseModule', canLoad: [] },
-  { path: 'todo', loadChildren: './todo/todo.module#TodoModule', canLoad: [] }
+  { path: 'forbidden', component: ForbiddenComponent }
 ];
 let fullRoutePath = 'search';
 let depth = 0;

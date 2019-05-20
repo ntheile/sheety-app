@@ -19,4 +19,4 @@ TODO
             - [ ] ThingItemComponent
                - [ ] ThingPropertyComponent
 
-
+- [ ] NPM package excel2jsonld

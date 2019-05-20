@@ -1,0 +1,47 @@
+<section>
+  <h1>Container</h1>
+
+
+  <mat-card-title>
+    <div *ngIf="Environment.debugFacets">
+      <pre>
+              {{ routeParams | json }}
+          </pre>
+      <span>Depth: {{ hierarchyDepth }}</span><br />
+      <span>Count: {{ currentData.length }}</span><br />
+      <span>Current Key: {{ currentKey }}</span><br />
+    </div>
+  </mat-card-title>
+  <mat-card-content>
+    <div *ngIf="Environment.debugFacets">
+      <h3>Search Options</h3>
+      <pre>
+              {{ searchOpts | json }}
+          </pre>
+      <hr />
+      <h3>Data</h3>
+    </div>
+
+
+    <app-thing-list  
+      [(currentData)]="currentData" 
+      [(routeParams)]="routeParams" 
+      [(hierarchyDepth)]="hierarchyDepth"
+      [(currentKey)]="currentKey"
+      [(searchOpts)]="searchOpts"
+      [(shouldFacet)]="shouldFacet">
+    </app-thing-list>
+
+
+
+  <p *ngIf="currentData.length == 0" style=" text-align: center">
+    No data found
+  </p>
+
+  <pre *ngIf="Environment.debugFacets">
+      {{ currentData | json }}
+  </pre>
+  </mat-card-content>
+
+
+</section>
