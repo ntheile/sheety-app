@@ -19,4 +19,8 @@ TODO
             - [X] ThingItemComponent
                - [X] ThingPropertyComponent
 
+- ETL
+   - [ ] Use the broswer to upload excel and ETL in browser
+
+
 - [ ] NPM package excel2jsonld

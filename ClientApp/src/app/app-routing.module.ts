@@ -6,13 +6,18 @@ import { HomeComponent } from './core/home/home.component';
 import { LoggedOutComponent } from './core/loggedout/loggedout.component';
 import { ForbiddenComponent } from './core/forbidden/forbidden.component';
 import { DataService } from '../services/data.service';
-
+import { ETLComponent } from './etl/etl.component';
+import { ThingConfigComponent } from './thing/thing-config/thing-config.component';
+import { ThingTransformComponent } from './thing/thing-transform/thing-transform.component';
 
 let appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [] },
   { path: 'home', component: HomeComponent, canActivate: [] },
   { path: 'loggedout', component: LoggedOutComponent, canActivate: [] },
-  { path: 'forbidden', component: ForbiddenComponent }
+  { path: 'forbidden', component: ForbiddenComponent },
+  { path: 'data', component: ETLComponent },
+  { path: 'config', component: ThingConfigComponent },
+  { path: 'transform', component: ThingTransformComponent }
 ];
 let fullRoutePath = 'search';
 let depth = 0;

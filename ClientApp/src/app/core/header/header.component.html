@@ -1,18 +1,23 @@
-<div>
+<div  >
+  <button mat-button (click)="go('/')" style="float: left;">Sheety App</button>
+  <button mat-button (click)="go('/data')" style="float: left;">Data</button>
+  <button mat-button (click)="go('/config')" style="float: left;">Config</button>
+  <button mat-button (click)="go('/transform')" style="float: left;">Transform</button>
+  <button mat-button (click)="goApi()" style="float: left;">API</button>
 
-<span (click)="goHome()" style="cursor:pointer">Thing Faceter</span>
-<button mat-button [matMenuTriggerFor]="menu" class="large-user-account">
-  {{ displayName || "Unknown User" }}
-  <i class="material-icons">&#xE5C5;</i>
-</button>
-<button mat-icon-button [matMenuTriggerFor]="menu" class="small-user-account">
-  <div class="icon">
-    <i class="material-icons">&#xE853;</i>
-  </div>
-</button>
-<mat-menu #menu="matMenu">
-  <span mat-menu-item disabled class="user-name">{{ displayName }}</span>
-  <a *ngIf="authService.isLoggedIn()" mat-menu-item (click)="logout()">Logout</a>
-  <a *ngIf="!authService.isLoggedIn()" mat-menu-item (click)="login()">Login</a>
-</mat-menu>
+  <button mat-button [matMenuTriggerFor]="menu" class="large-user-account" style="float:right !important">
+    {{ displayName || "Unknown User" }}
+    <i class="material-icons">&#xE5C5;</i>
+  </button>
+  <button mat-icon-button [matMenuTriggerFor]="menu" class="small-user-account" style="float:right !important">
+    <div class="icon">
+      <i class="material-icons">&#xE853;</i>
+    </div>
+  </button>
+  <mat-menu #menu="matMenu" style="float:right !important">
+    <span mat-menu-item disabled class="user-name">{{ displayName }}</span>
+    <a *ngIf="authService.isLoggedIn()" mat-menu-item (click)="logout()">Logout</a>
+    <a *ngIf="!authService.isLoggedIn()" mat-menu-item (click)="login()">Login</a>
+  </mat-menu>
+
 </div>

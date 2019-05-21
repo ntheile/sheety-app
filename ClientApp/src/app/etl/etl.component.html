@@ -1,0 +1,16 @@
+<section class="etl">
+  <form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+    <input type="file" (change)="onFileChange($event)" />
+    <button type="submit" [disabled]="formGroup.invalid || formGroup.prestine">Submit</button>
+  </form>
+
+  <br/><br/>
+
+  <div >
+    <button *ngFor="let sheet of sheets; index as i;"  (click)="processExcel(null, i)">{{ sheet }}</button>
+  </div>
+
+  <div #excelEl ></div>
+  
+ 
+</section>

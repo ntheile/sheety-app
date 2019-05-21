@@ -40,8 +40,12 @@ export class DataService {
     return this.hierarchy;
   }
 
+  getDataUrl(){
+    return Environment.transformFolder + 'data.json';
+  }
+
   async getData() {
-    let url = Environment.transformFolder + 'data.json';
+    let url = this.getDataUrl();
     this.data = await this.http.get(url).toPromise();
     this.originalData = this.data;
     return this.data;

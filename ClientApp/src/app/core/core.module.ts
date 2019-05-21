@@ -15,6 +15,10 @@ import { ThingListComponent } from './../thing/thing-list/thing-list.component';
 import { ThingItemComponent } from './../thing/thing-item/thing-item.component';
 import { ThingPropertiesComponent } from './../thing/thing-properties/thing-properties.component';
 import { ThingCategoryComponent } from './../thing/thing-category/thing-category.component';
+import { ETLComponent } from './../etl/etl.component';
+import { ThingConfigComponent } from './../thing/thing-config/thing-config.component';
+import { ThingTransformComponent } from './../thing/thing-transform/thing-transform.component';
+import { ThingFacetsComponent } from './../thing/thing-facets/thing-facets.component';
 
 
 @NgModule({
@@ -32,7 +36,11 @@ import { ThingCategoryComponent } from './../thing/thing-category/thing-category
         ThingListComponent,
         ThingItemComponent,
         ThingPropertiesComponent,
-        ThingCategoryComponent
+        ThingCategoryComponent,
+        ETLComponent,
+        ThingConfigComponent,
+        ThingTransformComponent,
+        ThingFacetsComponent
     ],
     declarations: [
         HomeComponent,
@@ -45,7 +53,11 @@ import { ThingCategoryComponent } from './../thing/thing-category/thing-category
         ThingListComponent,
         ThingItemComponent,
         ThingPropertiesComponent,
-        ThingCategoryComponent
+        ThingCategoryComponent,
+        ETLComponent,
+        ThingConfigComponent,
+        ThingTransformComponent,
+        ThingFacetsComponent
     ],
     providers: [
         AppServerAuthService,

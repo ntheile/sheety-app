@@ -1,4 +1,4 @@
-# Thing Faceter
+# Sheety App
 
 ## ETL
 
