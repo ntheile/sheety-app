@@ -7,16 +7,7 @@ import { Environment } from "../../../environments/environment";
 import { DataService } from "../../../services/data.service";
 import { FacetComponent } from "../../facet/facet.component";
 import { SearchOptions } from "./../../../data/interfaces";
-// @todo make this dynamic
-// import * as reducer from './../../../data/samples/products-emeai-flat/reducer.js'; 
-// import * as transformer from './../../../data/samples/products-emeai-flat/transformer.js';
-import * as reducer from './../../../data/samples/products-plastics-nested/reducer.js'; 
-import * as transformer from './../../../data/samples/products-plastics-nested/transformer.js';
-// import * as reducer from './../../../data/samples/cars/reducer.js'; 
-// import * as transformer from './../../../data/samples/cars/transformer.js';
-// import * as reducer from './../../../data/samples/cars-nested/reducer.js'; 
-// import * as transformer from './../../../data/samples/cars-nested/transformer.js';
-
+declare let require: any;
 
 @Component({
     selector: "app-home",
@@ -39,6 +30,8 @@ export class HomeComponent implements OnInit, AfterViewInit  {
     filterPropsAry;
     breadcrumbs = [];
     ignoreProps = Environment.config.ignoreProps;
+    reducer;
+    transformer;
     
     @ViewChild(FacetComponent) facets;
     
@@ -49,6 +42,8 @@ export class HomeComponent implements OnInit, AfterViewInit  {
         public http: HttpClient,
     ) {
         this.app_id = Environment.Application_Id;
+        this.reducer = require('./../../../data/' + this.dataService.getReducerUrl());
+        this.transformer = require('./../../../data/' + this.dataService.getTransformUrl());
     }
 
     ngOnInit() {
@@ -97,8 +92,8 @@ export class HomeComponent implements OnInit, AfterViewInit  {
             depth: this.hierarchyDepth,
             routeParms: this.routeParams,
             nextSearchOptions: null,
-            transform: transformer.transform,
-            reducer: reducer.reduce
+            transform: this.transformer.transform,
+            reducer: this.reducer.reduce
         };
         this.searchOpts = _.cloneDeep(searchOptions);
         this.searchOpts.data = this.data.length;

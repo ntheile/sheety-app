@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../../../services/data.service';
+declare let require: any;
 
 @Component({
   selector: 'app-thing-config',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ThingConfigComponent implements OnInit {
 
-  constructor() { }
+  config;
+
+  constructor(
+    public dataService: DataService,
+  ) { }
 
   ngOnInit() {
+    this.getConfig();
   }
+
+  async getConfig(){
+    const Config = require(`./../../../data/${this.dataService.getConfigUrl()}`);
+    this.config = Config;
+    return this.config;
+  }
+
+
 
 }

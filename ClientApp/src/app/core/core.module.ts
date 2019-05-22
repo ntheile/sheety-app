@@ -19,11 +19,13 @@ import { ETLComponent } from './../etl/etl.component';
 import { ThingConfigComponent } from './../thing/thing-config/thing-config.component';
 import { ThingTransformComponent } from './../thing/thing-transform/thing-transform.component';
 import { ThingFacetsComponent } from './../thing/thing-facets/thing-facets.component';
+import { HttpModule } from '@angular/http';
 
 
 @NgModule({
     imports: [
         SharedModule,
+        HttpModule,
     ],
     exports: [
         HomeComponent,

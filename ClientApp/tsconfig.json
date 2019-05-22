@@ -5,6 +5,7 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
+    "module": "esnext",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,    
     "target": "es5",
@@ -16,9 +17,6 @@
     "lib": [
       "es2017",
       "dom"
-    ],
-    "paths": {
-     
-    }
+    ]
   }
 }

@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import * as config from './../data/samples/products-plastics-nested/config';
+declare let require: any;
 
 // This environment file corresponds to the key/values found in appsettings.json(server-side)
 // At runtime, the serverside environment values will override the vars in this file
 // When updating this file, update appsettings.json, appsettings.Development.json
 @Injectable()
 export class Environment {
+    public static dataPath = "samples/products-plastics-nested";
     public static transformFolder = "./../data/samples/products-plastics-nested/";
+    public static config = require('./../data/samples/products-plastics-nested/config');
+
     public static debugFacets = false;
-    public static config = config;
-    
     public static production = false;
     public static hmr = false;
     public static Api_Uri = '#OverwrittenByAppSettings#';

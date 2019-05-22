@@ -2,7 +2,7 @@
 
     <div *ngIf="routeParams" fxLayout='row wrap' fxLayoutAlign="center center" style="margin-left: 16px; margin-bottom: 10px;" >
         <span *ngFor="let breadcrumb of breadcrumbs" >
-            <a  [href]="breadcrumb.href">{{ breadcrumb.label  }}</a> /
+            <a  [href]="breadcrumb.href">{{ breadcrumb.label  }}</a>&nbsp;/&nbsp;
         </span> 
     </div>
 

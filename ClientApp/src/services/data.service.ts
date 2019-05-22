@@ -44,6 +44,30 @@ export class DataService {
     return Environment.transformFolder + 'data.json';
   }
 
+  getConfigUrl(){
+    return Environment.dataPath + '/config.js';
+  }
+
+  getTransformUrl(){
+    return Environment.dataPath + '/transformer.js';
+  }
+
+  getReducerUrl(){
+    return Environment.dataPath + '/reducer.js';
+  }
+
+  getFacetsUrl(){
+    return Environment.transformFolder + 'facets.json';
+  }
+
+  getExcelUrl(){
+    return Environment.dataPath + '/data.xlsx';
+  }
+
+  getDataPath(){
+    return Environment.dataPath;
+  }
+
   async getData() {
     let url = this.getDataUrl();
     this.data = await this.http.get(url).toPromise();
