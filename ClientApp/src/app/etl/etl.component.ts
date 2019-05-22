@@ -36,7 +36,8 @@ export class ETLComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.downloadExcel("http://localhost:4200/data/samples/products-plastics-nested/data.xlsx");
+    const url = location.origin + "/data/" + this.dataService.getDataPath() + "/data.xlsx";
+    this.downloadExcel(url);
   } 
 
   async downloadExcel(url) {

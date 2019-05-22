@@ -27,6 +27,7 @@
               "src/data/samples/products-emeai-flat/hierarchy.json",
               "src/data/samples/products-emeai-flat/data.json",
               "src/data/samples/products-emeai-flat/facets.json",
+              "src/data/samples/products-emeai-flat/data.xlsx",
               "src/data/samples/products-plastics-nested/reducer.js",
               "src/data/samples/products-plastics-nested/transformer.js",
               "src/data/samples/products-plastics-nested/hierarchy.json",
@@ -38,12 +39,14 @@
               "src/data/samples/cars/hierarchy.json",
               "src/data/samples/cars/data.json",
               "src/data/samples/cars/facets.json",
+              "src/data/samples/cars/data.xlsx",
               "src/data/samples/cars-nested/reducer.js",
               "src/data/samples/cars-nested/transformer.js",
               "src/data/samples/cars-nested/hierarchy.json",
               "src/data/samples/cars-nested/data.json",
               "src/data/samples/cars-nested/facets.json",
-              "src/data/samples/cars-nested/config.js"
+              "src/data/samples/cars-nested/config.js",
+              "src/data/samples/cars-nested/data.xlsx"
             ],
             "styles": ["src/styles/styles.css", "src/styles/theme.scss"],
             "scripts": [
