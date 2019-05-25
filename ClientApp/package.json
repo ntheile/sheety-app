@@ -15,7 +15,7 @@
     "posttest": "node ./post-process-coverage.js",
     "postvstsTest": "node ./post-process-coverage.js",
     "gzip": "gzip -h",
-    "etl": "cd ../ETL/src && node index -configPath ../../ClientApp/src/data/samples/cars-nested && node genFacetsProperties -configPath ../../ClientApp/src/data/samples/cars-nested"
+    "etl": "cd ../ETL/src && node index -configPath ../../ClientApp/src/data/samples/blockstack && node genFacetsProperties -configPath ../../ClientApp/src/data/samples/blockstack"
   },
   "husky": {
     "hooks": {

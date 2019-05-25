@@ -27,7 +27,10 @@ import {
     MatSliderModule,
     MatChipsModule,
     MatGridListModule,
+    MatDialogModule,
+    MatSelectModule
 } from "@angular/material";
+import { DialogChooseSearchKey } from "../etl/etl.component";
 
 const MATERIALCOMPONENTS = [
     CdkTableModule,
@@ -52,11 +55,15 @@ const MATERIALCOMPONENTS = [
     Ng5SliderModule,
     MatChipsModule,
     MatGridListModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatDialogModule,
+    MatSelectModule
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [
+        DialogChooseSearchKey
+    ],
     imports: [
         CommonModule,
         FormsModule,
@@ -69,6 +76,9 @@ const MATERIALCOMPONENTS = [
     ],
     providers: [
 
+    ],
+    entryComponents:[
+        DialogChooseSearchKey
     ]
 })
 export class SharedModule { }

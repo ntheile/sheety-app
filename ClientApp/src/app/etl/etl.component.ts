@@ -1,13 +1,22 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, Inject } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { Http } from "@angular/http";
 import * as canvasDatagrid from "canvas-datagrid";
 import { $$ } from "protractor";
 import * as XLSX from "xlsx";
 import { DataService } from "../../services/data.service";
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatBottomSheetConfig } from "@angular/material";
+import { Router } from "@angular/router";
+import { worker } from "cluster";
+import { EtlService } from "../../services/etl/etl.service";
 declare let DropSheet: any;
 declare let $: any;
 declare let require: any;
+
+export interface DialogData {
+  headers: any;
+}
+
 
 @Component({
   selector: "app-etl",
@@ -24,6 +33,8 @@ export class ETLComponent implements OnInit {
   workbook;
   json;
   currentSheetJson;
+  headers;
+  selectedHeader;
   @ViewChild("excelEl") excelEl: ElementRef;
   
   constructor(
@@ -31,6 +42,9 @@ export class ETLComponent implements OnInit {
     private cd: ChangeDetectorRef,
     public dataService: DataService,
     public http: Http,
+    public dialog: MatDialog,
+    private router: Router,
+    public etlService: EtlService
     ) {
 
   }
@@ -84,6 +98,7 @@ export class ETLComponent implements OnInit {
     try {
       wb = XLSX.read(data, readtype);
       this.workbook = wb;
+      this.dataService.workbook = this.workbook;
       this.sheets = wb.SheetNames;
       this.processExcel(wb, 0);
     } catch (e) { 
@@ -99,15 +114,16 @@ export class ETLComponent implements OnInit {
       
     }
     const sheet = workbook.SheetNames[sheetIndex || 0];
-    const json = this.excelToJson(workbook)[sheet];
+    this.json = this.excelToJson(workbook)[sheet];
+    this.headers = this.getHeaders(this.json);
     this.cd.markForCheck();
-    this.makeWebExcel(workbook, json);
+    this.makeWebExcel(workbook, this.json);
   }
 
   excelToJson(workbook) {
       const result = {};
       workbook.SheetNames.forEach( (sheetName) => {
-        const roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {raw: false, header: 1});
+        const roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {raw: false});
         if (roa.length > 0) { result[sheetName] = roa; }
       });
       return result;
@@ -118,7 +134,7 @@ export class ETLComponent implements OnInit {
       const grid = this.excelEl.nativeElement;
       grid.style.display = "block";
       grid.style.height = (window.innerHeight - 200) + "px";
-      grid.style.width = (window.innerWidth - 200) + "px";
+      grid.style.width = (window.innerWidth - 10) + "px";
       
       const cdg = canvasDatagrid({
         parentNode: grid,
@@ -138,6 +154,62 @@ export class ETLComponent implements OnInit {
     }
     o += String.fromCharCode.apply(null, new Uint8Array(data.slice(o.length)));
     return o;
+  }
+
+  getHeaders(json) {
+    this.headers = Object.keys(json[0]);
+    return this.headers;
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogChooseSearchKey, {
+      data: {headers: this.headers}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed, ', result);
+      this.setThing(result);
+    });
+  }
+
+  setThing(thing) {
+    this.dataService.setThing(thing);
+    let data = this.etlService.init(thing);
+    this.router.navigate(["/config"]);
+  }
+
+
+}
+
+
+
+@Component({
+  selector: 'dialog-choose-search-key',
+  template: `
+      <div mat-dialog-content>
+        <h1 mat-dialog-title>Select a column to <br/> use as the search item:</h1>
+          <mat-form-field>
+            <mat-select [(value)]="selectedHeader" >
+              <mat-option [value]="header" *ngFor="let header of data.headers">{{header}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+      </div>
+      <div mat-dialog-actions>
+          <button mat-button [mat-dialog-close]="selectedHeader" cdkFocusInitial>Ok</button>
+      </div>
+  `,
+})
+export class DialogChooseSearchKey {
+
+
+  selectedHeader;
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogChooseSearchKey>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }

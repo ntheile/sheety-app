@@ -17,6 +17,12 @@
     </script>
   <!-- required to bootstrap environment variables before angular startup-->
   <script type="text/javascript" src="api/environment/init"></script>
+  <script>
+    String.prototype.replaceAll = function (search, replacement) {
+      var target = this;
+      return target.split(search).join(replacement);
+    };
+  </script>
 </head>
 <body>
   <app-root>

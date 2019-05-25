@@ -10,6 +10,7 @@ declare let require: any;
 export class ThingConfigComponent implements OnInit {
 
   config;
+  thing;
 
   constructor(
     public dataService: DataService,
@@ -20,11 +21,12 @@ export class ThingConfigComponent implements OnInit {
   }
 
   async getConfig(){
-    const Config = require(`./../../../data/${this.dataService.getConfigUrl()}`);
-    this.config = Config;
+   
+    this.config = this.dataService.getConfig();
     return this.config;
   }
 
+ 
 
 
 }

@@ -1,7 +1,9 @@
 <section class="etl">
-  <form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()">
+  <form [formGroup]="formGroup" novalidate (ngSubmit)="onSubmit()" style="margin-right: 40px; margin-left: 40px">
     <input type="file" (change)="onFileChange($event)" />
-    <button type="submit" [disabled]="formGroup.invalid || formGroup.prestine">Submit</button>
+    <button mat-raised-button color="primary" (click)="openDialog()" style="float: right" >
+      Next 
+    </button>
   </form>
 
   <br/><br/>

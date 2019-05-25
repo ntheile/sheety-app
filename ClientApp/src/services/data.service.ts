@@ -24,6 +24,10 @@ export class DataService {
   currentSeachOptions;
   currentData;
   originalFilterData;
+  thing;
+  config;
+  workbook;
+  storageDriver = Environment.storageDriver;
 
   constructor(
     public http: HttpClient,
@@ -36,8 +40,16 @@ export class DataService {
   }
 
   async getHierarchy() {
-    this.hierarchy = Environment.config.jsonNesting;
+    // this.hierarchy = Environment.config.jsonNesting;
+    if (!this.config){
+      alert('need to choose key in /data');
+    }
+    this.hierarchy = this.config;
     return this.hierarchy;
+  }
+
+  setThing(thing){
+    this.thing = thing;
   }
 
   getDataUrl(){
@@ -45,8 +57,21 @@ export class DataService {
   }
 
   getConfigUrl(){
+    
     return Environment.dataPath + '/config.js';
   }
+
+  getConfig(){
+    if (this.storageDriver == "memory"){
+      if (!this.config){
+        alert('gotta choose key config first on /data page');
+      }
+      return this.config;
+    }
+    const c = require(`./../data/${this.getConfigUrl()}`);
+    return c;
+  }
+
 
   getTransformUrl(){
     return Environment.dataPath + '/transformer.js';
@@ -69,6 +94,12 @@ export class DataService {
   }
 
   async getData() {
+    if (this.storageDriver == "memory"){
+      if (!this.data){
+        alert('gotta upload excel first on /data page');
+      }
+      return this.data;
+    }
     let url = this.getDataUrl();
     this.data = await this.http.get(url).toPromise();
     this.originalData = this.data;
@@ -228,10 +259,15 @@ export class DataService {
 
 
       let properties = propertyGroup.properties.map((d) => {
-        const obj: any = {};
-        obj.name = d.name;
-        obj.value = d.value;
-        return obj;
+          try{
+            const obj: any = {};
+            obj.name = d.name;
+            obj.value = d.value;
+            return obj;
+          } catch(e){
+            console.log('no props', e);
+          }
+
       });
 
       // find by name in properties leaf
@@ -268,19 +304,25 @@ export class DataService {
           } else {
             let isInList = false;
             for (const prop of properties) {
-              if (prop.name === propertyGroup.name) {
-                const result = propsAry.filter((f) => f.name == prop.name && f.value == prop.value);
-                if (result.length > 0) {
-                  groupResults.push(item);
+              try{
+                if (prop.name === propertyGroup.name) {
+                  const result = propsAry.filter((f) => f.name == prop.name && f.value == prop.value);
+                  if (result.length > 0) {
+                    groupResults.push(item);
+                  }
                 }
+              } catch(e){
+                console.log('null prop', e);
               }
+              
             }
           }
           // @TODO execute query for AND logicalOperator, for example in a car you want a seat color of Black AND White
         }
       }
-      results.push(groupResults);
-
+      if (groupResults.length > 0){
+        results.push(groupResults);
+      }
     }
 
     // AND operation (intersection) against each group results

@@ -46,7 +46,14 @@
               "src/data/samples/cars-nested/data.json",
               "src/data/samples/cars-nested/facets.json",
               "src/data/samples/cars-nested/config.js",
-              "src/data/samples/cars-nested/data.xlsx"
+              "src/data/samples/cars-nested/data.xlsx",
+              "src/data/samples/blockstack/reducer.js",
+              "src/data/samples/blockstack/transformer.js",
+              "src/data/samples/blockstack/hierarchy.json",
+              "src/data/samples/blockstack/data.json",
+              "src/data/samples/blockstack/facets.json",
+              "src/data/samples/blockstack/config.js",
+              "src/data/samples/blockstack/data.xlsx"
             ],
             "styles": ["src/styles/styles.css", "src/styles/theme.scss"],
             "scripts": [
