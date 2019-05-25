@@ -17,11 +17,6 @@
     "gzip": "gzip -h",
     "etl": "cd ../ETL/src && node index -configPath ../../ClientApp/src/data/samples/blockstack && node genFacetsProperties -configPath ../../ClientApp/src/data/samples/blockstack"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.ts": [
       "tslint --fix",
@@ -70,7 +65,6 @@
     "@types/node": "~8.9.4",
     "chalk": "2.1.0",
     "codelyzer": "^4.4.4",
-    "husky": "^1.0.0-rc.15",
     "include-media": "1.4.9",
     "inline-css": "^2.4.0",
     "istanbul-instrumenter-loader": "^3.0.1",

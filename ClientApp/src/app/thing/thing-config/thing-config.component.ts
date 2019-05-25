@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../../services/data.service';
+import { Component, OnInit } from "@angular/core";
+import { DataService } from "../../../services/data.service";
 declare let require: any;
 
 @Component({
-  selector: 'app-thing-config',
-  templateUrl: './thing-config.component.html',
-  styleUrls: ['./thing-config.component.scss']
+  selector: "app-thing-config",
+  templateUrl: "./thing-config.component.html",
+  styleUrls: ["./thing-config.component.scss"],
 })
 export class ThingConfigComponent implements OnInit {
 
@@ -20,13 +20,10 @@ export class ThingConfigComponent implements OnInit {
     this.getConfig();
   }
 
-  async getConfig(){
+  async getConfig() {
    
     this.config = this.dataService.getConfig();
     return this.config;
   }
-
- 
-
 
 }

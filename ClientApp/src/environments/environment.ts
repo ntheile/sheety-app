@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
+import { ForbiddenComponent } from "../app/core/forbidden/forbidden.component";
 import { HomeComponent } from "../app/core/home/home.component";
 import { LoggedOutComponent } from "../app/core/loggedout/loggedout.component";
-import { ForbiddenComponent } from "../app/core/forbidden/forbidden.component";
 import { ETLComponent } from "../app/etl/etl.component";
 import { ThingConfigComponent } from "../app/thing/thing-config/thing-config.component";
 import { ThingTransformComponent } from "../app/thing/thing-transform/thing-transform.component";
@@ -21,13 +21,13 @@ export class Environment {
     public static config = require("./../data/samples/blockstack/config");
     public static storageDriver = "memory"; // or blockstack or aws or memory etc...
     public static appRoutes = [
-        { path: '', component: HomeComponent, canActivate: [] },
-        { path: 'home', component: HomeComponent, canActivate: [] },
-        { path: 'loggedout', component: LoggedOutComponent, canActivate: [] },
-        { path: 'forbidden', component: ForbiddenComponent },
-        { path: 'data', component: ETLComponent },
-        { path: 'config', component: ThingConfigComponent },
-        { path: 'transform', component: ThingTransformComponent }
+        { path: "", component: HomeComponent, canActivate: [] },
+        { path: "home", component: HomeComponent, canActivate: [] },
+        { path: "loggedout", component: LoggedOutComponent, canActivate: [] },
+        { path: "forbidden", component: ForbiddenComponent },
+        { path: "data", component: ETLComponent },
+        { path: "config", component: ThingConfigComponent },
+        { path: "transform", component: ThingTransformComponent },
       ];
 
     public static debugFacets = false;

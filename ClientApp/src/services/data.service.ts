@@ -41,30 +41,30 @@ export class DataService {
 
   async getHierarchy() {
     // this.hierarchy = Environment.config.jsonNesting;
-    if (!this.config){
-      alert('need to choose key in /data');
+    if (!this.config) {
+      alert("need to choose key in /data");
     }
     this.hierarchy = this.config;
     return this.hierarchy;
   }
 
-  setThing(thing){
+  setThing(thing) {
     this.thing = thing;
   }
 
-  getDataUrl(){
-    return Environment.transformFolder + 'data.json';
+  getDataUrl() {
+    return Environment.transformFolder + "data.json";
   }
 
-  getConfigUrl(){
+  getConfigUrl() {
     
-    return Environment.dataPath + '/config.js';
+    return Environment.dataPath + "/config.js";
   }
 
-  getConfig(){
-    if (this.storageDriver == "memory"){
-      if (!this.config){
-        alert('gotta choose key config first on /data page');
+  getConfig() {
+    if (this.storageDriver == "memory") {
+      if (!this.config) {
+        alert("gotta choose key config first on /data page");
       }
       return this.config;
     }
@@ -72,42 +72,41 @@ export class DataService {
     return c;
   }
 
-
-  getTransformUrl(){
-    return Environment.dataPath + '/transformer.js';
+  getTransformUrl() {
+    return Environment.dataPath + "/transformer.js";
   }
 
-  getReducerUrl(){
-    return Environment.dataPath + '/reducer.js';
+  getReducerUrl() {
+    return Environment.dataPath + "/reducer.js";
   }
 
-  getFacetsUrl(){
-    return Environment.transformFolder + 'facets.json';
+  getFacetsUrl() {
+    return Environment.transformFolder + "facets.json";
   }
 
-  getExcelUrl(){
-    return Environment.dataPath + '/data.xlsx';
+  getExcelUrl() {
+    return Environment.dataPath + "/data.xlsx";
   }
 
-  getDataPath(){
+  getDataPath() {
     return Environment.dataPath;
   }
 
   async getData() {
-    if (this.storageDriver == "memory"){
-      if (!this.data){
-        alert('gotta upload excel first on /data page');
+    if (this.storageDriver == "memory") {
+      if (!this.data) {
+        alert("gotta upload excel first on /data page");
       }
       return this.data;
     }
-    let url = this.getDataUrl();
+    const url = this.getDataUrl();
     this.data = await this.http.get(url).toPromise();
     this.originalData = this.data;
     return this.data;
   }
 
   async getFacets() {
-    let url = Environment.transformFolder + 'facets.json';
+    const url = Environment.transformFolder + "facets.json";
     if (this.getFacets) {
       this.facets = await this.http.get(url).toPromise();
       this.facets = this.reduceFacets(this.currentData, this.facets);
@@ -152,7 +151,6 @@ export class DataService {
       options.id = showOnly;
     }
     let data2 = null;
-
 
     // loop the hierchary 
     //   - from the top route to the bottom . it filters down the data 
@@ -248,24 +246,22 @@ export class DataService {
       return data;
     }
 
-    let results = [];
-
+    const results = [];
 
     // operation within each Group (AND or OR)
-    for (let propertyGroup of propertyGroups) {
+    for (const propertyGroup of propertyGroups) {
 
-      let groupResults = [];
-      let removeGroup = [];
+      const groupResults = [];
+      const removeGroup = [];
 
-
-      let properties = propertyGroup.properties.map((d) => {
-          try{
+      const properties = propertyGroup.properties.map((d) => {
+          try {
             const obj: any = {};
             obj.name = d.name;
             obj.value = d.value;
             return obj;
-          } catch(e){
-            console.log('no props', e);
+          } catch (e) {
+            console.log("no props", e);
           }
 
       });
@@ -279,8 +275,7 @@ export class DataService {
           if (item.properties.length > 0) {
             if (Array.isArray(item.properties[0])) {
               propsAry = item.properties[0];
-            }
-            else {
+            } else {
               propsAry = item.properties;
             }
           }
@@ -294,25 +289,25 @@ export class DataService {
           });
 
           // execute query for OR logicalOperator
-          if (propertyGroup.type == 'number') {
-            let min = propertyGroup.selectedMin;
-            let max = propertyGroup.selectedMax;
+          if (propertyGroup.type == "number") {
+            const min = propertyGroup.selectedMin;
+            const max = propertyGroup.selectedMax;
             const result = propsAry.filter((f) => f.name == propertyGroup.name && f.value >= min && f.value <= max);
             if (result.length > 0) {
               groupResults.push(item);
             }
           } else {
-            let isInList = false;
+            const isInList = false;
             for (const prop of properties) {
-              try{
+              try {
                 if (prop.name === propertyGroup.name) {
                   const result = propsAry.filter((f) => f.name == prop.name && f.value == prop.value);
                   if (result.length > 0) {
                     groupResults.push(item);
                   }
                 }
-              } catch(e){
-                console.log('null prop', e);
+              } catch (e) {
+                console.log("null prop", e);
               }
               
             }
@@ -320,13 +315,13 @@ export class DataService {
           // @TODO execute query for AND logicalOperator, for example in a car you want a seat color of Black AND White
         }
       }
-      if (groupResults.length > 0){
+      if (groupResults.length > 0) {
         results.push(groupResults);
       }
     }
 
     // AND operation (intersection) against each group results
-    let finalResults = _.intersection(...results);
+    const finalResults = _.intersection(...results);
     return finalResults;
 
   }
@@ -334,22 +329,22 @@ export class DataService {
   async reduceFacets(data, facets) {
 
     if (data && facets) {
-      let ignoreFields = Environment.config.ignoreFacets;
-      for (let ignoreField of ignoreFields) {
-        facets = facets.filter(k => k.key !== ignoreField);
+      const ignoreFields = Environment.config.ignoreFacets;
+      for (const ignoreField of ignoreFields) {
+        facets = facets.filter((k) => k.key !== ignoreField);
       }
 
-      //reduce to the facets that pertain to  only the current data set
+      // reduce to the facets that pertain to  only the current data set
       let facetsWeCareAbout = [];
-      for (let item of data) {
-        for (let p of item.properties) {
+      for (const item of data) {
+        for (const p of item.properties) {
           if (Array.isArray(p)) {
-            for (let prop of p) {
-              let a = 1;
-              facetsWeCareAbout.push(prop.name)
+            for (const prop of p) {
+              const a = 1;
+              facetsWeCareAbout.push(prop.name);
             }
           } else {
-            facetsWeCareAbout.push(p.name)
+            facetsWeCareAbout.push(p.name);
           }
         }
       }
@@ -357,13 +352,12 @@ export class DataService {
       facetsWeCareAbout = _.uniq(facetsWeCareAbout);
 
       // remove not relevant facets to our current data set
-      for (let facet of facets) {
+      for (const facet of facets) {
         if (!facetsWeCareAbout.includes(facet.key)) {
-          facets = facets.filter(f => f !== facet)
+          facets = facets.filter((f) => f !== facet);
         }
       }
     }
-
 
     return facets;
 

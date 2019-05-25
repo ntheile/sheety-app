@@ -1,13 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, Inject } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { Http } from "@angular/http";
+import { MAT_DIALOG_DATA, MatBottomSheetConfig, MatDialog, MatDialogRef } from "@angular/material";
+import { Router } from "@angular/router";
 import * as canvasDatagrid from "canvas-datagrid";
+import { worker } from "cluster";
 import { $$ } from "protractor";
 import * as XLSX from "xlsx";
 import { DataService } from "../../services/data.service";
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatBottomSheetConfig } from "@angular/material";
-import { Router } from "@angular/router";
-import { worker } from "cluster";
 import { EtlService } from "../../services/etl/etl.service";
 declare let DropSheet: any;
 declare let $: any;
@@ -16,7 +16,6 @@ declare let require: any;
 export interface DialogData {
   headers: any;
 }
-
 
 @Component({
   selector: "app-etl",
@@ -44,7 +43,7 @@ export class ETLComponent implements OnInit {
     public http: Http,
     public dialog: MatDialog,
     private router: Router,
-    public etlService: EtlService
+    public etlService: EtlService,
     ) {
 
   }
@@ -163,34 +162,31 @@ export class ETLComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogChooseSearchKey, {
-      data: {headers: this.headers}
+      data: {headers: this.headers},
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed, ', result);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("The dialog was closed, ", result);
       this.setThing(result);
     });
   }
 
   setThing(thing) {
     this.dataService.setThing(thing);
-    let data = this.etlService.init(thing);
+    const data = this.etlService.init(thing);
     this.router.navigate(["/config"]);
   }
 
-
 }
 
-
-
 @Component({
-  selector: 'dialog-choose-search-key',
+  selector: "dialog-choose-search-key",
   template: `
       <div mat-dialog-content>
         <h1 mat-dialog-title>Select a column to <br/> use as the search item:</h1>
           <mat-form-field>
             <mat-select [(value)]="selectedHeader" >
-              <mat-option [value]="header" *ngFor="let header of data.headers">{{header}}</mat-option>
+              <mat-option [value]="header" *ngFor="let header of data.headers">{{ header }}</mat-option>
             </mat-select>
         </mat-form-field>
       </div>
@@ -200,7 +196,6 @@ export class ETLComponent implements OnInit {
   `,
 })
 export class DialogChooseSearchKey {
-
 
   selectedHeader;
 

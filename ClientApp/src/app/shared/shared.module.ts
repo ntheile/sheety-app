@@ -1,18 +1,20 @@
 import { CdkTableModule } from "@angular/cdk/table";
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule } from "@angular/forms";
-import { ReactiveFormsModule } from '@angular/forms';
-import { Ng5SliderModule } from 'ng5-slider';
-import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { ReactiveFormsModule } from "@angular/forms";
+import { Ng5SliderModule } from "ng5-slider";
 
 import {
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatChipsModule,
+    MatDialogModule,
     MatExpansionModule,
     MatFormFieldModule,
+    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -20,15 +22,12 @@ import {
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatRadioModule,
+    MatSelectModule,
     MatSidenavModule,
+    MatSliderModule,
     MatSlideToggleModule,
     MatTableModule,
     MatToolbarModule,
-    MatSliderModule,
-    MatChipsModule,
-    MatGridListModule,
-    MatDialogModule,
-    MatSelectModule
 } from "@angular/material";
 import { DialogChooseSearchKey } from "../etl/etl.component";
 
@@ -57,12 +56,12 @@ const MATERIALCOMPONENTS = [
     MatGridListModule,
     FlexLayoutModule,
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
 ];
 
 @NgModule({
     declarations: [
-        DialogChooseSearchKey
+        DialogChooseSearchKey,
     ],
     imports: [
         CommonModule,
@@ -77,8 +76,8 @@ const MATERIALCOMPONENTS = [
     providers: [
 
     ],
-    entryComponents:[
-        DialogChooseSearchKey
-    ]
+    entryComponents: [
+        DialogChooseSearchKey,
+    ],
 })
 export class SharedModule { }

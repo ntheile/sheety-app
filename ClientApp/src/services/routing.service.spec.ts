@@ -1,11 +1,11 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { RoutingService } from './routing.service';
+import { RoutingService } from "./routing.service";
 
-describe('RoutingService', () => {
+describe("RoutingService", () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
-  it('should be created', () => {
+  it("should be created", () => {
     const service: RoutingService = TestBed.get(RoutingService);
     expect(service).toBeTruthy();
   });

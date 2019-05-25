@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import * as XLSX from "xlsx";
-import { UtilsService } from './../utils.service';
-import { DataService } from './../data.service';
-import { Router } from '@angular/router';
-import { RoutingService } from '../routing.service';
-import { Environment } from '../../environments/environment';
+import { Environment } from "../../environments/environment";
+import { RoutingService } from "../routing.service";
+import { DataService } from "./../data.service";
+import { UtilsService } from "./../utils.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class EtlService {
-
 
   workbook;
   database;
@@ -19,11 +18,34 @@ export class EtlService {
   config;
   thing;
 
+    // flat
+    configTemplate = { 
+      name: "App Name", 
+      rootKeys: [
+          { key: "App Name",  title: "App Name" },
+      ],
+      staticProps: [
+          { key: "@context", value: "https://schema.org/" },
+          { key: "@type", value: "App" },
+      ],
+      id: "${App Name}",
+      child: {
+          name: "properties",
+          rootKeys: null,
+          ignoreColumns: [] , 
+          genericTransform: true, 
+          staticProps: [
+              { key: "@context", value: "https://schema.org/" },
+              { key: "@type", value: "Result" },
+          ],
+      },
+    };
+
   constructor(
     public utils: UtilsService,
     public dataService: DataService,
     public router: Router,
-    public routingService: RoutingService
+    public routingService: RoutingService,
   ) {
     
   }
@@ -31,15 +53,15 @@ export class EtlService {
   init(thing) {
     this.config = this.setConfig(thing);
 
-     this.database = [];
+    this.database = [];
     // workbook = load('../data.xlsx');
     this.workbook = this.dataService.workbook;
     this.sheetNames = this.workbook.SheetNames;
     
     // flatten
-    for (let sheet of this.sheetNames) {
+    for (const sheet of this.sheetNames) {
         if (!this.config.ignoreSheets.includes(sheet)) {
-            var data = this.flatten(sheet);
+            const data = this.flatten(sheet);
             for (const item of data) {
                 this.database.push(item);
             }
@@ -49,22 +71,21 @@ export class EtlService {
     // transform
     this.database = this.transform(this.database);
     
-    var jsonStr = JSON.stringify(this.database);
+    const jsonStr = JSON.stringify(this.database);
     // fs.writeFile('../data.json', jsonStr, 'utf8', function(){ });
-    //fs.writeFile(config.outputDir + "/data.json", jsonStr, 'utf8', function () { });
+    // fs.writeFile(config.outputDir + "/data.json", jsonStr, 'utf8', function () { });
     this.dataService.data = this.database;
     this.dataService.currentData = this.database;
     this.dataService.originalData = this.database;
-    console.log('Transform completed successfully!');
-
+    console.log("Transform completed successfully!");
 
   }
 
-  setConfig(thing){
+  setConfig(thing) {
     this.thing = thing;
     this.configTemplate.name = thing;
-    this.configTemplate.rootKeys = [{"key": thing, "title": thing}];
-    this.configTemplate.id = "${"+thing+"}";
+    this.configTemplate.rootKeys = [{key: thing, title: thing}];
+    this.configTemplate.id = "${" + thing + "}";
     this.config = this.configTemplate;
     this.config.ignoreSheets = [];
     this.dataService.config = this.config;
@@ -73,19 +94,19 @@ export class EtlService {
   }
 
   load(excelFile) {
-    let workbook = XLSX.readFile(excelFile);
+    const workbook = XLSX.readFile(excelFile);
     return workbook;
   }
 
   flatten(sheetName) {
-    let data  = [];
+    const data  = [];
     // data.sheet = sheetName;
-    let sheet = this.workbook.Sheets[sheetName];
-    var headers = this.utils.get_header_row(sheet);
-    var json = XLSX.utils.sheet_to_json(sheet);
+    const sheet = this.workbook.Sheets[sheetName];
+    const headers = this.utils.get_header_row(sheet);
+    const json = XLSX.utils.sheet_to_json(sheet);
 
     for (const row of json) {
-      var transform: any = {};
+      const transform: any = {};
       transform.sheet = sheetName;
       for (const col of Object.keys(row)) {
         transform[col] = row[col];
@@ -97,7 +118,7 @@ export class EtlService {
 
   transform(database) {
 
-    var data = [];
+    const data = [];
 
     //
     // is children or flat data structure
@@ -105,37 +126,36 @@ export class EtlService {
 
     // is flat     
     if (this.config.rootKeys == null) {
-      var data = [];
+      const data = [];
       for (const row of database) {
-        var transform = this.transformRow(row, this.config);
+        const transform = this.transformRow(row, this.config);
         data.push(transform);
       }
-    }
-    else { // is Nested 
+    } else { // is Nested 
 
-      var data = [];
-      //for(const row of database){
+      const data = [];
+      // for(const row of database){
 
       // root props
       for (const rootItem of this.config.rootKeys) {
 
         // find and loop all root children
-        var rootChildren = [... new Set(database.map(q => q[rootItem.key]))];
+        const rootChildren = [... new Set(database.map((q) => q[rootItem.key]))];
         for (const rootChild of rootChildren) {
-          var transform: any = {};
+          let transform: any = {};
 
           transform[rootItem.title] = rootChild;
 
           // recursive
-          var childrenRows = database.filter(q => q[rootItem.key] == rootChild);
+          const childrenRows = database.filter((q) => q[rootItem.key] == rootChild);
 
           transform[this.config.child.name] = [];
-          for (var childRow of childrenRows) {
+          for (const childRow of childrenRows) {
 
             // set root static props
             transform = this.addStaticProps(this.config.staticProps, childRow, transform);
 
-            var transformedRow = this.transformRow(childRow, this.config.child, {});
+            const transformedRow = this.transformRow(childRow, this.config.child, {});
             transform[this.config.child.name].push(transformedRow);
           }
           data.push(transform);
@@ -147,13 +167,12 @@ export class EtlService {
     return data;
   }
 
-
   transformRow(row, config, transform?) {
 
-    var expandAry = [];
+    const expandAry = [];
 
     if (config.id) {
-      var id = this.replaceTokens(config.id, row);
+      const id = this.replaceTokens(config.id, row);
       transform["@id"] = id;
     }
 
@@ -166,18 +185,16 @@ export class EtlService {
 
         if (config.ignoreColumns === true) {
           // ignore all columns in this transfom
-        }
-        else {
+        } else {
           if (!config.ignoreColumns.includes(col)) {
             // expand key value?
             if (config.genericTransform === true) {
-              var newData = Object.assign({}, transform);
+              const newData = Object.assign({}, transform);
               newData.name = col;
               newData.value = row[col];
               newData.type = typeof (row[col]);
               expandAry.push(newData);
-            }
-            else {
+            } else {
               // normal key value
               transform[col] = row[col];
             }
@@ -194,7 +211,7 @@ export class EtlService {
     }
 
     if (config.child) {
-      var childTransform = this.transformRow(row, config.child, {});
+      const childTransform = this.transformRow(row, config.child, {});
       transform[config.child.name] = childTransform;
     }
 
@@ -205,7 +222,6 @@ export class EtlService {
     return transform;
   }
 
-
   addStaticProps(staticProps, row, transform) {
 
     if (staticProps) {
@@ -214,8 +230,7 @@ export class EtlService {
         if (prop.eval) {
           try {
             transform[prop.key] = eval(transform[prop.key]);
-          }
-          catch (e) {
+          } catch (e) {
             // evaluation
           }
 
@@ -231,54 +246,30 @@ export class EtlService {
   // with this
   //    "https://dow.com/en-us/industries/Health & Hygiene/Active Comfort"
   replaceTokens(str, obj) {
-    var tokens = [];
-    var tokenizedString = null;
-    //var originalCase = str;
+    const tokens = [];
+    let tokenizedString = null;
+    // var originalCase = str;
     str = str.toLowerCase().replaceAll(" ", "");
     obj = this.utils.object_keys_to_lower(obj);
     obj = this.utils.object_keys_strip_space(obj);
-    var tokensArry = str.split('${');
-    for (var item of tokensArry) {
-      var tokenRightBoundIndex = item.indexOf('}');
+    const tokensArry = str.split("${");
+    for (let item of tokensArry) {
+      const tokenRightBoundIndex = item.indexOf("}");
       if (tokenRightBoundIndex >= 0) {
         // get text in front of } and its your token!
-        item = item.split('}')[0];
+        item = item.split("}")[0];
         item = item.toLowerCase().replaceAll(" ", "");
         tokens.push(item);
       }
     }
     tokenizedString = str;
-    for (var token of tokens) {
+    for (let token of tokens) {
       token = token.replaceAll(" ", "");
-      var replaceToken = "${" + token + "}";
+      const replaceToken = "${" + token + "}";
       tokenizedString = tokenizedString.replace(replaceToken, obj[token]);
-      var a = 1;
+      const a = 1;
     }
     return tokenizedString;
   }
-
-    // flat
-    configTemplate = { 
-      "name": "App Name", 
-      "rootKeys": [
-          { "key": "App Name",  "title": "App Name" }
-      ],
-      "staticProps": [
-          { "key": "@context", "value": "https://schema.org/" },
-          { "key": "@type", "value": "App" }
-      ],
-      "id": "${App Name}",
-      "child": {
-          "name": "properties",
-          "rootKeys": null,
-          "ignoreColumns": [] , 
-          "genericTransform": true, 
-          "staticProps": [
-              { "key": "@context", "value": "https://schema.org/" },
-              { "key": "@type", "value": "Result" }
-          ]
-      }
-    }
-
 
 }
