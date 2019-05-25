@@ -5,6 +5,7 @@ import * as _ from "lodash";
 import { SearchOptions } from "../data/interfaces";
 declare let underscore: any;
 import { Environment } from "../environments/environment";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root",
@@ -31,6 +32,7 @@ export class DataService {
 
   constructor(
     public http: HttpClient,
+    public router: Router
   ) {
     this.init();
   }
@@ -42,7 +44,7 @@ export class DataService {
   async getHierarchy() {
     // this.hierarchy = Environment.config.jsonNesting;
     if (!this.config) {
-      alert("need to choose key in /data");
+      console.log("need to choose key in /data");
     }
     this.hierarchy = this.config;
     return this.hierarchy;
@@ -64,7 +66,7 @@ export class DataService {
   getConfig() {
     if (this.storageDriver == "memory") {
       if (!this.config) {
-        alert("gotta choose key config first on /data page");
+        console.log("gotta choose key config first on /data page");
       }
       return this.config;
     }
@@ -95,7 +97,7 @@ export class DataService {
   async getData() {
     if (this.storageDriver == "memory") {
       if (!this.data) {
-        alert("gotta upload excel first on /data page");
+        this.router.navigate(['/data']);
       }
       return this.data;
     }
@@ -106,6 +108,13 @@ export class DataService {
   }
 
   async getFacets() {
+
+
+    if (this.storageDriver == "memory") {
+      this.facets = this.reduceFacets(this.currentData, this.facets);
+      return this.facets;
+    }
+
     const url = Environment.transformFolder + "facets.json";
     if (this.getFacets) {
       this.facets = await this.http.get(url).toPromise();

@@ -49,8 +49,11 @@ export class ETLComponent implements OnInit {
   }
 
   ngOnInit() {
-    const url = location.origin + "/data/" + this.dataService.getDataPath() + "/data.xlsx";
-    this.downloadExcel(url);
+    if (this.dataService.data){
+      location.reload();
+    }
+    // const url = location.origin + "/data/" + this.dataService.getDataPath() + "/data.xlsx";
+    // this.downloadExcel(url);
   } 
 
   async downloadExcel(url) {
@@ -156,7 +159,14 @@ export class ETLComponent implements OnInit {
   }
 
   getHeaders(json) {
-    this.headers = Object.keys(json[0]);
+    this.headers = [];
+    let numSheets = this.sheets.length;
+    for (let i = 0; i <= numSheets; i++ ){
+      for (let header of Object.keys(json[i])){
+        this.headers.push(header)
+      }
+    }
+   
     return this.headers;
   }
 
@@ -174,7 +184,7 @@ export class ETLComponent implements OnInit {
   setThing(thing) {
     this.dataService.setThing(thing);
     const data = this.etlService.init(thing);
-    this.router.navigate(["/config"]);
+    this.router.navigate(['/']);
   }
 
 }

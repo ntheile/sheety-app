@@ -5,6 +5,8 @@ import { Environment } from "../../environments/environment";
 import { RoutingService } from "../routing.service";
 import { DataService } from "./../data.service";
 import { UtilsService } from "./../utils.service";
+import { FacetService } from './facet.service';
+
 
 @Injectable({
   providedIn: "root",
@@ -18,36 +20,37 @@ export class EtlService {
   config;
   thing;
 
-    // flat
-    configTemplate = { 
-      name: "App Name", 
-      rootKeys: [
-          { key: "App Name",  title: "App Name" },
-      ],
+  // flat
+  configTemplate = {
+    name: "App Name",
+    rootKeys: [
+      { key: "App Name", title: "App Name" },
+    ],
+    staticProps: [
+      { key: "@context", value: "https://schema.org/" },
+      { key: "@type", value: "App" },
+    ],
+    id: "${App Name}",
+    child: {
+      name: "properties",
+      rootKeys: null,
+      ignoreColumns: [],
+      genericTransform: true,
       staticProps: [
-          { key: "@context", value: "https://schema.org/" },
-          { key: "@type", value: "App" },
+        { key: "@context", value: "https://schema.org/" },
+        { key: "@type", value: "Result" },
       ],
-      id: "${App Name}",
-      child: {
-          name: "properties",
-          rootKeys: null,
-          ignoreColumns: [] , 
-          genericTransform: true, 
-          staticProps: [
-              { key: "@context", value: "https://schema.org/" },
-              { key: "@type", value: "Result" },
-          ],
-      },
-    };
+    },
+  };
 
   constructor(
     public utils: UtilsService,
     public dataService: DataService,
     public router: Router,
     public routingService: RoutingService,
+    public facetService: FacetService,
   ) {
-    
+
   }
 
   init(thing) {
@@ -57,58 +60,62 @@ export class EtlService {
     // workbook = load('../data.xlsx');
     this.workbook = this.dataService.workbook;
     this.sheetNames = this.workbook.SheetNames;
-    
+
     // flatten
-    for (const sheet of this.sheetNames) {
-        if (!this.config.ignoreSheets.includes(sheet)) {
-            const data = this.flatten(sheet);
-            for (const item of data) {
-                this.database.push(item);
-            }
+    for (let sheet of this.sheetNames) {
+      if (!this.config.ignoreSheets.includes(sheet)) {
+        let data = this.flatten(sheet);
+        for (let item of data) {
+          this.database.push(item);
         }
+      }
     }
-    
+
+
     // transform
     this.database = this.transform(this.database);
-    
-    const jsonStr = JSON.stringify(this.database);
+
+    let jsonStr = JSON.stringify(this.database);
     // fs.writeFile('../data.json', jsonStr, 'utf8', function(){ });
     // fs.writeFile(config.outputDir + "/data.json", jsonStr, 'utf8', function () { });
     this.dataService.data = this.database;
     this.dataService.currentData = this.database;
     this.dataService.originalData = this.database;
     console.log("Transform completed successfully!");
+    let facets = this.facetService.init(this.database, this.config);
+    this.dataService.facets = facets;
+
 
   }
 
   setConfig(thing) {
     this.thing = thing;
     this.configTemplate.name = thing;
-    this.configTemplate.rootKeys = [{key: thing, title: thing}];
+    this.configTemplate.rootKeys = [{ key: thing, title: thing }];
     this.configTemplate.id = "${" + thing + "}";
     this.config = this.configTemplate;
     this.config.ignoreSheets = [];
     this.dataService.config = this.config;
-    this.routingService.configureDynamicRoutes(Environment.appRoutes);
-    return this.config;
+    this.routingService.configureDynamicRoutes(this.router.config);
+    return this.dataService.config;
   }
 
   load(excelFile) {
-    const workbook = XLSX.readFile(excelFile);
+    let workbook = XLSX.readFile(excelFile);
     return workbook;
   }
 
   flatten(sheetName) {
-    const data  = [];
+    let data = [];
     // data.sheet = sheetName;
-    const sheet = this.workbook.Sheets[sheetName];
-    const headers = this.utils.get_header_row(sheet);
-    const json = XLSX.utils.sheet_to_json(sheet);
+    let sheet = this.workbook.Sheets[sheetName];
+    let headers = this.utils.get_header_row(sheet);
+    let json = XLSX.utils.sheet_to_json(sheet);
 
-    for (const row of json) {
-      const transform: any = {};
+    for (let row of json) {
+      let transform: any = {};
       transform.sheet = sheetName;
-      for (const col of Object.keys(row)) {
+      for (let col of Object.keys(row)) {
         transform[col] = row[col];
       }
       data.push(transform);
@@ -118,7 +125,7 @@ export class EtlService {
 
   transform(database) {
 
-    const data = [];
+    let data = [];
 
     //
     // is children or flat data structure
@@ -126,36 +133,35 @@ export class EtlService {
 
     // is flat     
     if (this.config.rootKeys == null) {
-      const data = [];
-      for (const row of database) {
-        const transform = this.transformRow(row, this.config);
+      
+      for (let row of database) {
+        let transform = this.transformRow(row, this.config);
         data.push(transform);
       }
     } else { // is Nested 
 
-      const data = [];
-      // for(const row of database){
+      // for(let row of database){
 
       // root props
-      for (const rootItem of this.config.rootKeys) {
+      for (let rootItem of this.config.rootKeys) {
 
         // find and loop all root children
-        const rootChildren = [... new Set(database.map((q) => q[rootItem.key]))];
-        for (const rootChild of rootChildren) {
+        let rootChildren = [... new Set(database.map((q) => q[rootItem.key]))];
+        for (let rootChild of rootChildren) {
           let transform: any = {};
 
           transform[rootItem.title] = rootChild;
 
           // recursive
-          const childrenRows = database.filter((q) => q[rootItem.key] == rootChild);
+          let childrenRows = database.filter((q) => q[rootItem.key] == rootChild);
 
           transform[this.config.child.name] = [];
-          for (const childRow of childrenRows) {
+          for (let childRow of childrenRows) {
 
             // set root static props
             transform = this.addStaticProps(this.config.staticProps, childRow, transform);
 
-            const transformedRow = this.transformRow(childRow, this.config.child, {});
+            let transformedRow = this.transformRow(childRow, this.config.child, {});
             transform[this.config.child.name].push(transformedRow);
           }
           data.push(transform);
@@ -169,17 +175,17 @@ export class EtlService {
 
   transformRow(row, config, transform?) {
 
-    const expandAry = [];
+    let expandAry = [];
 
     if (config.id) {
-      const id = this.replaceTokens(config.id, row);
+      let id = this.replaceTokens(config.id, row);
       transform["@id"] = id;
     }
 
     // add static keys
     transform = this.addStaticProps(config.staticProps, row, transform);
 
-    for (const col of Object.keys(row)) {
+    for (let col of Object.keys(row)) {
       // ignore cols
       if (config.ignoreColumns) {
 
@@ -189,7 +195,7 @@ export class EtlService {
           if (!config.ignoreColumns.includes(col)) {
             // expand key value?
             if (config.genericTransform === true) {
-              const newData = Object.assign({}, transform);
+              let newData = Object.assign({}, transform);
               newData.name = col;
               newData.value = row[col];
               newData.type = typeof (row[col]);
@@ -211,7 +217,7 @@ export class EtlService {
     }
 
     if (config.child) {
-      const childTransform = this.transformRow(row, config.child, {});
+      let childTransform = this.transformRow(row, config.child, {});
       transform[config.child.name] = childTransform;
     }
 
@@ -225,7 +231,7 @@ export class EtlService {
   addStaticProps(staticProps, row, transform) {
 
     if (staticProps) {
-      for (const prop of staticProps) {
+      for (let prop of staticProps) {
         transform[prop.key] = this.replaceTokens(prop.value, row);
         if (prop.eval) {
           try {
@@ -246,15 +252,15 @@ export class EtlService {
   // with this
   //    "https://dow.com/en-us/industries/Health & Hygiene/Active Comfort"
   replaceTokens(str, obj) {
-    const tokens = [];
+    let tokens = [];
     let tokenizedString = null;
     // var originalCase = str;
     str = str.toLowerCase().replaceAll(" ", "");
     obj = this.utils.object_keys_to_lower(obj);
     obj = this.utils.object_keys_strip_space(obj);
-    const tokensArry = str.split("${");
+    let tokensArry = str.split("${");
     for (let item of tokensArry) {
-      const tokenRightBoundIndex = item.indexOf("}");
+      let tokenRightBoundIndex = item.indexOf("}");
       if (tokenRightBoundIndex >= 0) {
         // get text in front of } and its your token!
         item = item.split("}")[0];
@@ -265,9 +271,9 @@ export class EtlService {
     tokenizedString = str;
     for (let token of tokens) {
       token = token.replaceAll(" ", "");
-      const replaceToken = "${" + token + "}";
+      let replaceToken = "${" + token + "}";
       tokenizedString = tokenizedString.replace(replaceToken, obj[token]);
-      const a = 1;
+      let a = 1;
     }
     return tokenizedString;
   }

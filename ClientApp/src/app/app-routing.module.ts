@@ -11,7 +11,15 @@ import { ETLComponent } from "./etl/etl.component";
 import { ThingConfigComponent } from "./thing/thing-config/thing-config.component";
 import { ThingTransformComponent } from "./thing/thing-transform/thing-transform.component";
 
-const appRoutes: Routes = Environment.appRoutes;
+const appRoutes: Routes  = [
+  { path: "", component: HomeComponent, canActivate: [] },
+  { path: "home", component: HomeComponent, canActivate: [] },
+  { path: "loggedout", component: LoggedOutComponent, canActivate: [] },
+  { path: "forbidden", component: ForbiddenComponent },
+  { path: "data", component: ETLComponent },
+  { path: "config", component: ThingConfigComponent },
+  { path: "transform", component: ThingTransformComponent },
+];
 const fullRoutePath = "search";
 const depth = 0;
 

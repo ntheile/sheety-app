@@ -43,6 +43,7 @@
     "aspnet-prerendering": "^3.0.1",
     "canvas-datagrid": "^0.22.12",
     "core-js": "^2.5.7",
+    "d3-array": "^2.2.0",
     "d3-collection": "^1.0.7",
     "fuse.js": "^3.4.2",
     "hammerjs": "^2.0.8",
