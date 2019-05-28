@@ -14,15 +14,14 @@ declare let require: any;
     templateUrl: "./home.component.html",
     styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit  {
+export class HomeComponent implements OnInit, AfterViewInit {
     public app_id: string;
     hierarchy;
     routeParams;
     hierarchyDepth = 1;
     currentNodeData;
-    currentData;
     data;
-    searchOpts: any = {hi: "world"};
+    searchOpts: any = { hi: "world" };
     shouldFacet = false;
     currentKey = "this.hierarchy";
     Environment = Environment;
@@ -32,14 +31,14 @@ export class HomeComponent implements OnInit, AfterViewInit  {
     ignoreProps = Environment.config.ignoreProps;
     reducer;
     transformer;
-    
+
     @ViewChild(FacetComponent) facets;
-    
+
     constructor(
         public dataService: DataService,
         private router: Router,
         private activeRoute: ActivatedRoute,
-        public http: HttpClient,
+        public http: HttpClient
     ) {
         this.app_id = Environment.Application_Id;
         this.reducer = require('./../../../data/' + this.dataService.getReducerUrl());
@@ -50,23 +49,35 @@ export class HomeComponent implements OnInit, AfterViewInit  {
         this.routeParams = this.activeRoute.snapshot.params;
     }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
+        
+        if (Environment.storageDriver === "sample") {
+            // @todo figure out sample routing
+            // this.routingService.configureDynamicRoutes(this.dataService.getConfig());
+        }
+        
         this.gererateHierarchialDataFromRoute(this.routeParams);
     }
 
     async gererateHierarchialDataFromRoute(routeParams) {
-       
+        
         this.hierarchyDepth = Object.keys(routeParams).length;
+        this.dataService.hierarchyDepth.next(this.hierarchyDepth);
         this.hierarchy = await this.dataService.getHierarchy();
+        
+
+
         this.data = await this.dataService.getData();
 
-        for (let i = 0; i < this.hierarchyDepth; i++){
+        for (let i = 0; i < this.hierarchyDepth; i++) {
             this.currentKey = this.currentKey + ".child"
         }
         this.currentKey = eval(this.currentKey + ".name");
+        
+        this.dataService.currentKey.next(this.currentKey);
 
         let nodeEval = "this.hierarchy";
-        if ( !( this.hierarchyDepth === 0 || this.hierarchyDepth === 1 ) ) {
+        if (!(this.hierarchyDepth === 0 || this.hierarchyDepth === 1)) {
             for (let i = 1; i < this.hierarchyDepth; i++) {
                 nodeEval = nodeEval + ".child";
             }
@@ -75,19 +86,19 @@ export class HomeComponent implements OnInit, AfterViewInit  {
         const searchData = this.dataService.routeLookup[this.hierarchyDepth];
 
         let searchTerm = null;
-        if ( ! (_.isEmpty(this.routeParams) ) ) {
-            searchTerm = this.routeParams[Object.keys(this.routeParams)[Object.keys(this.routeParams).length - 1 ]]; // last obj
+        if (!(_.isEmpty(this.routeParams))) {
+            searchTerm = this.routeParams[Object.keys(this.routeParams)[Object.keys(this.routeParams).length - 1]]; // last obj
         }
 
-       
+        this.dataService.routeParams.next(this.routeParams);
         this.breadcrumbs = this.generateBreadcrumbs(this.routeParams);
         this.dataService.stopDepth = 0;
-        const searchOptions: SearchOptions  =  {
-            data: this.data, 
-            keys: searchData.keys, 
+        const searchOptions: SearchOptions = {
+            data: this.data,
+            keys: searchData.keys,
             headerKey: searchData.headerKey,
-            showOnly: searchData.showOnly, 
-            searchTerm, 
+            showOnly: searchData.showOnly,
+            searchTerm,
             omitFields: searchData.omitFields,
             depth: this.hierarchyDepth,
             routeParms: this.routeParams,
@@ -97,21 +108,27 @@ export class HomeComponent implements OnInit, AfterViewInit  {
         };
         this.searchOpts = _.cloneDeep(searchOptions);
         this.searchOpts.data = this.data.length;
-        this.currentData =  await this.dataService.search(searchOptions);
-        this.dataService.currentData = this.currentData;
-        
+        this.dataService.searchOpts.next(this.searchOpts);
+        let currentData = await this.dataService.search(searchOptions);
+        this.dataService.currentData.next(currentData);
+
         try {
-            if ( (this.currentData[0].properties.length > 0) ) {
+            if ((currentData[0].properties.length > 0)) {
                 this.shouldFacet = true;
             }
-        } catch (e) {}
+        } catch (e) { }
 
-        if (this.shouldFacet){
-            setTimeout( async ()=>{
+        if (this.shouldFacet) {
+            setTimeout(async () => {
                 await this.facets.getFacets();
-            }, 500 )
+            }, 500);
         }
-        return this.currentData;
+
+        this.dataService.shouldFacet.next(this.shouldFacet);
+
+        return currentData;
+
+
     }
 
     async filter() {
@@ -128,36 +145,35 @@ export class HomeComponent implements OnInit, AfterViewInit  {
         // ];
 
         this.filterPropsAry = this.facets.getSelectedFilters();
+        let filtered = await this.dataService.filter(this.dataService.currentDataCache, this.filterPropsAry);
 
-        const filtered = await this.dataService.filter(this.currentData, this.filterPropsAry);
-        this.currentData = filtered;
     }
 
     public go() {
         this.router.navigate(["/home/market"]);
     }
 
-  
 
-    generateBreadcrumbs(routeParams){
+
+    generateBreadcrumbs(routeParams) {
         let breadcrumbs = [{
             label: 'home',
             href: '/search'
         }];
-        for (let i = 0; i < Object.keys(routeParams).length; i++ ){
+        for (let i = 0; i < Object.keys(routeParams).length; i++) {
             let label = routeParams[Object.keys(routeParams)[i]];
             let breadcrumbBuilder = "/search/";
-            if (i == 0){
+            if (i == 0) {
                 breadcrumbBuilder = breadcrumbBuilder + label
             } else {
-                for (let ii = 0; ii <= i ; ii++ ){
+                for (let ii = 0; ii <= i; ii++) {
                     breadcrumbBuilder = breadcrumbBuilder + routeParams[Object.keys(routeParams)[ii]] + "/";
                 }
             }
             breadcrumbs.push({
                 label: label,
                 href: breadcrumbBuilder
-            });            
+            });
         }
         return breadcrumbs;
     }

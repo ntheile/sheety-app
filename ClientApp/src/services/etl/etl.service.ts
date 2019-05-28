@@ -47,7 +47,6 @@ export class EtlService {
     public utils: UtilsService,
     public dataService: DataService,
     public router: Router,
-    public routingService: RoutingService,
     public facetService: FacetService,
   ) {
 
@@ -78,14 +77,13 @@ export class EtlService {
     let jsonStr = JSON.stringify(this.database);
     // fs.writeFile('../data.json', jsonStr, 'utf8', function(){ });
     // fs.writeFile(config.outputDir + "/data.json", jsonStr, 'utf8', function () { });
-    this.dataService.data = this.database;
-    this.dataService.currentData = this.database;
+    this.dataService.data.next(this.database);
+    this.dataService.currentData.next(this.database);
     this.dataService.originalData = this.database;
+    this.dataService.currentDataCache = this.database;
     console.log("Transform completed successfully!");
     let facets = this.facetService.init(this.database, this.config);
-    this.dataService.facets = facets;
-
-
+    this.dataService.facets.next(facets);
   }
 
   setConfig(thing) {
@@ -96,7 +94,8 @@ export class EtlService {
     this.config = this.configTemplate;
     this.config.ignoreSheets = [];
     this.dataService.config = this.config;
-    this.routingService.configureDynamicRoutes(this.router.config);
+    let routingService = new RoutingService(this.router, this.dataService);
+    routingService.configureDynamicRoutes(this.router.config);
     return this.dataService.config;
   }
 

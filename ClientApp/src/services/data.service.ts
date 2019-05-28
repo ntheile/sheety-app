@@ -6,6 +6,8 @@ import { SearchOptions } from "../data/interfaces";
 declare let underscore: any;
 import { Environment } from "../environments/environment";
 import { Router } from "@angular/router";
+import { BehaviorSubject } from "rxjs";
+
 
 @Injectable({
   providedIn: "root",
@@ -13,26 +15,35 @@ import { Router } from "@angular/router";
 export class DataService {
 
   hierarchy;
-  data;
   routeLookup = [];
   stopDepth = -1;
   keysOrig;
   orginalSearchOptions;
   savedData;
   pubfuse = Fuse;
-  facets;
   originalData;
   currentSeachOptions;
-  currentData;
   originalFilterData;
   thing;
   config;
   workbook;
-  storageDriver = Environment.storageDriver;
+  storageDriver = Environment.storageDriver;  
+  currentDataCache;
+
+  public data: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public currentData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public routeParams: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public hierarchyDepth: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public currentKey: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public searchOpts: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public shouldFacet: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public facets: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  
+  
 
   constructor(
     public http: HttpClient,
-    public router: Router
+    public router: Router,
   ) {
     this.init();
   }
@@ -64,14 +75,23 @@ export class DataService {
   }
 
   getConfig() {
-    if (this.storageDriver == "memory") {
+    if (this.storageDriver === "memory") {
       if (!this.config) {
         console.log("gotta choose key config first on /data page");
       }
       return this.config;
     }
-    const c = require(`./../data/${this.getConfigUrl()}`);
-    return c;
+
+    if (this.storageDriver === "sample") {
+      const c = require(`./../data/${this.getConfigUrl()}`);
+      this.config = c;
+      return c;
+    }
+    
+  }
+
+  genRoute(){
+    
   }
 
   getTransformUrl() {
@@ -95,34 +115,43 @@ export class DataService {
   }
 
   async getData() {
-    if (this.storageDriver == "memory") {
-      if (!this.data) {
+    if (this.storageDriver === "memory") {
+      if (!this.currentDataCache) {
         this.router.navigate(['/data']);
       }
-      return this.data;
+      return this.currentDataCache;
     }
-    const url = this.getDataUrl();
-    this.data = await this.http.get(url).toPromise();
-    this.originalData = this.data;
-    return this.data;
+
+    if (this.storageDriver === "sample") {
+      const url = this.getDataUrl();
+      let data =  await this.http.get(url).toPromise();
+      this.data.next(data);
+      this.originalData = data;    
+      return data;
+    }
   }
 
   async getFacets() {
 
+    this.currentData.subscribe( async (currentData)=>{
+      
+      this.facets.subscribe(async (facets)=>{
+        if (this.storageDriver === "memory") {
+          this.facets.next( this.reduceFacets(currentData, facets) );
+          return this.facets;
+        }
 
-    if (this.storageDriver == "memory") {
-      this.facets = this.reduceFacets(this.currentData, this.facets);
-      return this.facets;
-    }
+        const url = Environment.transformFolder + "facets.json";
+        if (this.getFacets) {
+          let facetsResp = await this.http.get(url).toPromise();
+          this.facets.next( this.reduceFacets(currentData, facetsResp) );
+          return this.facets;
+        } else {
+          return null;
+        }
+      });
+    });
 
-    const url = Environment.transformFolder + "facets.json";
-    if (this.getFacets) {
-      this.facets = await this.http.get(url).toPromise();
-      this.facets = this.reduceFacets(this.currentData, this.facets);
-      return this.facets;
-    } else {
-      return null;
-    }
   }
  
   //
@@ -331,44 +360,48 @@ export class DataService {
 
     // AND operation (intersection) against each group results
     const finalResults = _.intersection(...results);
+    this.currentData.next(finalResults);
+    this.currentDataCache = finalResults;
     return finalResults;
 
   }
 
-  async reduceFacets(data, facets) {
+  async reduceFacets(d, facets) {
 
-    if (data && facets) {
-      const ignoreFields = Environment.config.ignoreFacets;
-      for (const ignoreField of ignoreFields) {
-        facets = facets.filter((k) => k.key !== ignoreField);
-      }
-
-      // reduce to the facets that pertain to  only the current data set
-      let facetsWeCareAbout = [];
-      for (const item of data) {
-        for (const p of item.properties) {
-          if (Array.isArray(p)) {
-            for (const prop of p) {
-              const a = 1;
-              facetsWeCareAbout.push(prop.name);
+    d.subscribe( (data)=>{
+      if (data && facets) {
+        const ignoreFields = Environment.config.ignoreFacets;
+        for (const ignoreField of ignoreFields) {
+          facets = facets.filter((k) => k.key !== ignoreField);
+        }
+  
+        // reduce to the facets that pertain to  only the current data set
+        let facetsWeCareAbout = [];
+        for (const item of data) {
+          for (const p of item.properties) {
+            if (Array.isArray(p)) {
+              for (const prop of p) {
+                const a = 1;
+                facetsWeCareAbout.push(prop.name);
+              }
+            } else {
+              facetsWeCareAbout.push(p.name);
             }
-          } else {
-            facetsWeCareAbout.push(p.name);
+          }
+        }
+  
+        facetsWeCareAbout = _.uniq(facetsWeCareAbout);
+  
+        // remove not relevant facets to our current data set
+        for (const facet of facets) {
+          if (!facetsWeCareAbout.includes(facet.key)) {
+            facets = facets.filter((f) => f !== facet);
           }
         }
       }
-
-      facetsWeCareAbout = _.uniq(facetsWeCareAbout);
-
-      // remove not relevant facets to our current data set
-      for (const facet of facets) {
-        if (!facetsWeCareAbout.includes(facet.key)) {
-          facets = facets.filter((f) => f !== facet);
-        }
-      }
-    }
-
-    return facets;
+  
+      return facets;
+    });
 
   }
 

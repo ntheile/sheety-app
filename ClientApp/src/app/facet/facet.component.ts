@@ -38,10 +38,11 @@ export class FacetComponent implements OnInit {
   }
 
   public async getFacets() {
-    let facets = await this.dataService.getFacets();
-    this.formFacet = this.createFormGroup(facets);
-    this.facets = facets;
-    return this.facets;
+    this.dataService.facets.subscribe( (facets)=>{
+      this.formFacet = this.createFormGroup(facets);
+      this.facets = facets;
+      return this.facets;
+    });
   }
 
 

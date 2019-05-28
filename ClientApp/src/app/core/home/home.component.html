@@ -1,44 +1,30 @@
-<div *ngIf="currentData" class="home-page">
+<div class="home-page" *ngIf="data">
 
-    <div *ngIf="routeParams" fxLayout='row wrap' fxLayoutAlign="center center" style="margin-left: 16px; margin-bottom: 10px;" >
-        <span *ngFor="let breadcrumb of breadcrumbs" >
-            <a  [href]="breadcrumb.href">{{ breadcrumb.label  }}</a>&nbsp;/&nbsp;
-        </span> 
+    <div *ngIf="routeParams" fxLayout='row wrap' fxLayoutAlign="center center"
+        style="margin-left: 16px; margin-bottom: 10px;">
+        <span *ngFor="let breadcrumb of breadcrumbs">
+            <a [href]="breadcrumb.href">{{ breadcrumb.label  }}</a>&nbsp;/&nbsp;
+        </span>
     </div>
 
     <div fxLayout='row wrap' fxLayoutAlign="space-evenly stretch">
-        <mat-card fxFlex="30%" fxFlex.xs="100%" *ngIf="shouldFacet || Environment.debugFacets" style="margin-bottom: 20px">
+        <mat-card fxFlex="30%" fxFlex.xs="100%" *ngIf="shouldFacet || Environment.debugFacets"
+            style="margin-bottom: 20px">
             <span *ngIf="Environment.debugFacets">Should Facet: {{ shouldFacet }}</span>
             <h2 style="float: left;">Filter</h2>
             <button (click)="filter()" mat-raised-button color="primary" style="float: right">Filter </button>
             <span style="float: right; cursor: pointer;" onclick="location.reload()">clear &nbsp;&nbsp;&nbsp; </span>
             <br />
             <pre>
-                <app-facet #facets></app-facet>
+                <app-facet #facets></app-facet> 
             </pre>
         </mat-card>
         <mat-card fxFlex="60%" fxFlex.xs="100%" *ngIf="shouldFacet">
-
-            <app-thing-container
-                [(currentData)]="currentData" 
-                [(routeParams)]="routeParams" 
-                [(hierarchyDepth)]="hierarchyDepth"
-                [(currentKey)]="currentKey"
-                [(searchOpts)]="searchOpts"
-                [(shouldFacet)]="shouldFacet">
-            </app-thing-container>
-            
+            <app-thing-container></app-thing-container>
         </mat-card>
     </div>
 
     <!-- list of items in categories for nested data  -->
-    <app-thing-category *ngIf="!shouldFacet"
-        [(currentData)]="currentData" 
-        [(routeParams)]="routeParams" 
-        [(hierarchyDepth)]="hierarchyDepth"
-        [(currentKey)]="currentKey"
-        [(searchOpts)]="searchOpts"
-        [(shouldFacet)]="shouldFacet">
-    </app-thing-category>
+    <app-thing-category *ngIf="!shouldFacet"></app-thing-category>
 
 </div>

@@ -53,6 +53,8 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "only-arrow-functions": false
+    "only-arrow-functions": false,
+    "ordered-imports": false,
+    "no-console": false,
   }
 }

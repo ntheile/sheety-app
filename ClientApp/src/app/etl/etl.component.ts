@@ -9,6 +9,7 @@ import { $$ } from "protractor";
 import * as XLSX from "xlsx";
 import { DataService } from "../../services/data.service";
 import { EtlService } from "../../services/etl/etl.service";
+import { Environment } from "../../environments/environment";
 declare let DropSheet: any;
 declare let $: any;
 declare let require: any;
@@ -49,11 +50,13 @@ export class ETLComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.dataService.data){
-      location.reload();
+    // if (this.dataService.currentDataCache){
+    //   //location.reload();
+    // }
+    if (Environment.storageDriver === "sample"){
+      const url = location.origin + "/data/" + this.dataService.getDataPath() + "/data.xlsx";
+      this.downloadExcel(url);
     }
-    // const url = location.origin + "/data/" + this.dataService.getDataPath() + "/data.xlsx";
-    // this.downloadExcel(url);
   } 
 
   async downloadExcel(url) {
@@ -184,6 +187,7 @@ export class ETLComponent implements OnInit {
   setThing(thing) {
     this.dataService.setThing(thing);
     const data = this.etlService.init(thing);
+    this.dataService.routeLookup = [];
     this.router.navigate(['/']);
   }
 

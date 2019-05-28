@@ -12,12 +12,6 @@ export class ThingPropertiesComponent implements OnInit {
   @Input() prop: any;
   @Input() i: any;
   @Input() item: any;
-  @Input() currentData: any;
-  @Input() routeParams: any;
-  @Input() hierarchyDepth: any;
-  @Input() currentKey: any;
-  @Input() searchOpts: any;
-  @Input() shouldFacet: any;
   Environment = Environment;
   ignoreProps = Environment.config.ignoreProps;
 
@@ -27,6 +21,9 @@ export class ThingPropertiesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+   
   }
+  
 
+  
 }

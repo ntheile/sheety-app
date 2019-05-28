@@ -14,7 +14,7 @@ export class Environment {
     public static dataPath = "samples/blockstack";
     public static transformFolder = "./../data/samples/blockstack/";
     public static config = require("./../data/samples/blockstack/config");
-    public static storageDriver = "memory"; // or blockstack or aws or memory etc...
+    public static storageDriver = "memory"; // memory, sample, blockstack
     public static debugFacets = false;
     public static production = false;
     public static hmr = false;

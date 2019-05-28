@@ -3,7 +3,7 @@
     <mat-expansion-panel-header (click)="facetTouched(facet.key)">
       {{ facet.key }}
     </mat-expansion-panel-header>
-    <div>
+    <ng-template matExpansionPanelContent>
       <div *ngIf="facet.values[0].type =='string'">
         <!-- <mat-selection-list #list [(ngModel)]="selectedOptions" (ngModelChange)="onNgModelChange($event)"> -->
         <mat-selection-list [formControlName]="facet.key">
@@ -16,7 +16,7 @@
         <ng5-slider [options]="facet.options"  [(value)]="facet.min" [(highValue)]="facet.max"
           [manualRefresh]="sliderRefreshHackEvent" [formControlName]="facet.key"></ng5-slider>
       </div>
-    </div>
+    </ng-template>
   </mat-expansion-panel>
 
   <pre *ngIf="Environment.debugFacets">

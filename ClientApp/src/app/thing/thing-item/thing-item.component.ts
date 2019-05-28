@@ -11,12 +11,12 @@ import { isTemplateExpression } from 'typescript';
 export class ThingItemComponent implements OnInit {
 
   @Input() item: any;
-  @Input() currentData: any;
-  @Input() routeParams: any;
-  @Input() hierarchyDepth: any;
-  @Input() currentKey: any;
-  @Input() searchOpts: any;
-  @Input() shouldFacet: any;
+  currentData;
+  routeParams;
+  hierarchyDepth;
+  currentKey;
+  searchOpts;
+  shouldFacet;
   Environment = Environment;
   ignoreProps = Environment.config.ignoreProps;
 
@@ -33,6 +33,34 @@ export class ThingItemComponent implements OnInit {
         this.item.properties
       ]
     }
+
+    this.initData();
+
+  }
+
+  
+  initData(){
+    
+    this.dataService.currentData.subscribe( (currData)=>{
+      this.currentData = currData;
+    });
+
+    this.dataService.routeParams.subscribe( (routeParams)=>{
+      this.routeParams = routeParams;
+    });
+
+    this.dataService.currentKey.subscribe( (currentKey)=>{
+      this.currentKey = currentKey;
+    });
+
+    this.dataService.searchOpts.subscribe( (searchOpts)=>{
+      this.searchOpts = searchOpts;
+    });
+
+    this.dataService.shouldFacet.subscribe( (shouldFacet)=>{
+      this.shouldFacet = shouldFacet;
+    });
+
   }
 
 }

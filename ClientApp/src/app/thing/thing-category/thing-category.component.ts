@@ -11,12 +11,12 @@ import { Router } from '@angular/router';
 export class ThingCategoryComponent implements OnInit {
 
 
-  @Input() currentData: any;
-  @Input() routeParams: any;
-  @Input() hierarchyDepth: any;
-  @Input() currentKey: any;
-  @Input() searchOpts: any;
-  @Input() shouldFacet: any;
+  currentData;
+  routeParams;
+  hierarchyDepth;
+  currentKey;
+  searchOpts;
+  shouldFacet;
   Environment = Environment;
   ignoreProps = Environment.config.ignoreProps;
 
@@ -26,19 +26,44 @@ export class ThingCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+   this.initData();
   }
 
-  nav(page){
+  nav(page) {
     let route = decodeURI(this.router.url);
-    if (!route.includes('search')){
-        route = "/search" + route;
+    if (!route.includes('search')) {
+      route = "/search" + route;
     }
     route = route + "/" + page;
-    this.router.navigate([route]).then( ()=>{
-        // @todo fix reload hack. i.e sometimes data does not load properly if if it reloaded
-        location.reload();
-    } );
+    this.router.navigate([route]).then(() => {
+      // @todo fix reload hack. i.e sometimes data does not load properly if if it reloaded
+      location.reload();
+    });
+
+  }
+
+  initData(){
     
-}
+    this.dataService.currentData.subscribe( (currData)=>{
+      this.currentData = currData;
+    });
+
+    this.dataService.routeParams.subscribe( (routeParams)=>{
+      this.routeParams = routeParams;
+    });
+
+    this.dataService.currentKey.subscribe( (currentKey)=>{
+      this.currentKey = currentKey;
+    });
+
+    this.dataService.searchOpts.subscribe( (searchOpts)=>{
+      this.searchOpts = searchOpts;
+    });
+
+    this.dataService.shouldFacet.subscribe( (shouldFacet)=>{
+      this.shouldFacet = shouldFacet;
+    });
+
+  }
 
 }

@@ -28,6 +28,6 @@ TODO
             can done in the UI. After the user picks what "thing" and column he wants to facet, the ui will check all sheets for similar names and normalized at that point.
       - [ ] If multiple sheets contain the same info, then in facets fitler properties for the "thing" of the non selected sheet
       - [ ] port of ignore fields
-
+- [ ] Port data access code to BehaviorSubjects
 
 - [ ] NPM package excel2jsonld

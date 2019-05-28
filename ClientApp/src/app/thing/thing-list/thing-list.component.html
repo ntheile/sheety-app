@@ -1,14 +1,7 @@
 <section>
   <mat-accordion *ngIf="shouldFacet">
     <section *ngFor="let item of currentData">
-      <app-thing-item
-        [item]="item" 
-        [(currentData)]="currentData" 
-        [(routeParams)]="routeParams" 
-        [(hierarchyDepth)]="hierarchyDepth"
-        [(currentKey)]="currentKey"
-        [(searchOpts)]="searchOpts"
-        [(shouldFacet)]="shouldFacet">
+      <app-thing-item [item]="item">
       </app-thing-item>
     </section>
   </mat-accordion>
