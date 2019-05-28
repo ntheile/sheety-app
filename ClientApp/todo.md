@@ -21,12 +21,13 @@ TODO
 
 - ETL
    - [ ] Use the broswer to upload excel and ETL in browser
-      - [ ] index.js port
-      - [ ] facets.js port
+      - [X] index.js port
+      - [X] facets.js port
       - [ ] write logic, blob storage
       - [ ] normalize case differences, For example one sheet might read "App Name" to next sheet might read "App name". This
             can done in the UI. After the user picks what "thing" and column he wants to facet, the ui will check all sheets for similar names and normalized at that point.
       - [ ] If multiple sheets contain the same info, then in facets fitler properties for the "thing" of the non selected sheet
+      - [ ] port of ignore fields
 
 
 - [ ] NPM package excel2jsonld
