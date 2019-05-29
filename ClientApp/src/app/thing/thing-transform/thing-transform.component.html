@@ -1,4 +1,8 @@
 <section>
+<button mat-raised-button color="primary" (click)="saveConfig()" style="float: right">
+    Save
+</button>
+<br/>
 <h2>Transformer</h2>
 <pre contenteditable="true" *ngIf="transform">
 {{ transform  }}

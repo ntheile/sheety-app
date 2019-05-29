@@ -118,11 +118,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
         } catch (e) { }
 
-        if (this.shouldFacet) {
-            setTimeout(async () => {
-                await this.facets.getFacets();
-            }, 500);
-        }
+        // if (this.shouldFacet) {
+        //     setTimeout(async () => {
+        //         await this.facets.getFacets();
+        //     }, 500);
+        // }
 
         this.dataService.shouldFacet.next(this.shouldFacet);
 

@@ -16,7 +16,7 @@
             <span style="float: right; cursor: pointer;" onclick="location.reload()">clear &nbsp;&nbsp;&nbsp; </span>
             <br />
             <pre>
-                <app-facet #facets></app-facet> 
+                <app-facet #facets *ngIf="shouldFacet"></app-facet> 
             </pre>
         </mat-card>
         <mat-card fxFlex="60%" fxFlex.xs="100%" *ngIf="shouldFacet">

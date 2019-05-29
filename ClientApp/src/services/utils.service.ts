@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import * as XLSX from "xlsx";
 declare let String: any;
 declare let replaceAll: any;
+declare let $:any;
 
 @Injectable({
   providedIn: "root",
@@ -98,5 +99,10 @@ export class UtilsService {
     }
     return tokenizedString;
   }
+
+  stripHTML(data){
+    return $( '<div>' + data + '</div>' ).text();
+  }
+
 
 }

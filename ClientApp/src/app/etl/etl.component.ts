@@ -35,6 +35,7 @@ export class ETLComponent implements OnInit {
   currentSheetJson;
   headers;
   selectedHeader;
+  currentSheetIndex;
   @ViewChild("excelEl") excelEl: ElementRef;
   
   constructor(
@@ -53,11 +54,30 @@ export class ETLComponent implements OnInit {
     // if (this.dataService.currentDataCache){
     //   //location.reload();
     // }
+    this.clear();
     if (Environment.storageDriver === "sample"){
       const url = location.origin + "/data/" + this.dataService.getDataPath() + "/data.xlsx";
       this.downloadExcel(url);
     }
+
+    let excelCache = localStorage.getItem("excel");
+    if(excelCache){
+      let readtype: any = {type: this.rABS ? "binary" : "base64" };
+      this.loadExcel(excelCache, readtype);
+    }
+
   } 
+
+  clear(){
+    this.workbook = null;
+    this.sheets = null;  
+    this.json = null;
+    this.currentSheetJson = null;
+    this.headers = null;
+    this.selectedHeader = null;
+    this.currentSheetIndex = null;
+    this.excelEl.nativeElement.innerHTML = "";
+  }
 
   async downloadExcel(url) {
     const req = new XMLHttpRequest();
@@ -72,6 +92,7 @@ export class ETLComponent implements OnInit {
 
   /// https://gist.github.com/amcdnl/bebcab2e962076558fb4a5f05b96a7e4#file-end-ts 
   onFileChange(e: any) {
+    this.excelEl.nativeElement.innerHTML = "";
     const files: any = e.target.files;
     let i;
     let f;
@@ -100,18 +121,25 @@ export class ETLComponent implements OnInit {
         data = btoa(arr);
       }
     }
+    localStorage.setItem("excel", data);    
+    this.loadExcel(data, readtype);
+  }
+
+  loadExcel(data, readtype?){
+    let wb;
     try {
       wb = XLSX.read(data, readtype);
       this.workbook = wb;
       this.dataService.workbook = this.workbook;
       this.sheets = wb.SheetNames;
-      this.processExcel(wb, 0);
+      this.showSheet(this.workbook, 0);
     } catch (e) { 
-      // console.log(e); 
+      console.log(e); 
     }
   }
 
-  processExcel(workbook, sheetIndex?) {
+  showSheet(workbook, sheetIndex?) {
+    this.currentSheetIndex = sheetIndex;
     if (!workbook) {
       $("canvas-datagrid").remove();
       this.cd.detectChanges();
@@ -123,6 +151,11 @@ export class ETLComponent implements OnInit {
     this.headers = this.getHeaders(this.json);
     this.cd.markForCheck();
     this.makeWebExcel(workbook, this.json);
+  }
+
+  hideSheet(sheet, i){
+    // this.dataService.con
+
   }
 
   excelToJson(workbook) {
@@ -147,7 +180,7 @@ export class ETLComponent implements OnInit {
       cdg.style.height = "100%";
       cdg.style.width = "100%";
       cdg.data = json;
-     
+
   }
 
   fixdata(data) {

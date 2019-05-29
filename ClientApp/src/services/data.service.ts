@@ -366,11 +366,11 @@ export class DataService {
 
   }
 
-  async reduceFacets(d, facets) {
+  reduceFacets(data, facets) {
 
-    d.subscribe( (data)=>{
+    
       if (data && facets) {
-        const ignoreFields = Environment.config.ignoreFacets;
+        const ignoreFields = this.config.ignoreFacets;
         for (const ignoreField of ignoreFields) {
           facets = facets.filter((k) => k.key !== ignoreField);
         }
@@ -401,7 +401,7 @@ export class DataService {
       }
   
       return facets;
-    });
+
 
   }
 

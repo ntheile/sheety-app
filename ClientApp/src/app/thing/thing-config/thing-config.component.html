@@ -1,5 +1,9 @@
 <section>
-<pre contenteditable="true">
+    <button mat-raised-button color="primary" (click)="saveConfig()" style="float: right">
+        Save
+    </button>
+    <br/>
+<pre contenteditable="true" #configEl>
 {{ config | json }}
 </pre>
 </section>

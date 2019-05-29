@@ -41,6 +41,8 @@ export class EtlService {
         { key: "@type", value: "Result" },
       ],
     },
+    ignoreSheets: [],
+    ignoreFacets: ["__EMPTY_2"]
   };
 
   constructor(
@@ -52,10 +54,15 @@ export class EtlService {
 
   }
 
-  init(thing) {
-    this.config = this.setConfig(thing);
-
-    this.database = [];
+  init(thing, config?) {
+    
+    this.clear();
+    if (config){
+      this.config = this.setConfig(thing, config);
+    } else {
+      this.config = this.setConfig(thing);
+    }
+    
     // workbook = load('../data.xlsx');
     this.workbook = this.dataService.workbook;
     this.sheetNames = this.workbook.SheetNames;
@@ -69,7 +76,6 @@ export class EtlService {
         }
       }
     }
-
 
     // transform
     this.database = this.transform(this.database);
@@ -86,13 +92,22 @@ export class EtlService {
     this.dataService.facets.next(facets);
   }
 
-  setConfig(thing) {
+  clear(){
+    this.database = [];
+    this.dataService.facets.next([]);
+  }
+
+  setConfig(thing, config?) {
     this.thing = thing;
-    this.configTemplate.name = thing;
-    this.configTemplate.rootKeys = [{ key: thing, title: thing }];
-    this.configTemplate.id = "${" + thing + "}";
-    this.config = this.configTemplate;
-    this.config.ignoreSheets = [];
+    if (!config){
+      this.configTemplate.name = thing;
+      this.configTemplate.rootKeys = [{ key: thing, title: thing }];
+      this.configTemplate.id = "${" + thing + "}";
+      this.config = this.configTemplate;
+    } else {
+      this.config = config;
+    }
+    
     this.dataService.config = this.config;
     let routingService = new RoutingService(this.router, this.dataService);
     routingService.configureDynamicRoutes(this.router.config);

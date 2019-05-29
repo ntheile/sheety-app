@@ -4,6 +4,7 @@ import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Environment } from './../../environments/environment';
 import { Options } from 'ng5-slider';
 
+
 @Component({
   selector: "app-facet",
   templateUrl: "./facet.component.html",
@@ -35,18 +36,21 @@ export class FacetComponent implements OnInit {
     setTimeout( ()=>{
       this.sliderRefreshHackEvent.emit();
     }, 2000 )
-  }
 
-  public async getFacets() {
-    this.dataService.facets.subscribe( (facets)=>{
+    this.dataService.facets.subscribe(async (facets)=>{
+      console.log('sub facets, ', facets);
       this.formFacet = this.createFormGroup(facets);
       this.facets = facets;
-      return this.facets;
+      let reduced = this.dataService.reduceFacets(this.dataService.currentDataCache, facets);
+      this.facets = reduced;
     });
   }
 
+  // getFacets(){
+  //   return this.facets;
+  // }
 
-
+  
   public createFormGroup(facets): FormGroup {
     let group: any = {};
 

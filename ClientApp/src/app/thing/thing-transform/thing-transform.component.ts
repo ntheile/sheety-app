@@ -25,4 +25,9 @@ export class ThingTransformComponent implements OnInit {
     this.reduce = require(`./../../../data/${this.dataService.getReducerUrl()}`).reduce;
   }
 
+  saveConfig(){
+    // wire up with ETL scripts, need to kick off a new ETL, etl should take these params
+    // etl(config, transform, reduce)
+  }
+
 }

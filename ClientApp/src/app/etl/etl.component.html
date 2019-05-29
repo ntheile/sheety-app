@@ -8,9 +8,13 @@
 
   <br/><br/>
 
-  <div >
-    <button *ngFor="let sheet of sheets; index as i;"  (click)="processExcel(null, i)">{{ sheet }}</button>
+  <div fxLayout="row wrap" fxLayoutAlign="start">
+      <div *ngFor="let sheet of sheets; index as i;" fxLayout="column" fxLayoutAlign="start">
+          <button  (click)="showSheet(null, i)">{{ sheet }}</button>
+          <mat-slide-toggle *ngIf="currentSheetIndex == i" (click)="hideSheet(shetet, i)">Hide</mat-slide-toggle>
+        </div>
   </div>
+  
 
   <div #excelEl ></div>
   
