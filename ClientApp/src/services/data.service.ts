@@ -29,6 +29,7 @@ export class DataService {
   workbook;
   storageDriver = Environment.storageDriver;  
   currentDataCache;
+  facets;
 
   public data: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public currentData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -37,10 +38,7 @@ export class DataService {
   public currentKey: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public searchOpts: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public shouldFacet: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public facets: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   
-  
-
   constructor(
     public http: HttpClient,
     public router: Router,
@@ -54,7 +52,8 @@ export class DataService {
 
   async getHierarchy() {
     // this.hierarchy = Environment.config.jsonNesting;
-    if (!this.config) {
+    let c = this.getConfig();
+    if (!c) {
       console.log("need to choose key in /data");
     }
     this.hierarchy = this.config;
@@ -75,7 +74,12 @@ export class DataService {
   }
 
   getConfig() {
+
     if (this.storageDriver === "memory") {
+      let configStr = localStorage.getItem("config");
+      if (configStr){
+        this.config = JSON.parse(configStr);
+      }
       if (!this.config) {
         console.log("gotta choose key config first on /data page");
       }
@@ -88,6 +92,14 @@ export class DataService {
       return c;
     }
     
+  }
+
+  saveConfig(config){
+    this.config = config;
+    if (this.storageDriver === "memory") {
+      localStorage.setItem("config", JSON.stringify(this.config));
+    }
+    return this.config;
   }
 
   genRoute(){
@@ -115,7 +127,12 @@ export class DataService {
   }
 
   async getData() {
-    if (this.storageDriver === "memory") {
+    if (this.storageDriver === "memory") {  
+      let dataLocal = localStorage.getItem("data")
+      if (dataLocal){
+        dataLocal = JSON.parse(dataLocal);
+        this.currentDataCache = dataLocal;
+      }
       if (!this.currentDataCache) {
         this.router.navigate(['/data']);
       }
@@ -129,29 +146,44 @@ export class DataService {
       this.originalData = data;    
       return data;
     }
+
+  }
+
+  saveData(data){
+    
+    if (this.storageDriver === "memory") {
+     localStorage.setItem("data", JSON.stringify(data));
+    }
+
   }
 
   async getFacets() {
 
-    this.currentData.subscribe( async (currentData)=>{
-      
-      this.facets.subscribe(async (facets)=>{
-        if (this.storageDriver === "memory") {
-          this.facets.next( this.reduceFacets(currentData, facets) );
-          return this.facets;
+      if (this.storageDriver === "memory") {
+        let facetsLocal = localStorage.getItem("facets");
+        if (facetsLocal) {
+          this.facets = JSON.parse(facetsLocal);
         }
+        this.facets = this.reduceFacets(this.currentDataCache, this.facets); 
+        return this.facets;
+      }
 
+      if (this.storageDriver === "sample") {
         const url = Environment.transformFolder + "facets.json";
-        if (this.getFacets) {
-          let facetsResp = await this.http.get(url).toPromise();
-          this.facets.next( this.reduceFacets(currentData, facetsResp) );
-          return this.facets;
-        } else {
-          return null;
-        }
-      });
-    });
+        let facetsResp = await this.http.get(url).toPromise();
+        this.facets = this.reduceFacets(this.currentDataCache, facetsResp);         
+        return this.facets;
+      }
 
+  }
+
+  saveFacets(facets){
+    if (this.storageDriver === "memory") {
+      localStorage.setItem("facets", JSON.stringify(facets));
+    }
+
+    this.facets = facets;
+    return this.facets;
   }
  
   //

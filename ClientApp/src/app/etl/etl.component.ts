@@ -13,7 +13,7 @@ import { Environment } from "../../environments/environment";
 declare let DropSheet: any;
 declare let $: any;
 declare let require: any;
-
+declare let window: any;
 export interface DialogData {
   headers: any;
 }
@@ -121,8 +121,14 @@ export class ETLComponent implements OnInit {
         data = btoa(arr);
       }
     }
-    localStorage.setItem("excel", data);    
+    this.saveExcelBlob(data);
     this.loadExcel(data, readtype);
+  }
+
+  saveExcelBlob(data){
+    if(this.dataService.storageDriver === "memory"){
+      localStorage.setItem("excel", data);    
+    }
   }
 
   loadExcel(data, readtype?){
@@ -219,8 +225,8 @@ export class ETLComponent implements OnInit {
 
   setThing(thing) {
     this.dataService.setThing(thing);
-    const data = this.etlService.init(thing);
-    this.dataService.routeLookup = [];
+    let data = this.etlService.init(thing);
+    // this.dataService.routeLookup = [];
     this.router.navigate(['/']);
   }
 

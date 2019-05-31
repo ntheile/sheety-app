@@ -12,7 +12,7 @@ import { Options } from 'ng5-slider';
 })
 export class FacetComponent implements OnInit {
 
-  facets;
+  public facets;
   facetsGroup;
   selectedOptions;
   formFacet;
@@ -29,27 +29,18 @@ export class FacetComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
+  }
+
+  ngAfterViewInit() {
     this.init();
   }
 
   async init() {
-    setTimeout( ()=>{
-      this.sliderRefreshHackEvent.emit();
-    }, 2000 )
-
-    this.dataService.facets.subscribe(async (facets)=>{
-      console.log('sub facets, ', facets);
-      this.formFacet = this.createFormGroup(facets);
-      this.facets = facets;
-      let reduced = this.dataService.reduceFacets(this.dataService.currentDataCache, facets);
-      this.facets = reduced;
-    });
+    this.facets = await this.dataService.getFacets();
+    this.formFacet = this.createFormGroup(this.facets);
+    this.sliderRefreshHackEvent.emit();
   }
-
-  // getFacets(){
-  //   return this.facets;
-  // }
-
   
   public createFormGroup(facets): FormGroup {
     let group: any = {};

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router, Routes } from "@angular/router";
 import { HomeComponent} from "./../app/core/home/home.component";
 import { DataService } from "./data.service";
+declare let _ :any;
 
 @Injectable({
   providedIn: "root",
@@ -17,6 +18,8 @@ export class RoutingService {
   ) { }
 
   async configureDynamicRoutes(appRoutes) {
+    this.depth = 0;
+    appRoutes = this.cleanRoutes(appRoutes);
     const hierarchy = await this.data.getHierarchy();
     this.recurseHierarchyObject(hierarchy, appRoutes);
     this.router.resetConfig(appRoutes);
@@ -59,7 +62,9 @@ export class RoutingService {
         // let omitFields;
         // if (!isRoot) {
         // keys = this.data.routeLookup[depth].keys[0];
-        const omitFields = this.data.routeLookup[this.depth - 1].omitFields;
+        let omitFields = null;
+        omitFields = this.data.routeLookup[this.depth - 1].omitFields;
+        
         // }  else {
         //  omitFields = [node.child.name];
         // }
@@ -80,7 +85,10 @@ export class RoutingService {
       } else { // 3) End no childdren
         // if no children then this is the details page (using the keys from the parent for fuse.js search)
         //  keys = this.data.routeLookup[depth].keys;
-        const showOnly = this.data.routeLookup[this.depth - 1].omitFields[0];
+        let showOnly = null;
+        showOnly = this.data.routeLookup[this.depth - 1].omitFields[0];
+        
+        
         this.data.routeLookup.push({
           route: this.fullRoutePath,
           keys,
@@ -95,6 +103,17 @@ export class RoutingService {
         });
       }
     }
+  }
+
+  cleanRoutes(appRoutes){
+
+    for (let route of appRoutes){
+      if (route.path.includes('search')){
+        appRoutes = _.without(appRoutes, route);
+      }
+    }
+    this.router.resetConfig(appRoutes);
+    return appRoutes;
   }
 
 }

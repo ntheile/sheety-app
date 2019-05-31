@@ -34,9 +34,8 @@ export class ThingConfigComponent implements OnInit {
 
   saveConfig(){
     let configObj:any = JSON.parse( this.utils.stripHTML(this.configEl.nativeElement.innerHTML) ) ;
-    this.dataService.config = configObj ;
+    this.dataService.saveConfig(configObj);
     this.etlService.init(configObj.name, configObj);
-
   }
 
 }

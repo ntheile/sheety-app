@@ -1,11 +1,16 @@
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, Route, Routes } from "@angular/router";
 import * as XLSX from "xlsx";
 import { Environment } from "../../environments/environment";
-import { RoutingService } from "../routing.service";
 import { DataService } from "./../data.service";
 import { UtilsService } from "./../utils.service";
 import { FacetService } from './facet.service';
+import { ThingTransformComponent } from "../../app/thing/thing-transform/thing-transform.component";
+import { ThingConfigComponent } from "../../app/thing/thing-config/thing-config.component";
+import { ETLComponent } from "../../app/etl/etl.component";
+import { ForbiddenComponent } from "../../app/core/forbidden/forbidden.component";
+import { LoggedOutComponent } from "../../app/core/loggedout/loggedout.component";
+import { HomeComponent } from "../../app/core/home/home.component";
 
 
 @Injectable({
@@ -55,7 +60,6 @@ export class EtlService {
   }
 
   init(thing, config?) {
-    
     this.clear();
     if (config){
       this.config = this.setConfig(thing, config);
@@ -84,17 +88,18 @@ export class EtlService {
     // fs.writeFile('../data.json', jsonStr, 'utf8', function(){ });
     // fs.writeFile(config.outputDir + "/data.json", jsonStr, 'utf8', function () { });
     this.dataService.data.next(this.database);
+    this.dataService.saveData(this.database);
     this.dataService.currentData.next(this.database);
     this.dataService.originalData = this.database;
-    this.dataService.currentDataCache = this.database;
     console.log("Transform completed successfully!");
     let facets = this.facetService.init(this.database, this.config);
-    this.dataService.facets.next(facets);
+    this.dataService.saveFacets(facets);
   }
 
   clear(){
     this.database = [];
-    this.dataService.facets.next([]);
+    //this.dataService.routeLookup = [];
+    this.dataService.saveFacets(null);
   }
 
   setConfig(thing, config?) {
@@ -107,11 +112,8 @@ export class EtlService {
     } else {
       this.config = config;
     }
-    
-    this.dataService.config = this.config;
-    let routingService = new RoutingService(this.router, this.dataService);
-    routingService.configureDynamicRoutes(this.router.config);
-    return this.dataService.config;
+    this.dataService.saveConfig(this.config);
+    return this.config;
   }
 
   load(excelFile) {

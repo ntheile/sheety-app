@@ -12,7 +12,6 @@ import { CoreModule } from "./core/core.module";
 
 import { AuthGuardService } from "./core/auth-guard";
 import { SharedModule } from "./shared/shared.module";
-
 import "hammerjs";
 
 @NgModule({
@@ -33,7 +32,7 @@ import "hammerjs";
   providers: [
     AppInsightsService,
     AuthGuardService,
-    MediaMatcher,
+    MediaMatcher
   ],
   bootstrap: [AppComponent],
 })

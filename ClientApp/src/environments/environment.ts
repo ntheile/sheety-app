@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { ForbiddenComponent } from "../app/core/forbidden/forbidden.component";
 declare let require: any;
 
 // This environment file corresponds to the key/values found in appsettings.json(server-side)

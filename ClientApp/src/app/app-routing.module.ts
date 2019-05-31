@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { Router, RouterModule, Routes } from "@angular/router";
 
 import { Environment } from "../environments/environment";
-import { RoutingService } from "./../services/routing.service";
 import { AuthGuardService } from "./core/auth-guard";
 import { ForbiddenComponent } from "./core/forbidden/forbidden.component";
 import { HomeComponent } from "./core/home/home.component";
@@ -38,13 +37,12 @@ export class AppRoutingModule {
 
   constructor(
     public router: Router,
-    public routingService: RoutingService,
   ) {
     // this.configureDynamicRoutes();
   }
 
   configureDynamicRoutes() {
-    this.routingService.configureDynamicRoutes(appRoutes);
+    // this.routingService.configureDynamicRoutes(appRoutes);
   }
 
 }

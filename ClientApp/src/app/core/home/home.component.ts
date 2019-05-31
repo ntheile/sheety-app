@@ -7,7 +7,9 @@ import { Environment } from "../../../environments/environment";
 import { DataService } from "../../../services/data.service";
 import { FacetComponent } from "../../facet/facet.component";
 import { SearchOptions } from "./../../../data/interfaces";
+import { RoutingService } from "../../../services/routing.service";
 declare let require: any;
+declare let window: any;
 
 @Component({
     selector: "app-home",
@@ -38,24 +40,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
         public dataService: DataService,
         private router: Router,
         private activeRoute: ActivatedRoute,
-        public http: HttpClient
+        public http: HttpClient,
+        public routingService: RoutingService
     ) {
-        this.app_id = Environment.Application_Id;
-        this.reducer = require('./../../../data/' + this.dataService.getReducerUrl());
-        this.transformer = require('./../../../data/' + this.dataService.getTransformUrl());
+        
     }
 
     ngOnInit() {
+        this.app_id = Environment.Application_Id;
+        this.reducer = require('./../../../data/' + this.dataService.getReducerUrl());
+        this.transformer = require('./../../../data/' + this.dataService.getTransformUrl());
         this.routeParams = this.activeRoute.snapshot.params;
     }
 
     ngAfterViewInit() {
-        
         if (Environment.storageDriver === "sample") {
             // @todo figure out sample routing
             // this.routingService.configureDynamicRoutes(this.dataService.getConfig());
         }
-        
         this.gererateHierarchialDataFromRoute(this.routeParams);
     }
 
@@ -64,9 +66,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.hierarchyDepth = Object.keys(routeParams).length;
         this.dataService.hierarchyDepth.next(this.hierarchyDepth);
         this.hierarchy = await this.dataService.getHierarchy();
-        
-
-
         this.data = await this.dataService.getData();
 
         for (let i = 0; i < this.hierarchyDepth; i++) {
@@ -83,6 +82,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
         }
 
+       
+        await this.routingService.configureDynamicRoutes(this.router.config);
+       
         const searchData = this.dataService.routeLookup[this.hierarchyDepth];
 
         let searchTerm = null;
@@ -118,17 +120,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
         } catch (e) { }
 
-        // if (this.shouldFacet) {
-        //     setTimeout(async () => {
-        //         await this.facets.getFacets();
-        //     }, 500);
-        // }
-
         this.dataService.shouldFacet.next(this.shouldFacet);
-
         return currentData;
-
-
     }
 
     async filter() {
