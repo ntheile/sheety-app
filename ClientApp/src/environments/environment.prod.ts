@@ -14,6 +14,12 @@ export class Environment {
   public static Redirect_Uri = '#OverwrittenByAppSettings#';
   public static Tenant = '#OverwrittenByAppSettings#';
 
+  public static dataPath = "samples/blockstack";
+  public static transformFolder = "./../data/samples/blockstack/";
+  public static config = require("./../data/samples/blockstack/config");
+  public static storageDriver = "memory"; // memory, sample, blockstack
+  public static debugFacets = false;
+
   public static init(environment: any = window['Environment']) {
     if (environment) {
       Object.assign(Environment, environment);

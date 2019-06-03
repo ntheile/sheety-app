@@ -12,6 +12,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "extractCss": true,
+            "showCircularDependencies": false,
             "outputPath": "dist/",
             "index": "src/index.html",
             "main": "src/main.ts",

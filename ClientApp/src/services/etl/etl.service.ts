@@ -263,10 +263,6 @@ export class EtlService {
   }
 
   // dynamically replaces a string with tokens stored in an array dynamically
-  // for example it replaces this @id
-  //    "https://dow.com/en-us/industries/${Application}/${Market segment}"
-  // with this
-  //    "https://dow.com/en-us/industries/Health & Hygiene/Active Comfort"
   replaceTokens(str, obj) {
     let tokens = [];
     let tokenizedString = null;

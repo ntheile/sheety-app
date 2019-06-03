@@ -196,7 +196,7 @@ export class DataService {
   // keys = ['products.name'],
   // showOnly = null
   // omitFields = ['properties']
-  // searchTerm = 'DOWLEXTM 2629UE'
+  // searchTerm = 'Name'
   //
   //
   async search(searchOptions: SearchOptions) {

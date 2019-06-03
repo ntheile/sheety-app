@@ -5,7 +5,7 @@ ignoreFacets = ['sheet', 'Market segment', 'Application']; // fields you do not 
 rootKeys = ["Name"]; // I.E the Thing you are trying to facet like a Product , this should be the column name of that THING
 rootProps = ["Name"]; // The thing your are faceting 
 ignoreProps = []; // Array of excel columns names to skip 
-idTokenized = "${Name}"; // This evaluates as string interpolation. Make the ID something globally unique. Like for a product "dow/product/plastics/activecomfort/dowlex50"
+idTokenized = "${Name}"; // This evaluates as string interpolation. Make the ID something globally unique. 
 outputDir = "../../ClientApp/src/data/samples/cars-nested";
 excelPath = outputDir + "/data.xlsx";
 

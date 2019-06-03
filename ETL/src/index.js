@@ -184,10 +184,6 @@ function addStaticProps(staticProps, row, transform) {
 }
 
 // dynamically replaces a string with tokens stored in an array dynamically
-// for example it replaces this @id
-//    "https://dow.com/en-us/industries/${Application}/${Market segment}"
-// with this
-//    "https://dow.com/en-us/industries/Health & Hygiene/Active Comfort"
 function replaceTokens(str, obj) {
     var tokens = [];
     var tokenizedString = null;
