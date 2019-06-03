@@ -227,7 +227,8 @@ export class ETLComponent implements OnInit {
     this.dataService.setThing(thing);
     let data = this.etlService.init(thing);
     // this.dataService.routeLookup = [];
-    this.router.navigate(['/']);
+    // this.router.navigate(['/']);
+    location.replace('/');
   }
 
 }

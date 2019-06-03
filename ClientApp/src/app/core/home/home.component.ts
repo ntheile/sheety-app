@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         
         this.hierarchyDepth = Object.keys(routeParams).length;
         this.dataService.hierarchyDepth.next(this.hierarchyDepth);
-        this.hierarchy = await this.dataService.getHierarchy();
+        this.hierarchy = this.dataService.getHierarchy();
         this.data = await this.dataService.getData();
 
         for (let i = 0; i < this.hierarchyDepth; i++) {

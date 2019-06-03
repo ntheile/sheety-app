@@ -20,7 +20,7 @@ export class RoutingService {
   async configureDynamicRoutes(appRoutes) {
     this.depth = 0;
     appRoutes = this.cleanRoutes(appRoutes);
-    const hierarchy = await this.data.getHierarchy();
+    const hierarchy = this.data.getHierarchy();
     this.recurseHierarchyObject(hierarchy, appRoutes);
     this.router.resetConfig(appRoutes);
   }
@@ -31,7 +31,7 @@ export class RoutingService {
       // 1) Root
       if (node.name) {
         // add name route
-        if (this.fullRoutePath === "search") {
+        if (this.fullRoutePath === "search" || this.fullRoutePath.includes('properties') ) {
           this.fullRoutePath = `search`;
           hasPropName = false;
           const omitFields = [node.child.name];

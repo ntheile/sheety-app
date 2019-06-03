@@ -50,7 +50,7 @@ export class DataService {
 
   }
 
-  async getHierarchy() {
+  getHierarchy() {
     // this.hierarchy = Environment.config.jsonNesting;
     let c = this.getConfig();
     if (!c) {
