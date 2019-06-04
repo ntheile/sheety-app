@@ -28,4 +28,4 @@ steps:
     azureSubscription: 'Visual Studio Premium with MSDN(Converted to EA) - Theile(ed623955-fa27-48cc-b3ca-fc3a4e010c97)'
     appType: 'webApp'
     WebAppName: 'sheetyapp'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: 'd:\a\1\a\drop\s.zip'
