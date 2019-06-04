@@ -21,11 +21,3 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifacts'
-
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Visual Studio Premium with MSDN(Converted to EA) - Theile(ed623955-fa27-48cc-b3ca-fc3a4e010c97)'
-    appType: 'webApp'
-    WebAppName: 'sheetyapp'
-    packageForLinux: 'd:\a\1\a\drop\s.zip'
