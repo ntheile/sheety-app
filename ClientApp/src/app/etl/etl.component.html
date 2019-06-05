@@ -1,4 +1,7 @@
 <section class="etl">
+  
+  <h2>Create an app from an excel spreadsheet!</h2>
+
   <form [formGroup]="formGroup" novalidate style="margin-right: 40px; margin-left: 40px">
     <input type="file" (change)="onFileChange($event)" />
     <button mat-raised-button color="primary" (click)="openDialog()" style="float: right" >

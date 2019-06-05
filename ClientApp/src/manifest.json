@@ -1,0 +1,14 @@
+{
+    "name": "SheetyApp",
+    "short_name": "SheetyApp",
+    "start_url": "/",
+    "display": "standalone",
+    "description": "Build app app from a sheet",
+    "icons": [{
+      "src": "https://blockusign.co/assets/imgs/blockusignLogoHiRes.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }],
+    "background_color": "#2E3136",
+    "theme_color": "#4e8ef7"
+  }
