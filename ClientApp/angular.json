@@ -39,7 +39,8 @@
               "src/data/samples/blockstack/hierarchy.json",
               "src/data/samples/blockstack/data.json",
               "src/data/samples/blockstack/facets.json",
-              "src/data/samples/blockstack/config.js"
+              "src/data/samples/blockstack/config.js",
+              "src/manifest.json"
             ],
             "styles": ["src/styles/styles.css", "src/styles/theme.scss"],
             "scripts": [

@@ -80,7 +80,7 @@ export class AppComponent {
         } catch(e){}
       }, 1500 )
 
-
+      this.name = this.authService.getDisplayName();
     } else if (blockstack.isSignInPending()) {
 
       // this.cacheNewDocIfNotLoggedIn();
@@ -116,6 +116,8 @@ export class AppComponent {
 
     // @todo Optimize this;
     // this.blockStackService.saveAppPublicKey();
+
+    
 
   }
 

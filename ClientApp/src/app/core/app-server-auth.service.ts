@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from '@angular/core';
 import { UserClaims } from './user-claims.model';
+declare let blockstack: any;
 
 /**
  * Local App Server Proxy Authentication.
@@ -13,6 +14,7 @@ import { UserClaims } from './user-claims.model';
 @Injectable()
 export class AppServerAuthService {
   public currentUser: UserClaims | undefined;
+  public name = "none";
   private baseUrl: string;
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.baseUrl = baseUrl;
@@ -39,6 +41,7 @@ export class AppServerAuthService {
    * @return {string} Display friendly name of current user
    */
   public getDisplayName(): string {
+    return blockstack.loadUserData().username;
     return "none";
     if (
       this.currentUser &&
@@ -49,6 +52,11 @@ export class AppServerAuthService {
     } else {
       return this.currentUser.name;
     }
+  }
+
+  setDisplayName(name){
+    this.name = name;
+    return this.name;
   }
 
 
