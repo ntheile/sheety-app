@@ -47,28 +47,6 @@ export class AppComponent {
       this.loginState = "[Logout]";
       
 
-      
-
-      // let profileData = await this.blockStackService.getProfileData();
-
-      // if (!profileData) {
-      //   this.profileModal(this.email);
-      // }
-      // else {
-      //   let myProfile = JSON.parse(profileData);
-      //   if (!myProfile.email) {
-      //     this.profileModal(this.email);
-      //   }
-      //   else {
-      //     // this.name = myProfile.email;
-      //     this.name = blockstack.loadUserData().username;
-      //     this.loadCachedNewDocWhenLoggedIn();
-      //   }
-      // }
-
-      //}
-      // this.loading.dismiss();
-
       // get rid of ?authResponse=ey to prevent routing bugs
       setTimeout( ()=>{
         try{
@@ -78,46 +56,19 @@ export class AppComponent {
             history.pushState({}, null, newUrl);
           }
         } catch(e){}
-      }, 1500 )
+      }, 2500 )
 
       this.name = this.authService.getDisplayName();
     } else if (blockstack.isSignInPending()) {
 
-      // this.cacheNewDocIfNotLoggedIn();
-
+    
       blockstack.handlePendingSignIn().then(function (userData) {
         window.location = window.location.origin
-        this.documentsGetList();
-        //this.loading.dismiss();
       });
     }
     else {
-
-      //this.loading.dismiss();
-      // this.cacheNewDocIfNotLoggedIn();
-
-
-      if (navigator.userAgent.toLocaleLowerCase().includes('electron') === true) {
-        localStorage.setItem('signUp', 'true');
-        //this.loginElectron();      
-        //return;
-      }
-
-      if (localStorage.getItem('signUp') !== 'true' && location.hostname !== "localhost") {
-        window.location.href = "signup.html";
-      }
-      else {
-        localStorage.setItem('signUp', 'true');
         this.login();
-      }
-
-
     }
-
-    // @todo Optimize this;
-    // this.blockStackService.saveAppPublicKey();
-
-    
 
   }
 
