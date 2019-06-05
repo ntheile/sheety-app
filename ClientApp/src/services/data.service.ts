@@ -75,6 +75,7 @@ export class DataService {
 
   getConfig() {
 
+    
     if (this.storageDriver === "memory") {
       let configStr = localStorage.getItem("config");
       if (configStr){
