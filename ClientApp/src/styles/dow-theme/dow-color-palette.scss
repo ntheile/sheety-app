@@ -130,6 +130,7 @@ $mat-dow-dark-orange: (
     )
 );
 
+
 $mat-dow-dark-red: (
     50 : #f7e2e8,
     100 : #ecb6c5,
@@ -211,6 +212,39 @@ $mat-dow-magenta: (
     A200 : #ff6aba,
     A400 : #ff048a,
     A700 : #e9007d,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$mat-sheety-blue: (
+    50 : #E1F5FE,
+    100 : #B3E5FC,
+    200 : #81D4FA,
+    300 : #4FC3F7,
+    400 : #29B6F6,
+    500 : #03A9F4,
+    600 : #039BE5,
+    700 : #0288D1,
+    800 : #0277BD,
+    900 : #01579B,
+    A100 : #40C4FF,
+    A200 : #80D8FF,
+    A400 : #00B0FF,
+    A700 : #0091EA,
     contrast: (
         50 : #000000,
         100 : #000000,

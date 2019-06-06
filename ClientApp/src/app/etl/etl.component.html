@@ -1,15 +1,27 @@
 <section class="etl">
   
-  <h2>Create an app from an excel spreadsheet!</h2>
+  <mat-card style="max-width: 800px" fxLayout="column" fxLayoutAlign="center">
+    <div fxLayout="row wrap" fxLayoutAlign="center">
+      <h2>Create an app from an excel spreadsheet!</h2>
+    </div>
+  
+    <div fxLayout="row wrap" fxLayoutAlign="center">
+      
+      <form [formGroup]="formGroup" novalidate style="margin-right: 40px; margin-left: 40px">
+        <input hidden type="file"  #fileInput (change)="onFileChange($event)" />
+        <button mat-raised-button color="primary" (click)="fileInput.click()" style="margin-right: 16px">Upload</button>
 
-  <form [formGroup]="formGroup" novalidate style="margin-right: 40px; margin-left: 40px">
-    <input type="file" (change)="onFileChange($event)" />
-    <button mat-raised-button color="primary" (click)="openDialog()" style="float: right" >
-      Next 
-    </button>
-  </form>
+        <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="headers" style="float: right" >
+          Next 
+        </button>
+      </form>
+    </div>
+  </mat-card>
 
-  <br/><br/>
+  
+  <br/>
+
+  
 
   <div fxLayout="row wrap" fxLayoutAlign="start">
       <div *ngFor="let sheet of sheets; index as i;" fxLayout="column" fxLayoutAlign="start">

@@ -213,6 +213,11 @@ export class ETLComponent implements OnInit {
   }
 
   openDialog(): void {
+
+    if (!this.headers){
+      alert('Please choose an excel spreadsheet that is tabular and has the first row as headers')
+    }
+
     const dialogRef = this.dialog.open(DialogChooseSearchKey, {
       data: {headers: this.headers},
     });
