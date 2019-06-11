@@ -1,6 +1,9 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AppServerAuthService } from './core/app-server-auth.service';
+import { Environment } from '../environments/environment';
+import { FacetComponent } from './facet/facet.component';
+import { DataService } from '../services/data.service';
 declare let blockstack: any;
 declare let window: any;
 
@@ -12,7 +15,7 @@ declare let window: any;
 export class AppComponent {
   title = 'app';
   mobileQuery: MediaQueryList;
-
+  win = window;
   name: string;
   isLoggedIn = false;
   loginState = "Login";
@@ -21,12 +24,19 @@ export class AppComponent {
   loading;
   isMobile = true;
   resizeTimeout;
+  Environment = Environment;
+  filterPropsAry;
+  shouldFacet = true;
+  @ViewChild(FacetComponent) facets;
   
 
   private _mobileQueryListener: () => void;
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, 
-    public authService: AppServerAuthService, ) {
-
+  constructor(
+    changeDetectorRef: ChangeDetectorRef, 
+    media: MediaMatcher, 
+    public authService: AppServerAuthService, 
+    public dataService: DataService,
+    ) {
     this.mobileQuery = media.matchMedia('(max-width: 1024px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -77,5 +87,23 @@ export class AppComponent {
     let manifest = origin;
     blockstack.redirectToSignIn(origin, manifest + '/manifest.json', ['store_write', 'publish_data', 'email'])
   }
+
+  async filter() {
+
+    // For
+    // const filterPropsAry = [
+    //     {
+    //         "@context": "https://schema.org/",
+    //         "@type": "productvalue",
+    //         "name": "Product Line",
+    //         "value": "Water",
+    //         "type": "string",
+    //     },
+    // ];
+
+    this.filterPropsAry = this.facets.getSelectedFilters();
+    let filtered = await this.dataService.filter(this.dataService.currentDataCache, this.filterPropsAry);
+
+}
 
 }

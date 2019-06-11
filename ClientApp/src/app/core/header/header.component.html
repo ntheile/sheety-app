@@ -1,5 +1,5 @@
 <div  >
-  <img src="./../../../assets/icons/32.png" (click)="go('/')" style="float: left;">
+  
   <button mat-button (click)="go('/')" style="float: left;">Sheety App</button>
   <button mat-button (click)="go('/data')" style="float: left;">Data</button>
   <button mat-button (click)="go('/config')" style="float: left;">Config</button>
@@ -16,8 +16,8 @@
     <div class="icon">
       <i class="material-icons">&#xE853;</i>
     </div>
-  </button>
-  <mat-menu #menu="matMenu" style="float:right !important">
+  </button> -->
+  <!-- <mat-menu #menu="matMenu" style="float:right !important">
     <span mat-menu-item disabled class="user-name">{{ displayName }}</span>
     <a *ngIf="authService.isLoggedIn()" mat-menu-item (click)="logout()">Logout</a>
     <a *ngIf="!authService.isLoggedIn()" mat-menu-item (click)="login()">Login</a>

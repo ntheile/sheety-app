@@ -8,7 +8,7 @@
     </div>
 
     <div fxLayout='row wrap' fxLayoutAlign="space-evenly stretch">
-        <mat-card fxFlex="30%" fxFlex.xs="100%" *ngIf="shouldFacet || Environment.debugFacets"
+        <!-- <mat-card fxFlex="30%" fxFlex.xs="100%" *ngIf="shouldFacet || Environment.debugFacets"
             style="margin-bottom: 20px">
             <span *ngIf="Environment.debugFacets">Should Facet: {{ shouldFacet }}</span>
             <h2 style="float: left;">Filter</h2>
@@ -18,7 +18,7 @@
             <pre>
                 <app-facet #facets *ngIf="shouldFacet"></app-facet> 
             </pre>
-        </mat-card>
+        </mat-card> -->
         <mat-card fxFlex="60%" fxFlex.xs="100%" *ngIf="shouldFacet">
             <app-thing-container></app-thing-container>
         </mat-card>
