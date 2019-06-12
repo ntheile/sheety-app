@@ -13,6 +13,7 @@ import { CoreModule } from "./core/core.module";
 import { AuthGuardService } from "./core/auth-guard";
 import { SharedModule } from "./shared/shared.module";
 import "hammerjs";
+import { SidenavService } from "./sidenav.service";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import "hammerjs";
   providers: [
     AppInsightsService,
     AuthGuardService,
-    MediaMatcher
+    MediaMatcher,
+    SidenavService
   ],
   bootstrap: [AppComponent],
 })

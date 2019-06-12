@@ -10,6 +10,7 @@ import * as XLSX from "xlsx";
 import { DataService } from "../../services/data.service";
 import { EtlService } from "../../services/etl/etl.service";
 import { Environment } from "../../environments/environment";
+import { SidenavService } from "../sidenav.service";
 declare let DropSheet: any;
 declare let $: any;
 declare let require: any;
@@ -37,6 +38,7 @@ export class ETLComponent implements OnInit {
   selectedHeader;
   currentSheetIndex;
   @ViewChild("excelEl") excelEl: ElementRef;
+
   
   constructor(
     private fb: FormBuilder, 
@@ -46,6 +48,7 @@ export class ETLComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     public etlService: EtlService,
+    private sidenav: SidenavService
     ) {
 
   }
@@ -54,6 +57,7 @@ export class ETLComponent implements OnInit {
     // if (this.dataService.currentDataCache){
     //   //location.reload();
     // }
+    
     this.clear();
     if (Environment.storageDriver === "sample"){
       const url = location.origin + "/data/" + this.dataService.getDataPath() + "/data.xlsx";
@@ -67,6 +71,11 @@ export class ETLComponent implements OnInit {
     }
 
   } 
+
+  ngAfterViewInit(){
+    this.sidenav.close();
+  }
+
 
   clear(){
     this.workbook = null;

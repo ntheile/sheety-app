@@ -8,6 +8,7 @@ import { DataService } from "../../../services/data.service";
 import { FacetComponent } from "../../facet/facet.component";
 import { SearchOptions } from "./../../../data/interfaces";
 import { RoutingService } from "../../../services/routing.service";
+import { SidenavService } from "../../sidenav.service";
 declare let require: any;
 declare let window: any;
 
@@ -33,6 +34,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     ignoreProps = Environment.config.ignoreProps;
     reducer;
     transformer;
+    win = Window;
+    isMobile = false;
 
     @ViewChild(FacetComponent) facets;
 
@@ -41,7 +44,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private router: Router,
         private activeRoute: ActivatedRoute,
         public http: HttpClient,
-        public routingService: RoutingService
+        public routingService: RoutingService,
+        public sidenav: SidenavService,
     ) {
         
     }
@@ -59,6 +63,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
             // this.routingService.configureDynamicRoutes(this.dataService.getConfig());
         }
         this.gererateHierarchialDataFromRoute(this.routeParams);
+        if (window.innerWidth >= 1024){
+            this.sidenav.open();
+        }
+
+        if (window.innerWidth < 1024){
+            this.isMobile = true;
+        }
     }
 
     async gererateHierarchialDataFromRoute(routeParams) {

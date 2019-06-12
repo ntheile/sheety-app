@@ -4,6 +4,8 @@ import { AppServerAuthService } from './core/app-server-auth.service';
 import { Environment } from '../environments/environment';
 import { FacetComponent } from './facet/facet.component';
 import { DataService } from '../services/data.service';
+import { MatSidenav } from '@angular/material';
+import { SidenavService } from './sidenav.service';
 declare let blockstack: any;
 declare let window: any;
 
@@ -28,7 +30,7 @@ export class AppComponent {
   filterPropsAry;
   shouldFacet = true;
   @ViewChild(FacetComponent) facets;
-  @ViewChild('sidenav') sidenav; 
+  @ViewChild('sidenav') public sidenav: MatSidenav; 
 
   
 
@@ -38,12 +40,19 @@ export class AppComponent {
     media: MediaMatcher, 
     public authService: AppServerAuthService, 
     public dataService: DataService,
+    private sidenavService: SidenavService
     ) {
     this.mobileQuery = media.matchMedia('(max-width: 1024px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.showProfile();
   }
+
+  ngOnInit(){
+    this.sidenavService.setSidenav(this.sidenav);
+    
+  }
+
 
   async showProfile() {
 

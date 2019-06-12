@@ -1,5 +1,5 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches"> 
-    <img class="menu-btn" src="./../assets/icons/32.png" (click)="sidenav.toggle()"
+    <img class="menu-btn" src="./../assets/icons/32.png" (click)="this.sidenavService.toggle()"
         style="float: left; cursor: pointer;">
     <!-- <button mat-icon-button class="menu-btn" (click)="sidenav.toggle()">
         <i class="material-icons">&#xE5D2;</i>
@@ -14,7 +14,10 @@
             #sidenav class="example-sidenav">
             <mat-list>
                 <span *ngIf="Environment.debugFacets">Should Facet: {{ shouldFacet }}</span>
-                <button  (click)="filter()" mat-raised-button color="primary" style="float: right; border-radius: 20px;text-align: center;   position: fixed; top: 85px; width: 150px; margin-left: 16px">Filter </button><br />
+                <button  (click)="filter()" mat-raised-button color="primary" 
+                    style="float: right; border-radius: 20px;text-align: center;   position: fixed; top: 85px; width: 150px; margin-left: 16px">Filter <i class="material-icons">
+                    filter_list
+                    </i></button><br />
                 <span style="float: right; cursor: pointer;" onclick="location.reload()">clear &nbsp;&nbsp;&nbsp;
                 </span>
                 <br /> <br />
