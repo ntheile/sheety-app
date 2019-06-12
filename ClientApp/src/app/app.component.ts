@@ -28,6 +28,8 @@ export class AppComponent {
   filterPropsAry;
   shouldFacet = true;
   @ViewChild(FacetComponent) facets;
+  @ViewChild('sidenav') sidenav; 
+
   
 
   private _mobileQueryListener: () => void;
@@ -103,6 +105,10 @@ export class AppComponent {
 
     this.filterPropsAry = this.facets.getSelectedFilters();
     let filtered = await this.dataService.filter(this.dataService.currentDataCache, this.filterPropsAry);
+
+    if (window.innerWidth	<= 1024) {
+      this.sidenav.close();
+    }
 
 }
 

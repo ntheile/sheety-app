@@ -1,5 +1,6 @@
-<div >
-    <img class="menu-btn" src="./../assets/icons/32.png" (click)="sidenav.toggle()" style="float: left; cursor: pointer;">
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches"> 
+    <img class="menu-btn" src="./../assets/icons/32.png" (click)="sidenav.toggle()"
+        style="float: left; cursor: pointer;">
     <!-- <button mat-icon-button class="menu-btn" (click)="sidenav.toggle()">
         <i class="material-icons">&#xE5D2;</i>
     </button> -->
@@ -8,16 +9,18 @@
     </mat-toolbar>
 
 
-    <mat-sidenav-container >
-        <mat-sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" position="start" [opened]="!mobileQuery.matches" #sidenav class="example-sidenav">
-                <mat-list>
+    <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" position="start" [opened]="!mobileQuery.matches"
+            #sidenav class="example-sidenav">
+            <mat-list>
                 <span *ngIf="Environment.debugFacets">Should Facet: {{ shouldFacet }}</span>
-                <button (click)="filter()" mat-raised-button color="primary" style="float: right">Filter </button><br/>
-                <span style="float: right; cursor: pointer;" onclick="location.reload()">clear &nbsp;&nbsp;&nbsp; </span>
+                <button  (click)="filter()" mat-raised-button color="primary" style="float: right; border-radius: 20px;text-align: center;   position: fixed; top: 85px; width: 150px; margin-left: 16px">Filter </button><br />
+                <span style="float: right; cursor: pointer;" onclick="location.reload()">clear &nbsp;&nbsp;&nbsp;
+                </span>
                 <br /> <br />
-                <app-facet #facets *ngIf="shouldFacet"></app-facet> 
-            </mat-list> 
-            
+                <app-facet #facets *ngIf="shouldFacet"></app-facet>
+            </mat-list>
+
             <!-- <img class="nav-logo" src="/assets/logo.png" />
             
                 <mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
@@ -25,7 +28,7 @@
                 </mat-list-item>
                -->
         </mat-sidenav>
-        <div class="body-content" [style.min-height]="(win.screen.availHeight - 300)">
+        <div class="body-content">
             <router-outlet></router-outlet>
         </div>
         <footer>
