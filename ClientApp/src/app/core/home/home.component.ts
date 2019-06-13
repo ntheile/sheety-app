@@ -52,8 +52,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.app_id = Environment.Application_Id;
-        this.reducer = require('./../../../data/' + this.dataService.getReducerUrl());
-        this.transformer = require('./../../../data/' + this.dataService.getTransformUrl());
+        this.reducer = this.dataService.getReducer();
+        this.transformer = this.dataService.getTransformer();
         this.routeParams = this.activeRoute.snapshot.params;
     }
 

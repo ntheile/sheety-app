@@ -252,8 +252,7 @@ export class ETLComponent implements OnInit {
   template: `
       <div mat-dialog-content>
 
-        <h1 mat-dialog-title style="text-align:center">Choose a layout:</h1>
-
+      <!-- <h1 mat-dialog-title style="text-align:center">Choose a layout:</h1>
         <div style="display:flex; flex-wrap: wrap;">
           <div class="layout-square" style="cursor:pointer">
             <h3 style="text-align:center">Filter</h3>
@@ -270,14 +269,10 @@ export class ETLComponent implements OnInit {
             </div>
             <img src="./../../assets/layouts/shopping.svg" width="320px" />
         </div>
-        </div>
+        </div>-->
         
 
         <h1 mat-dialog-title>Select a column to <br/> use as the search item:</h1>
-
-
-       
-
           <mat-form-field>
             <mat-select [(value)]="selectedHeader" >
               <mat-option [value]="header" *ngFor="let header of data.headers">{{ header }}</mat-option>

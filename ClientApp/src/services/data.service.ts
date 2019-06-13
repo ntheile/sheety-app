@@ -464,4 +464,39 @@ export class DataService {
     }
   }
 
+  getTransformer(){
+    let transformer = null;
+
+    // if (this.storageDriver === "memory") {
+    //    transformer =  localStorage.getItem("transformer");
+    // }
+
+    let transformerTemplate = require(`../data/${this.getTransformUrl()}`);
+
+    if(!transformer){
+         transformer = transformerTemplate;
+         this.setTransformer(transformerTemplate);
+    }
+
+    return transformer;
+  }
+
+  setTransformer(transformer){
+
+
+    if (this.storageDriver === "memory") {
+      transformer =  localStorage.setItem("transformer", transformer.toString());
+    }
+
+    return transformer;
+  }
+
+  getReducer(){
+    return require('../data/' + this.getReducerUrl());
+  }
+
+  setReducer(reducer){
+    return reducer;
+  }
+
 }
