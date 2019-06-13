@@ -251,7 +251,33 @@ export class ETLComponent implements OnInit {
   selector: "dialog-choose-search-key",
   template: `
       <div mat-dialog-content>
+
+        <h1 mat-dialog-title style="text-align:center">Choose a layout:</h1>
+
+        <div style="display:flex; flex-wrap: wrap;">
+          <div class="layout-square" style="cursor:pointer">
+            <h3 style="text-align:center">Filter</h3>
+            <img class="layoutImage" src="./../../assets/layouts/filtering.svg" width="320px" />
+          </div>
+          <div class="layout-square"  style="cursor:pointer">
+            <h3 style="text-align:center">Category Drill Down</h3>
+            <img src="./../../assets/layouts/category.svg" width="320px" />
+          </div>
+          <div class="layout-square" >
+            <div class="layout-square">
+              <h3 style="text-align:center">Shopping</h3>
+              <div style="text-align:center;">coming soon</div>
+            </div>
+            <img src="./../../assets/layouts/shopping.svg" width="320px" />
+        </div>
+        </div>
+        
+
         <h1 mat-dialog-title>Select a column to <br/> use as the search item:</h1>
+
+
+       
+
           <mat-form-field>
             <mat-select [(value)]="selectedHeader" >
               <mat-option [value]="header" *ngFor="let header of data.headers">{{ header }}</mat-option>

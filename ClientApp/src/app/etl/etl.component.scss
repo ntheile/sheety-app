@@ -39,3 +39,19 @@
 
 }
 
+.layout-square {
+  display:flex; 
+  flex-direction: column; 
+  cursor: pointer ;
+  background: #3a87ad
+}
+
+.layoutImage{
+  cursor: pointer;
+}
+
+.layoutImage:hover{
+  opacity: .6;
+}
+
+
