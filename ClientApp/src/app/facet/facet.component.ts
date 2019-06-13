@@ -37,9 +37,14 @@ export class FacetComponent implements OnInit {
   }
 
   async init() {
-    this.facets = await this.dataService.getFacets();
-    this.formFacet = this.createFormGroup(this.facets);
-    this.sliderRefreshHackEvent.emit();
+
+    // subsribe to data change
+
+    this.dataService.currentData.subscribe( async (currData)=>{
+      this.facets = await this.dataService.getFacets();
+      this.formFacet = this.createFormGroup(this.facets);
+      this.sliderRefreshHackEvent.emit();
+    });
   }
   
   public createFormGroup(facets): FormGroup {

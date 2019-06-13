@@ -99,7 +99,7 @@ export class EtlService {
   clear(){
     this.database = [];
     //this.dataService.routeLookup = [];
-    this.dataService.saveFacets(null);
+    // this.dataService.saveFacets(null);
   }
 
   setConfig(thing, config?) {
