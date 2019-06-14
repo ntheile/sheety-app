@@ -27,7 +27,7 @@ export class DataService {
   thing;
   config;
   workbook;
-  storageDriver = Environment.storageDriver;  
+  storageDriver = Environment.storageDriver;
   currentDataCache;
   facets;
   sheets;
@@ -40,7 +40,7 @@ export class DataService {
   public currentKey: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public searchOpts: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public shouldFacet: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  
+
   constructor(
     public http: HttpClient,
     public router: Router,
@@ -71,16 +71,16 @@ export class DataService {
   }
 
   getConfigUrl() {
-    
+
     return Environment.dataPath + "/config.js";
   }
 
   getConfig() {
 
-    
+
     if (this.storageDriver === "memory") {
       let configStr = localStorage.getItem("config");
-      if (configStr){
+      if (configStr) {
         this.config = JSON.parse(configStr);
       }
       if (!this.config) {
@@ -94,10 +94,10 @@ export class DataService {
       this.config = c;
       return c;
     }
-    
+
   }
 
-  saveConfig(config){
+  saveConfig(config) {
     this.config = config;
     if (this.storageDriver === "memory") {
       localStorage.setItem("config", JSON.stringify(this.config));
@@ -105,8 +105,8 @@ export class DataService {
     return this.config;
   }
 
-  genRoute(){
-    
+  genRoute() {
+
   }
 
   getTransformUrl() {
@@ -130,9 +130,9 @@ export class DataService {
   }
 
   async getData() {
-    if (this.storageDriver === "memory") {  
+    if (this.storageDriver === "memory") {
       let dataLocal = localStorage.getItem("data")
-      if (dataLocal){
+      if (dataLocal) {
         dataLocal = JSON.parse(dataLocal);
         this.currentDataCache = dataLocal;
       }
@@ -144,43 +144,43 @@ export class DataService {
 
     if (this.storageDriver === "sample") {
       const url = this.getDataUrl();
-      let data =  await this.http.get(url).toPromise();
+      let data = await this.http.get(url).toPromise();
       this.data.next(data);
-      this.originalData = data;    
+      this.originalData = data;
       return data;
     }
 
   }
 
-  saveData(data){
-    
+  saveData(data) {
+
     if (this.storageDriver === "memory") {
-     localStorage.setItem("data", JSON.stringify(data));
+      localStorage.setItem("data", JSON.stringify(data));
     }
 
   }
 
   async getFacets() {
 
-      if (this.storageDriver === "memory") {
-        let facetsLocal = localStorage.getItem("facets");
-        if (facetsLocal) {
-          this.facets = JSON.parse(facetsLocal);
-        }
-        this.facets = this.reduceFacets(this.currentDataCache, this.facets); 
-        return this.facets;
+    if (this.storageDriver === "memory") {
+      let facetsLocal = localStorage.getItem("facets");
+      if (facetsLocal) {
+        this.facets = JSON.parse(facetsLocal);
       }
+      this.facets = this.reduceFacets(this.currentDataCache, this.facets);
+      return this.facets;
+    }
 
-      if (this.storageDriver === "sample") {
-        const url = Environment.transformFolder + "facets.json";
-        let facetsResp = await this.http.get(url).toPromise();
-        this.facets = this.reduceFacets(this.currentDataCache, facetsResp);         
-        return this.facets;
-      }
+    if (this.storageDriver === "sample") {
+      const url = Environment.transformFolder + "facets.json";
+      let facetsResp = await this.http.get(url).toPromise();
+      this.facets = this.reduceFacets(this.currentDataCache, facetsResp);
+      return this.facets;
+    }
 
   }
 
-  saveFacets(facets){
+  saveFacets(facets) {
     if (this.storageDriver === "memory") {
       localStorage.setItem("facets", JSON.stringify(facets));
     }
@@ -188,7 +188,7 @@ export class DataService {
     this.facets = facets;
     return this.facets;
   }
- 
+
   //
   // 
   // keys = ['market'],
@@ -328,14 +328,14 @@ export class DataService {
       const removeGroup = [];
 
       const properties = propertyGroup.properties.map((d) => {
-          try {
-            const obj: any = {};
-            obj.name = d.name;
-            obj.value = d.value;
-            return obj;
-          } catch (e) {
-            console.log("no props", e);
-          }
+        try {
+          const obj: any = {};
+          obj.name = d.name;
+          obj.value = d.value;
+          return obj;
+        } catch (e) {
+          console.log("no props", e);
+        }
 
       });
 
@@ -382,7 +382,7 @@ export class DataService {
               } catch (e) {
                 console.log("null prop", e);
               }
-              
+
             }
           }
           // @TODO execute query for AND logicalOperator, for example in a car you want a seat color of Black AND White
@@ -403,39 +403,39 @@ export class DataService {
 
   reduceFacets(data, facets) {
 
-  
-      if (data && facets) {
-        const ignoreFields = this.config.ignoreFacets;
-        for (const ignoreField of ignoreFields) {
-          facets = facets.filter((k) => k.key !== ignoreField);
-        }
-  
-        // reduce to the facets that pertain to  only the current data set
-        let facetsWeCareAbout = [];
-        for (const item of data) {
-          for (const p of item.properties) {
-            if (Array.isArray(p)) {
-              for (const prop of p) {
-                const a = 1;
-                facetsWeCareAbout.push(prop.name);
-              }
-            } else {
-              facetsWeCareAbout.push(p.name);
+
+    if (data && facets) {
+      const ignoreFields = this.config.ignoreFacets;
+      for (const ignoreField of ignoreFields) {
+        facets = facets.filter((k) => k.key !== ignoreField);
+      }
+
+      // reduce to the facets that pertain to  only the current data set
+      let facetsWeCareAbout = [];
+      for (const item of data) {
+        for (const p of item.properties) {
+          if (Array.isArray(p)) {
+            for (const prop of p) {
+              const a = 1;
+              facetsWeCareAbout.push(prop.name);
             }
-          }
-        }
-  
-        facetsWeCareAbout = _.uniq(facetsWeCareAbout);
-  
-        // remove not relevant facets to our current data set
-        for (const facet of facets) {
-          if (!facetsWeCareAbout.includes(facet.key)) {
-            facets = facets.filter((f) => f !== facet);
+          } else {
+            facetsWeCareAbout.push(p.name);
           }
         }
       }
-  
-      return facets;
+
+      facetsWeCareAbout = _.uniq(facetsWeCareAbout);
+
+      // remove not relevant facets to our current data set
+      for (const facet of facets) {
+        if (!facetsWeCareAbout.includes(facet.key)) {
+          facets = facets.filter((f) => f !== facet);
+        }
+      }
+    }
+
+    return facets;
 
 
   }
@@ -466,54 +466,82 @@ export class DataService {
     }
   }
 
-  getTransformer(){
+  getTransformer() {
     let transformer = null;
-
-    // if (this.storageDriver === "memory") {
-    //    transformer =  localStorage.getItem("transformer");
-    // }
-
-    let transformerTemplate = require(`../data/${this.getTransformUrl()}`);
-
-    if(!transformer){
-         transformer = transformerTemplate;
-         this.setTransformer(transformerTemplate);
-    }
-
-    return transformer;
-  }
-
-  setTransformer(transformer){
-
-
+    let transformerTemplate = null;
     if (this.storageDriver === "memory") {
-      transformer =  localStorage.setItem("transformer", transformer.toString());
+      transformer = localStorage.getItem("transformer");
     }
+    // let transformerTemplate = require(`../data/${this.getTransformUrl()}`);
+    if (!transformer) {
+      let functionBody = `
+        console.log('=>executing transformer template'); 
+        searchOptions.omitFields = null;
+        return searchOptions
+      `
+      transformerTemplate = ["searchOptions", "Environment", functionBody];
+      this.setTransformer(functionBody);
+    } else{
+      transformerTemplate = ["searchOptions", "Environment", transformer];
+    }
+    transformer = transformerTemplate;
+    transformer = new Function(...transformer);
+    return transformer;
+    // return require(`../data/${this.getTransformUrl()}`);
+  }
 
+  setTransformer(transformer) {
+    if (this.storageDriver === "memory") {
+      transformer = localStorage.setItem("transformer", transformer);
+    }
     return transformer;
   }
 
-  getReducer(){
-    return require('../data/' + this.getReducerUrl());
-  }
-
-  setReducer(reducer){
+  getReducer() {
+    let reducer = null;
+    let reducerTemplate = null;
+    if (this.storageDriver === "memory") {
+      reducer = localStorage.getItem("reducer");
+    }
+    if (!reducer) {
+      let functionBody =  `
+        if (searchOptions.keys.includes('products.name') && searchOptions.searchTerm !== null) {
+          list = list[0].products.filter(product => product.name == keyword);
+        }
+        return list;
+      `;
+      reducerTemplate = ["list", "keyword", "searchOptions", "Environment", functionBody];
+      this.setReducer(functionBody);
+    } else{
+      reducerTemplate = ["list", "keyword", "searchOptions", "Environment", reducer];
+    }
+    reducer = reducerTemplate;
+    reducer = new Function(...reducer);
     return reducer;
+    //return require('../data/' + this.getReducerUrl());
   }
 
-  getWorkbook(){
+  setReducer(reducer) {
+    if (this.storageDriver === "memory") {
+      reducer = localStorage.setItem("reducer", reducer);
+    }
+    return reducer;
+    //return reducer;
+  }
+
+  getWorkbook() {
     return this.workbook;
   }
-  
-  setWorkbook(workbook){
+
+  setWorkbook(workbook) {
     this.workbook = workbook;
   }
 
-  getSheets(){
-    
+  getSheets() {
+
     if (this.storageDriver === "memory") {
-      let sheets =  localStorage.getItem("sheets");
-      if (sheets){
+      let sheets = localStorage.getItem("sheets");
+      if (sheets) {
         this.sheets = JSON.parse(sheets);
       }
     }
@@ -521,13 +549,15 @@ export class DataService {
     return this.sheets;
   }
 
-  setSheets(sheets){
+  setSheets(sheets) {
 
     if (this.storageDriver === "memory") {
       localStorage.setItem("sheets", JSON.stringify(sheets));
     }
-
-    
   }
+
+
+
+
 
 }

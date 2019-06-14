@@ -23,6 +23,7 @@ export class ThingConfigComponent implements OnInit {
 
   
   ngOnInit() {
+    
     this.getConfig();
   }
 

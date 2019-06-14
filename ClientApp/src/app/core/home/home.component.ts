@@ -116,8 +116,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             depth: this.hierarchyDepth,
             routeParms: this.routeParams,
             nextSearchOptions: null,
-            transform: this.transformer.transform,
-            reducer: this.reducer.reduce
+            transform: this.transformer,
+            reducer: this.reducer
         };
         this.searchOpts = _.cloneDeep(searchOptions);
         this.searchOpts.data = this.data.length;

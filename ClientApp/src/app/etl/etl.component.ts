@@ -193,21 +193,15 @@ export class ETLComponent implements OnInit {
 @Component({
   selector: "dialog-choose-search-key",
   template: `
-      <div mat-dialog-content align="center">
-
-        
-
+      <mat-dialog-content align="center">
         <h2 mat-dialog-title>Select a column to use as the search item:</h2>
-          <mat-form-field width="100%" >
-            <mat-select [(value)]="selectedHeader" >
-              <mat-option [value]="header" *ngFor="let header of data.headers">{{ header }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-      </div>
-
-      
-      
-      <h2 mat-dialog-title style="text-align:center">Choose a layout:</h2>
+        <mat-form-field width="100%" >
+          <mat-select [(value)]="selectedHeader" >
+            <mat-option [value]="header" *ngFor="let header of data.headers">{{ header }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+     
+        <h2 mat-dialog-title style="text-align:center">Choose a layout:</h2>
         <div style="display:flex; flex-wrap: wrap;">
           <mat-card style="background:#1e88e5">
             <div class="layout-square" style="cursor:pointer">
@@ -237,6 +231,7 @@ export class ETLComponent implements OnInit {
           </div>
           </mat-card>
         </div>
+      </mat-dialog-content>
 
       <div mat-dialog-actions>
           <button mat-button [mat-dialog-close]="cancel" >Cancel</button>

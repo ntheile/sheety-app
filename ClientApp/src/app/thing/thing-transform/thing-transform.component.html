@@ -4,12 +4,18 @@
 </button>
 <br/>
 <h2>Transformer</h2>
-<pre contenteditable="true" *ngIf="transform">
+<pre>
+function(searchOptions, Environment)
+</pre>
+<pre contenteditable="true" *ngIf="transform" #transformEl>
 {{ transform  }}
 </pre>
 <hr/>
 <h2>Reducer</h2>
-<pre contenteditable="true" *ngIf="reduce">
-{{ reduce }}
+<pre>
+function(list, keyword, searchOptions, Environment)
+</pre>
+<pre contenteditable="true" *ngIf="reduce" #reduceEl>
+ {{ reduce }}
 </pre>
 </section>
