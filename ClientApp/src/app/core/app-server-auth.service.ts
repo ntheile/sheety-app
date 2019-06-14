@@ -185,5 +185,6 @@ export class AppServerAuthService {
       .catch((error: Response) => {
         this.currentUser = null;
       });
+      
   }
 }

@@ -30,6 +30,8 @@ export class DataService {
   storageDriver = Environment.storageDriver;  
   currentDataCache;
   facets;
+  sheets;
+
 
   public data: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public currentData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -401,7 +403,7 @@ export class DataService {
 
   reduceFacets(data, facets) {
 
-    
+  
       if (data && facets) {
         const ignoreFields = this.config.ignoreFacets;
         for (const ignoreField of ignoreFields) {
@@ -497,6 +499,35 @@ export class DataService {
 
   setReducer(reducer){
     return reducer;
+  }
+
+  getWorkbook(){
+    return this.workbook;
+  }
+  
+  setWorkbook(workbook){
+    this.workbook = workbook;
+  }
+
+  getSheets(){
+    
+    if (this.storageDriver === "memory") {
+      let sheets =  localStorage.getItem("sheets");
+      if (sheets){
+        this.sheets = JSON.parse(sheets);
+      }
+    }
+
+    return this.sheets;
+  }
+
+  setSheets(sheets){
+
+    if (this.storageDriver === "memory") {
+      localStorage.setItem("sheets", JSON.stringify(sheets));
+    }
+
+    
   }
 
 }

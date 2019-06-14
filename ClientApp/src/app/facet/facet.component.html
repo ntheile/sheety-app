@@ -1,5 +1,5 @@
 <div *ngIf="formFacet">
-<form [formGroup]="formFacet">
+<form [formGroup]="formFacet" >
   <mat-expansion-panel *ngFor="let facet of facets; index as i">
     <mat-expansion-panel-header (click)="facetTouched(facet.key)">
       {{ facet.key }}

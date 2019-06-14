@@ -11,6 +11,9 @@ import { ETLComponent } from "../../app/etl/etl.component";
 import { ForbiddenComponent } from "../../app/core/forbidden/forbidden.component";
 import { LoggedOutComponent } from "../../app/core/loggedout/loggedout.component";
 import { HomeComponent } from "../../app/core/home/home.component";
+import { ExcelService } from "../excel.service";
+
+
 
 
 @Injectable({
@@ -55,6 +58,7 @@ export class EtlService {
     public dataService: DataService,
     public router: Router,
     public facetService: FacetService,
+    public excelService: ExcelService
   ) {
 
   }
@@ -67,9 +71,11 @@ export class EtlService {
       this.config = this.setConfig(thing);
     }
     
-    // workbook = load('../data.xlsx');
-    this.workbook = this.dataService.workbook;
-    this.sheetNames = this.workbook.SheetNames;
+    this.workbook = this.dataService.getWorkbook();
+    if (!this.workbook){
+      this.workbook = this.loadWorkbook();
+    }
+    this.sheetNames = this.dataService.getSheets();
 
     // flatten
     for (let sheet of this.sheetNames) {
@@ -121,10 +127,27 @@ export class EtlService {
     return workbook;
   }
 
+  loadWorkbook(){
+    if (this.dataService.storageDriver === "memory") {
+      let wb;
+      try {
+        let excelCache = localStorage.getItem("excel");
+        if(excelCache){
+          let readtype: any = {type: this.excelService.rABS ? "binary" : "base64" };
+          wb = XLSX.read(excelCache, readtype);
+        }
+        return wb;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
+
   flatten(sheetName) {
     let data = [];
     // data.sheet = sheetName;
-    let sheet = this.workbook.Sheets[sheetName];
+    let sheet =  this.workbook.Sheets[sheetName];
     let headers = this.utils.get_header_row(sheet);
     let json = XLSX.utils.sheet_to_json(sheet);
 

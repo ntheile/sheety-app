@@ -29,22 +29,28 @@ export class FacetComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+    this.init();
   }
 
   ngAfterViewInit() {
-    this.init();
+    
   }
 
   async init() {
 
-    // subsribe to data change
-
-    this.dataService.currentData.subscribe( async (currData)=>{
-      this.facets = await this.dataService.getFacets();
-      this.formFacet = this.createFormGroup(this.facets);
-      this.sliderRefreshHackEvent.emit();
+    this.dataService.shouldFacet.subscribe(async (shouldFacet)=>{
+      if (shouldFacet){
+        this.facets = await this.dataService.getFacets();
+        if (this.facets){
+          console.log('facets subscribed change => ', this.facets); 
+          this.formFacet = this.createFormGroup(this.facets);
+          this.sliderRefreshHackEvent.emit();
+        } else{
+          console.log('no facets, please upload an excel file on the data tab');
+        }
+      }
     });
+    
   }
   
   public createFormGroup(facets): FormGroup {

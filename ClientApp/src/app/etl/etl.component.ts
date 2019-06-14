@@ -11,6 +11,7 @@ import { DataService } from "../../services/data.service";
 import { EtlService } from "../../services/etl/etl.service";
 import { Environment } from "../../environments/environment";
 import { SidenavService } from "../sidenav.service";
+import { ExcelService } from "../../services/excel.service";
 declare let DropSheet: any;
 declare let $: any;
 declare let require: any;
@@ -29,8 +30,8 @@ export class ETLComponent implements OnInit {
   formGroup = this.fb.group({
     file: [null, Validators.required],
   });
-  rABS = typeof FileReader !== "undefined" && FileReader.prototype && FileReader.prototype.readAsBinaryString;
-  sheets;  
+
+  sheets;
   workbook;
   json;
   currentSheetJson;
@@ -39,17 +40,18 @@ export class ETLComponent implements OnInit {
   currentSheetIndex;
   @ViewChild("excelEl") excelEl: ElementRef;
 
-  
+
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private cd: ChangeDetectorRef,
     public dataService: DataService,
     public http: Http,
     public dialog: MatDialog,
     private router: Router,
     public etlService: EtlService,
-    private sidenav: SidenavService
-    ) {
+    private sidenav: SidenavService,
+    public excelService: ExcelService,
+  ) {
 
   }
 
@@ -57,29 +59,32 @@ export class ETLComponent implements OnInit {
     // if (this.dataService.currentDataCache){
     //   //location.reload();
     // }
-    
+
     this.clear();
-    if (Environment.storageDriver === "sample"){
+    if (Environment.storageDriver === "sample") {
       const url = location.origin + "/data/" + this.dataService.getDataPath() + "/data.xlsx";
-      this.downloadExcel(url);
+      this.excelService.downloadExcel(url);
     }
 
     let excelCache = localStorage.getItem("excel");
-    if(excelCache){
-      let readtype: any = {type: this.rABS ? "binary" : "base64" };
-      this.loadExcel(excelCache, readtype);
+    if (excelCache) {
+      let readtype: any = { type: this.excelService.rABS ? "binary" : "base64" };
+      this.excelService.loadExcel(excelCache, readtype);
+      this.sheets = this.dataService.getSheets();
+      this.workbook = this.dataService.getWorkbook();
+      this.showSheet(this.workbook, 0);
     }
 
-  } 
+  }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.sidenav.close();
   }
 
 
-  clear(){
+  clear() {
     this.workbook = null;
-    this.sheets = null;  
+    this.sheets = null;
     this.json = null;
     this.currentSheetJson = null;
     this.headers = null;
@@ -88,16 +93,7 @@ export class ETLComponent implements OnInit {
     this.excelEl.nativeElement.innerHTML = "";
   }
 
-  async downloadExcel(url) {
-    const req = new XMLHttpRequest();
-    req.open("GET", url, true);
-    req.responseType = "arraybuffer";
-    req.onload = (e) => {
-      const data = new Uint8Array(req.response);
-      this.convertExcelBinary(null, data);
-    };
-    req.send();
-  }
+
 
   /// https://gist.github.com/amcdnl/bebcab2e962076558fb4a5f05b96a7e4#file-end-ts 
   onFileChange(e: any) {
@@ -109,49 +105,21 @@ export class ETLComponent implements OnInit {
       const reader = new FileReader();
       const name = f.name;
       reader.onload = (ee: any) => {
-        this.convertExcelBinary(ee);
+        this.excelService.convertExcelBinary(ee);
+        this.sheets = this.dataService.getSheets();
+        this.workbook = this.dataService.getWorkbook();
+        this.showSheet(this.workbook, 0);
       };
-      if (this.rABS) { reader.readAsBinaryString(f); } else { reader.readAsArrayBuffer(f); }
-    }
-  }
-
-  convertExcelBinary(e?, rawData?) {
-    let data;
-    let wb;
-    let arr;
-    let readtype: any = {type: this.rABS ? "binary" : "base64" };
-    if (rawData) {
-      data = rawData;
-      readtype = {type: "array"};
-    } else {
-      data = e.target.result;
-      if (!this.rABS) {
-        arr = this.fixdata(data);
-        data = btoa(arr);
+      if (this.excelService.rABS) {
+        reader.readAsBinaryString(f);
+      }
+      else {
+        reader.readAsArrayBuffer(f);
       }
     }
-    this.saveExcelBlob(data);
-    this.loadExcel(data, readtype);
   }
 
-  saveExcelBlob(data){
-    if(this.dataService.storageDriver === "memory"){
-      localStorage.setItem("excel", data);    
-    }
-  }
 
-  loadExcel(data, readtype?){
-    let wb;
-    try {
-      wb = XLSX.read(data, readtype);
-      this.workbook = wb;
-      this.dataService.workbook = this.workbook;
-      this.sheets = wb.SheetNames;
-      this.showSheet(this.workbook, 0);
-    } catch (e) { 
-      console.log(e); 
-    }
-  }
 
   showSheet(workbook, sheetIndex?) {
     this.currentSheetIndex = sheetIndex;
@@ -159,81 +127,56 @@ export class ETLComponent implements OnInit {
       $("canvas-datagrid").remove();
       this.cd.detectChanges();
       workbook = this.workbook;
-      
+
     }
     const sheet = workbook.SheetNames[sheetIndex || 0];
-    this.json = this.excelToJson(workbook)[sheet];
-    this.headers = this.getHeaders(this.json);
+    this.json = this.excelService.excelToJson(workbook)[sheet];
+    this.headers = this.excelService.getHeaders(this.json);
     this.cd.markForCheck();
     this.makeWebExcel(workbook, this.json);
   }
 
-  hideSheet(sheet, i){
+  hideSheet(sheet, i) {
     // this.dataService.con
 
   }
 
-  excelToJson(workbook) {
-      const result = {};
-      workbook.SheetNames.forEach( (sheetName) => {
-        const roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {raw: false});
-        if (roa.length > 0) { result[sheetName] = roa; }
-      });
-      return result;
-  }
 
   makeWebExcel(workbook, json) {
-      
-      const grid = this.excelEl.nativeElement;
-      grid.style.display = "block";
-      grid.style.height = (window.innerHeight - 200) + "px";
-      grid.style.width = (window.innerWidth - 10) + "px";
-      
-      const cdg = canvasDatagrid({
-        parentNode: grid,
-      });
-      cdg.style.height = "100%";
-      cdg.style.width = "100%";
-      cdg.data = json;
+
+    const grid = this.excelEl.nativeElement;
+    grid.style.display = "block";
+    grid.style.height = (window.innerHeight - 200) + "px";
+    grid.style.width = (window.innerWidth - 10) + "px";
+
+    const cdg = canvasDatagrid({
+      parentNode: grid,
+    });
+    cdg.style.height = "100%";
+    cdg.style.width = "100%";
+    cdg.data = json;
 
   }
 
-  fixdata(data) {
-    let o = "";
-    let l = 0;
-    const w = 10240;
-    for (; l < data.byteLength / w; ++l) {
-      o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
-    }
-    o += String.fromCharCode.apply(null, new Uint8Array(data.slice(o.length)));
-    return o;
-  }
 
-  getHeaders(json) {
-    this.headers = [];
-    let numSheets = this.sheets.length;
-    for (let i = 0; i <= numSheets; i++ ){
-      for (let header of Object.keys(json[i])){
-        this.headers.push(header)
-      }
-    }
-   
-    return this.headers;
-  }
 
   openDialog(): void {
 
-    if (!this.headers){
+    if (!this.headers) {
       alert('Please choose an excel spreadsheet that is tabular and has the first row as headers')
     }
 
     const dialogRef = this.dialog.open(DialogChooseSearchKey, {
-      data: {headers: this.headers},
+      data: { headers: this.headers },
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log("The dialog was closed, ", result);
-      this.setThing(result);
+      if (result){
+        this.setThing(result);
+      }
+     
     });
   }
 
@@ -250,39 +193,53 @@ export class ETLComponent implements OnInit {
 @Component({
   selector: "dialog-choose-search-key",
   template: `
-      <div mat-dialog-content>
+      <div mat-dialog-content align="center">
 
         
 
-        <h1 mat-dialog-title>Select a column to <br/> use as the search item:</h1>
-          <mat-form-field>
+        <h2 mat-dialog-title>Select a column to use as the search item:</h2>
+          <mat-form-field width="100%" >
             <mat-select [(value)]="selectedHeader" >
               <mat-option [value]="header" *ngFor="let header of data.headers">{{ header }}</mat-option>
             </mat-select>
-        </mat-form-field>
+          </mat-form-field>
       </div>
 
       
-      <h1 mat-dialog-title style="text-align:center">Choose a layout:</h1>
+      
+      <h2 mat-dialog-title style="text-align:center">Choose a layout:</h2>
         <div style="display:flex; flex-wrap: wrap;">
-          <div class="layout-square" style="cursor:pointer">
-            <h3 style="text-align:center">Filter</h3>
-            <img class="layoutImage" src="./../../assets/layouts/filtering.svg" width="320px" />
+          <mat-card style="background:#1e88e5">
+            <div class="layout-square" style="cursor:pointer">
+              <div class="layout-square">
+                  <h3 style="text-align:center">Filter</h3>
+                  <div style="text-align:center;">&nbsp;</div>
+                </div>
+              <img class="layoutImage" src="./../../assets/layouts/filtering.svg" width="150px" />
+            </div>
+          </mat-card>
+          <mat-card>
+          <div class="layout-square" >
+              <div class="layout-square">
+                <h3 style="text-align:center">Category Drill Down</h3>
+                <div style="text-align:center;">coming soon</div>
+            </div>
+            <img src="./../../assets/layouts/category.svg" width="150px" />
           </div>
-          <div class="layout-square"  style="cursor:pointer">
-            <h3 style="text-align:center">Category Drill Down</h3>
-            <img src="./../../assets/layouts/category.svg" width="320px" />
-          </div>
+          </mat-card>
+          <mat-card>
           <div class="layout-square" >
             <div class="layout-square">
               <h3 style="text-align:center">Shopping</h3>
               <div style="text-align:center;">coming soon</div>
             </div>
-            <img src="./../../assets/layouts/shopping.svg" width="320px" />
+            <img src="./../../assets/layouts/shopping.svg" width="150px" />
           </div>
+          </mat-card>
         </div>
 
       <div mat-dialog-actions>
+          <button mat-button [mat-dialog-close]="cancel" >Cancel</button>
           <button mat-button [mat-dialog-close]="selectedHeader" cdkFocusInitial>Ok</button>
       </div>
   `,
@@ -293,7 +250,7 @@ export class DialogChooseSearchKey {
 
   constructor(
     public dialogRef: MatDialogRef<DialogChooseSearchKey>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   onNoClick(): void {
     this.dialogRef.close();

@@ -23,10 +23,10 @@
 
   
 
-  <div fxLayout="row wrap" fxLayoutAlign="start">
+  <div fxLayout="row wrap" fxLayoutAlign="start" *ngIf="sheets">
       <div *ngFor="let sheet of sheets; index as i;" fxLayout="column" fxLayoutAlign="start">
           <button  (click)="showSheet(null, i)">{{ sheet }}</button>
-          <mat-slide-toggle *ngIf="currentSheetIndex == i" (click)="hideSheet(shetet, i)">Hide</mat-slide-toggle>
+          <mat-slide-toggle *ngIf="currentSheetIndex == i" (click)="hideSheet(sheet, i)">Hide</mat-slide-toggle>
         </div>
   </div>
   
