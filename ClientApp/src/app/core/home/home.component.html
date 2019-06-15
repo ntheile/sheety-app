@@ -3,12 +3,12 @@
     <button (click)="sidenav.open()" mat-raised-button color="primary" *ngIf="isMobile" > Filter <i class="material-icons">
         filter_list
         </i></button>
-    <!-- <div *ngIf="routeParams" fxLayout='row wrap' fxLayoutAlign="center center"
+    <div *ngIf="routeParams" fxLayout='row wrap' fxLayoutAlign="center center"
         style="margin-left: 16px; margin-bottom: 10px;">
         <span *ngFor="let breadcrumb of breadcrumbs">
             <a [href]="breadcrumb.href">{{ breadcrumb.label  }}</a>&nbsp;/&nbsp;
         </span>
-    </div> -->
+    </div> 
 
     <div fxLayout='row wrap' fxLayoutAlign="space-evenly stretch">
         <!-- <mat-card fxFlex="30%" fxFlex.xs="100%" *ngIf="shouldFacet || Environment.debugFacets"

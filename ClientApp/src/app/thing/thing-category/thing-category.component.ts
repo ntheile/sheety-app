@@ -30,20 +30,22 @@ export class ThingCategoryComponent implements OnInit {
   }
 
   nav(page) {
+    console.log('[Router Config] ', this.router.config);
     let route = decodeURI(this.router.url);
     if (!route.includes('search')) {
       route = "/search" + route;
     }
     route = route + "/" + page;
+    route = route.replace("//", "/");
     this.router.navigate([route]).then(() => {
       // @todo fix reload hack. i.e sometimes data does not load properly if if it reloaded
-      location.reload();
+      // location.reload();
     });
 
   }
 
   initData(){
-    
+    console.log('[Router Config] ', this.router.config);
     this.dataService.currentData.subscribe( (currData)=>{
       this.currentData = currData;
     });

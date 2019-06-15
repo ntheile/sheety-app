@@ -9,6 +9,7 @@ import { FacetComponent } from "../../facet/facet.component";
 import { SearchOptions } from "./../../../data/interfaces";
 import { RoutingService } from "../../../services/routing.service";
 import { SidenavService } from "../../sidenav.service";
+import { initChangeDetectorIfExisting } from "@angular/core/src/render3/instructions";
 declare let require: any;
 declare let window: any;
 
@@ -51,10 +52,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        this.init();
+    }
+
+    async init(){
         this.app_id = Environment.Application_Id;
         this.reducer = this.dataService.getReducer();
         this.transformer = this.dataService.getTransformer();
         this.routeParams = this.activeRoute.snapshot.params;
+        await this.gererateHierarchialDataFromRoute(this.routeParams);
+
     }
 
     ngAfterViewInit() {
@@ -62,7 +69,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
             // @todo figure out sample routing
             // this.routingService.configureDynamicRoutes(this.dataService.getConfig());
         }
-        this.gererateHierarchialDataFromRoute(this.routeParams);
         if (window.innerWidth >= 1024){
             this.sidenav.open();
         }
@@ -132,6 +138,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         } catch (e) { }
 
         this.dataService.shouldFacet.next(this.shouldFacet);
+
         return currentData;
     }
 
@@ -152,11 +159,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let filtered = await this.dataService.filter(this.dataService.currentDataCache, this.filterPropsAry);
 
     }
-
-    public go() {
-        this.router.navigate(["/home/market"]);
-    }
-
 
 
     generateBreadcrumbs(routeParams) {
@@ -181,5 +183,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
         return breadcrumbs;
     }
+
 
 }
