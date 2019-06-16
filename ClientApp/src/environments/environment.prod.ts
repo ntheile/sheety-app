@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+declare let require: any;
 
 // This environment file corresponds to the key/values found in appsettings.json(server-side)
 // At runtime, the serverside environment values will override the vars in this file

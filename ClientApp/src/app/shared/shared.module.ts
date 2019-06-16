@@ -5,6 +5,9 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
 import { Ng5SliderModule } from "ng5-slider";
+import { LayoutDialogComponent } from "../dialogs/layout-dialog/layout-dialog.component";
+import { LayoutConfigDialogComponent } from "../dialogs/layout-config-dialog/layout-config-dialog.component";
+
 
 import {
     MatButtonModule,
@@ -29,7 +32,8 @@ import {
     MatTableModule,
     MatToolbarModule,
 } from "@angular/material";
-import { DialogChooseSearchKey } from "../etl/etl.component";
+
+
 
 const MATERIALCOMPONENTS = [
     CdkTableModule,
@@ -61,7 +65,8 @@ const MATERIALCOMPONENTS = [
 
 @NgModule({
     declarations: [
-        DialogChooseSearchKey,
+        LayoutDialogComponent,
+        LayoutConfigDialogComponent
     ],
     imports: [
         CommonModule,
@@ -77,7 +82,8 @@ const MATERIALCOMPONENTS = [
 
     ],
     entryComponents: [
-        DialogChooseSearchKey,
+        LayoutDialogComponent,
+        LayoutConfigDialogComponent
     ],
 })
 export class SharedModule { }

@@ -42,7 +42,7 @@ import { HttpModule } from '@angular/http';
         ETLComponent,
         ThingConfigComponent,
         ThingTransformComponent,
-        ThingFacetsComponent
+        ThingFacetsComponent,
     ],
     declarations: [
         HomeComponent,
@@ -59,7 +59,7 @@ import { HttpModule } from '@angular/http';
         ETLComponent,
         ThingConfigComponent,
         ThingTransformComponent,
-        ThingFacetsComponent
+        ThingFacetsComponent,
     ],
     providers: [
         AppServerAuthService,

@@ -1,0 +1,13 @@
+<mat-dialog-content align="center">
+  <h2 mat-dialog-title>Select a column to use as the search item:</h2>
+  <mat-form-field width="100%" >
+    <mat-select [(value)]="selectedHeader" >
+      <mat-option [value]="header" *ngFor="let header of data.headers">{{ header }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="cancel" >Cancel</button>
+    <button mat-button (click)="select(selectedHeader)" cdkFocusInitial>Ok</button>
+</div>

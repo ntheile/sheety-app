@@ -1,0 +1,37 @@
+<mat-dialog-content align="center">
+  <h2 mat-dialog-title style="text-align:center">Choose a layout:</h2>
+  <div style="display:flex; flex-wrap: wrap;">
+    <mat-card class="layout-sq-card" (click)="select('filter')" [class.layout-selected]="selectedLayout == 'filter'">
+      <div class="layout-square">
+        <div class="layout-square">
+            <h3 style="text-align:center">Filter</h3>
+            <div style="text-align:center;">&nbsp;</div>
+          </div>
+        <img class="layoutImage" src="./../../assets/layouts/filtering.svg" width="150px" />
+      </div>
+    </mat-card>
+    <mat-card class="layout-sq-card" (click)="select('category')" [class.layout-selected]="selectedLayout == 'category'">
+    <div class="layout-square" >
+        <div class="layout-square">
+          <h3 style="text-align:center">Category Drill Down</h3>
+      </div>
+      <img src="./../../assets/layouts/category.svg" width="150px" />
+    </div>
+    </mat-card>
+    <mat-card class="layout-sq-card" (click)="select('filter')" [class.layout-selected]="selectedLayout == 'shopping'">
+    <div class="layout-square" >
+      <div class="layout-square">
+        <h3 style="text-align:center">Shopping</h3>
+        <div style="text-align:center;">coming soon</div>
+      </div>
+      <img src="./../../assets/layouts/shopping.svg" width="150px" />
+    </div>
+    </mat-card>
+  </div>
+  <br/><br/>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="cancel" >Cancel</button>
+    <!-- <button mat-button [mat-dialog-close]="selectedHeader" cdkFocusInitial>Ok</button> -->
+</div>

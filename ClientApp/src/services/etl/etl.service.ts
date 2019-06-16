@@ -63,7 +63,7 @@ export class EtlService {
 
   }
 
-  init(thing, config?) {
+  init(thing, layout, config?) {
     this.clear();
     if (config){
       this.config = this.setConfig(thing, config);
@@ -100,6 +100,7 @@ export class EtlService {
     console.log("Transform completed successfully!");
     let facets = this.facetService.init(this.database, this.config);
     this.dataService.saveFacets(facets);
+    this.setLayout(layout);
   }
 
   clear(){
@@ -120,6 +121,39 @@ export class EtlService {
     }
     this.dataService.saveConfig(this.config);
     return this.config;
+  }
+
+  setLayout(layout){
+
+    let categoryTranformFunction = `
+      if (searchOptions.searchTerm !== null) {
+        searchOptions.omitFields = null;
+      }
+      return searchOptions;
+    `;
+    let filterTranformFunction = `
+      searchOptions.omitFields = null;
+      return searchOptions;
+    `;
+    switch (layout) {
+      case 'filter':
+        this.dataService.setTransformer(filterTranformFunction);
+        break;
+      case 'category':
+        this.dataService.setTransformer(categoryTranformFunction);
+        break;
+      default:
+        break;
+    }
+
+    // reducer
+    let reducer = `
+      if (searchOptions.keys.includes('products.name') &&  searchOptions.searchTerm !== null) {
+        list = list[0].products.filter(product => product.name == keyword);
+      }
+      return list;
+    `;
+
   }
 
   load(excelFile) {

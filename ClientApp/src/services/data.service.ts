@@ -7,7 +7,7 @@ declare let underscore: any;
 import { Environment } from "../environments/environment";
 import { Router } from "@angular/router";
 import { BehaviorSubject } from "rxjs";
-
+declare let require: any;
 
 @Injectable({
   providedIn: "root",
@@ -31,6 +31,7 @@ export class DataService {
   currentDataCache;
   facets;
   sheets;
+  layout;
 
 
   public data: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -65,6 +66,11 @@ export class DataService {
   setThing(thing) {
     this.thing = thing;
   }
+
+  setLayout(layout) {
+    this.layout = layout;
+  }
+
 
   getDataUrl() {
     return Environment.transformFolder + "data.json";

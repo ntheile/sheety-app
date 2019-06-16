@@ -11,7 +11,7 @@
         <input hidden type="file"  #fileInput (change)="onFileChange($event)" />
         <button mat-raised-button color="primary" (click)="fileInput.click()" style="margin-right: 16px">Upload</button>
 
-        <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="headers" style="float: right" >
+        <button mat-raised-button color="primary" (click)="openLayoutDialog()" *ngIf="headers" style="float: right" >
           Next 
         </button>
       </form>

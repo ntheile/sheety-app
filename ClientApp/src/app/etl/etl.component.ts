@@ -4,21 +4,23 @@ import { Http } from "@angular/http";
 import { MAT_DIALOG_DATA, MatBottomSheetConfig, MatDialog, MatDialogRef } from "@angular/material";
 import { Router } from "@angular/router";
 import * as canvasDatagrid from "canvas-datagrid";
-import { worker } from "cluster";
-import { $$ } from "protractor";
 import * as XLSX from "xlsx";
 import { DataService } from "../../services/data.service";
 import { EtlService } from "../../services/etl/etl.service";
 import { Environment } from "../../environments/environment";
 import { SidenavService } from "../sidenav.service";
 import { ExcelService } from "../../services/excel.service";
+import { LayoutDialogComponent } from './../dialogs/layout-dialog/layout-dialog.component';
+import { LayoutConfigDialogComponent } from './../dialogs/layout-config-dialog/layout-config-dialog.component';
+// dont remove worker of $$ - need to avoid compile error for dynamic module loading with require()
+import { worker } from "cluster";
+import { $$ } from "protractor";
+
 declare let DropSheet: any;
 declare let $: any;
 declare let require: any;
 declare let window: any;
-export interface DialogData {
-  headers: any;
-}
+
 
 @Component({
   selector: "app-etl",
@@ -158,97 +160,64 @@ export class ETLComponent implements OnInit {
 
   }
 
-
-
-  openDialog(): void {
+  openLayoutDialog(): void {
 
     if (!this.headers) {
       alert('Please choose an excel spreadsheet that is tabular and has the first row as headers')
     }
 
-    const dialogRef = this.dialog.open(DialogChooseSearchKey, {
+    const dialogRef = this.dialog.open(LayoutDialogComponent, {
       data: { headers: this.headers },
       disableClose: true,
     });
 
+    const dialogOKSubscription = dialogRef.componentInstance.okClicked.subscribe(layout => {
+      if (layout){
+        console.log(layout);
+        this.openLayoutConfigDialog(layout);
+      }
+      dialogOKSubscription.unsubscribe();
+    });
+
     dialogRef.afterClosed().subscribe((result) => {
       console.log("The dialog was closed, ", result);
-      if (result){
-        this.setThing(result);
-      }
-     
     });
+
   }
 
-  setThing(thing) {
+
+  openLayoutConfigDialog(layout){
+   
+    const dialogRef = this.dialog.open(LayoutConfigDialogComponent, {
+      data: { 
+        headers: this.headers,
+        layout: layout,
+      },
+      disableClose: true,
+    });
+
+    const dialogOKSubscription = dialogRef.componentInstance.okClicked.subscribe(selectedHeader => {
+      if (selectedHeader){
+        console.log(selectedHeader);
+        this.setThing(selectedHeader, dialogRef.componentInstance.data.layout);
+      }
+      dialogOKSubscription.unsubscribe();
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("The dialog was closed, ", result);
+    });
+
+  }
+
+
+  setThing(thing, layout) {
     this.dataService.setThing(thing);
-    let data = this.etlService.init(thing);
+    this.dataService.setLayout(layout);
+    let data = this.etlService.init(thing, layout);
     // this.dataService.routeLookup = [];
     // this.router.navigate(['/']);
     location.replace('/');
-  }
-
-}
-
-@Component({
-  selector: "dialog-choose-search-key",
-  template: `
-      <mat-dialog-content align="center">
-        <h2 mat-dialog-title>Select a column to use as the search item:</h2>
-        <mat-form-field width="100%" >
-          <mat-select [(value)]="selectedHeader" >
-            <mat-option [value]="header" *ngFor="let header of data.headers">{{ header }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-     
-        <h2 mat-dialog-title style="text-align:center">Choose a layout:</h2>
-        <div style="display:flex; flex-wrap: wrap;">
-          <mat-card style="background:#1e88e5">
-            <div class="layout-square" style="cursor:pointer">
-              <div class="layout-square">
-                  <h3 style="text-align:center">Filter</h3>
-                  <div style="text-align:center;">&nbsp;</div>
-                </div>
-              <img class="layoutImage" src="./../../assets/layouts/filtering.svg" width="150px" />
-            </div>
-          </mat-card>
-          <mat-card>
-          <div class="layout-square" >
-              <div class="layout-square">
-                <h3 style="text-align:center">Category Drill Down</h3>
-                <div style="text-align:center;">coming soon</div>
-            </div>
-            <img src="./../../assets/layouts/category.svg" width="150px" />
-          </div>
-          </mat-card>
-          <mat-card>
-          <div class="layout-square" >
-            <div class="layout-square">
-              <h3 style="text-align:center">Shopping</h3>
-              <div style="text-align:center;">coming soon</div>
-            </div>
-            <img src="./../../assets/layouts/shopping.svg" width="150px" />
-          </div>
-          </mat-card>
-        </div>
-      </mat-dialog-content>
-
-      <div mat-dialog-actions>
-          <button mat-button [mat-dialog-close]="cancel" >Cancel</button>
-          <button mat-button [mat-dialog-close]="selectedHeader" cdkFocusInitial>Ok</button>
-      </div>
-  `,
-})
-export class DialogChooseSearchKey {
-
-  selectedHeader;
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogChooseSearchKey>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 
 }
