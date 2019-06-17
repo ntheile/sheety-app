@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { InMemoryStorageProvider } from "../drivers/memory/InMemoryStorageProvider";
 import { BlockstackStorageProvider } from "../drivers/blockstack/BlockstackStorageProvider";
+import { BlockstackAuthProvider } from "../drivers/blockstack/BlockstackAuthProvider";
 declare let require: any;
 
 // This environment file corresponds to the key/values found in appsettings.json(server-side)
@@ -26,6 +27,7 @@ export class Environment {
     public static Redirect_Uri = "#OverwrittenByAppSettings#";
     public static Tenant = "#OverwrittenByAppSettings#";
     public static StorageProvider = InMemoryStorageProvider;
+    public static AuthProvider = BlockstackAuthProvider;
 
     public static init(environment: any = window["Environment"]) {
         if (environment) {

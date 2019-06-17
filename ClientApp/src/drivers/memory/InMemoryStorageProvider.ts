@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { StorageProvider } from './../interfaces/StorageProvider';
+import { StorageProvider } from '../StorageProvider';
 
 @Injectable()
 export class InMemoryStorageProvider implements StorageProvider {

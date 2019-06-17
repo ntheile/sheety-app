@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { StorageProvider } from './../interfaces/StorageProvider';
+import { StorageProvider } from './../StorageProvider';
 declare let blockstack: any;
 
 @Injectable()

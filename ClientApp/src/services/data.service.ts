@@ -7,7 +7,7 @@ declare let underscore: any;
 import { Environment } from "../environments/environment";
 import { Router } from "@angular/router";
 import { BehaviorSubject } from "rxjs";
-import { StorageProvider } from "../drivers/interfaces/StorageProvider";
+import { StorageProvider } from "../drivers/StorageProvider";
 declare let require: any;
 declare let blockstack: any;
 import 'rxjs/add/operator/toPromise';
