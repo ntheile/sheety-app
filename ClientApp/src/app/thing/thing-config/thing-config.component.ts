@@ -29,7 +29,7 @@ export class ThingConfigComponent implements OnInit {
 
   async getConfig() {
    
-    this.config = this.dataService.getConfig();
+    this.config = await this.dataService.getConfig();
     return this.config;
   }
 

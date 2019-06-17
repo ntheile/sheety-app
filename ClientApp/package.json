@@ -53,6 +53,7 @@
     "ngx-json-viewer": "^2.4.0",
     "normalize.css": "^7.0.0",
     "rxjs": "^6.3.2",
+    "rxjs-compat": "^6.5.2",
     "underscore": "^1.9.1",
     "xlsx": "^0.14.3",
     "zone.js": "^0.8.26"

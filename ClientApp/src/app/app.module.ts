@@ -34,7 +34,8 @@ import { SidenavService } from "./sidenav.service";
     AppInsightsService,
     AuthGuardService,
     MediaMatcher,
-    SidenavService
+    SidenavService,
+    {provide: 'StorageProvider', useClass: Environment.StorageProvider}
   ],
   bootstrap: [AppComponent],
 })

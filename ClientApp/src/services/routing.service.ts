@@ -20,7 +20,7 @@ export class RoutingService {
   async configureDynamicRoutes(appRoutes) {
     this.depth = 0;
     appRoutes = this.cleanRoutes(appRoutes);
-    const hierarchy = this.data.getHierarchy();
+    const hierarchy = await this.data.getHierarchy();
     this.recurseHierarchyObject(hierarchy, appRoutes);
     this.router.resetConfig(appRoutes);
   }

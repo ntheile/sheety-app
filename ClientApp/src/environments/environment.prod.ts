@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { InMemoryStorageProvider } from '../drivers/memory/InMemoryStorageProvider';
 declare let require: any;
 
 // This environment file corresponds to the key/values found in appsettings.json(server-side)
@@ -14,12 +15,13 @@ export class Environment {
   public static Application_Insights_Id = '#OverwrittenByAppSettings#';
   public static Redirect_Uri = '#OverwrittenByAppSettings#';
   public static Tenant = '#OverwrittenByAppSettings#';
-
   public static dataPath = "samples/blockstack";
   public static transformFolder = "./../data/samples/blockstack/";
   public static config = require("./../data/samples/blockstack/config");
   public static storageDriver = "memory"; // memory, sample, blockstack
   public static debugFacets = false;
+  public static StorageProvider = InMemoryStorageProvider;
+
 
   public static init(environment: any = window['Environment']) {
     if (environment) {

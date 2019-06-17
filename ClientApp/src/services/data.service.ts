@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, Inject } from "@angular/core";
 import * as Fuse from "fuse.js";
 import * as _ from "lodash";
 import { SearchOptions } from "../data/interfaces";
@@ -7,7 +7,11 @@ declare let underscore: any;
 import { Environment } from "../environments/environment";
 import { Router } from "@angular/router";
 import { BehaviorSubject } from "rxjs";
+import { StorageProvider } from "../drivers/interfaces/StorageProvider";
 declare let require: any;
+declare let blockstack: any;
+import 'rxjs/add/operator/toPromise';
+
 
 @Injectable({
   providedIn: "root",
@@ -45,17 +49,18 @@ export class DataService {
   constructor(
     public http: HttpClient,
     public router: Router,
+    @Inject('StorageProvider') private storage: StorageProvider
   ) {
     this.init();
   }
 
   async init() {
-
+    
   }
 
-  getHierarchy() {
+  async getHierarchy() {
     // this.hierarchy = Environment.config.jsonNesting;
-    let c = this.getConfig();
+    let c = await this.getConfig();
     if (!c) {
       console.log("need to choose key in /data");
     }
@@ -81,11 +86,12 @@ export class DataService {
     return Environment.dataPath + "/config.js";
   }
 
-  getConfig() {
-
+  // todo made async, so need to refactor the callers
+  async getConfig() {
 
     if (this.storageDriver === "memory") {
-      let configStr = localStorage.getItem("config");
+      // let configStr = localStorage.getItem("config");
+      let configStr = await this.storage.getFile("config");
       if (configStr) {
         this.config = JSON.parse(configStr);
       }
@@ -94,6 +100,18 @@ export class DataService {
       }
       return this.config;
     }
+
+    if (this.storageDriver === "blockstack") {
+      let configStr = await blockstack.getFile("config").toPromise();
+      if (configStr) {
+        this.config = JSON.parse(configStr);
+      }
+      if (!this.config) {
+        console.log("gotta choose key config first on /data page");
+      }
+      return this.config;
+    }
+
 
     if (this.storageDriver === "sample") {
       const c = require(`./../data/${this.getConfigUrl()}`);

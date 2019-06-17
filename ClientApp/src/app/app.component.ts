@@ -135,7 +135,7 @@ export class AppComponent {
         
     let hierarchyDepth = Object.keys(routeParams).length;
     this.dataService.hierarchyDepth.next(hierarchyDepth);
-    let hierarchy = this.dataService.getHierarchy();
+    let hierarchy = await this.dataService.getHierarchy();
     let data = await this.dataService.getData();
     let currentKey = "hierarchy";
 
