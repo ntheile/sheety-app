@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, Inject } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AppServerAuthService } from './core/app-server-auth.service';
 import { Environment } from '../environments/environment';
@@ -8,7 +8,7 @@ import { MatSidenav } from '@angular/material';
 import { SidenavService } from './sidenav.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RoutingService } from '../services/routing.service';
-declare let blockstack: any;
+import { AuthProvider } from '../drivers/AuthProvider';
 declare let window: any;
 
 @Component({
@@ -46,6 +46,7 @@ export class AppComponent {
     private router: Router,
     public routingService: RoutingService,
     private activeRoute: ActivatedRoute,
+    @Inject('AuthProvider') private authProvider: AuthProvider
     ) {
     this.mobileQuery = media.matchMedia('(max-width: 1024px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -66,38 +67,11 @@ export class AppComponent {
 
   async showProfile() {
 
-    if (blockstack.isUserSignedIn()) {
+    let userInfo = this.authProvider.getUserInfo();
 
-      let profile = blockstack.loadUserData();
-      this.name = profile.username;
-      this.isLoggedIn = true;
-      try {
-        this.avatar = profile.profile.image[0].contentUrl;
-      } catch (e) { console.log('no profile pic') }
-
-      this.loginState = "[Logout]";
-      
-
-      // get rid of ?authResponse=ey to prevent routing bugs
-      setTimeout( ()=>{
-        try{
-          let authParam =  window.location.href.includes('authResponse');
-          if(authParam){
-            let newUrl = window.location.href.replace("/?authResponse=" + blockstack.loadUserData().authResponseToken , '');
-            history.pushState({}, null, newUrl);
-          }
-        } catch(e){}
-      }, 2500 )
-
-      this.name = this.authService.getDisplayName();
-    } else if (blockstack.isSignInPending()) {
-
-    
-      blockstack.handlePendingSignIn().then(function (userData) {
-        window.location = window.location.origin
-      });
-    }
-    else {
+    if (userInfo.name !== null) {
+      this.name = userInfo.name;
+    } else {
         this.login();
     }
 
@@ -106,7 +80,7 @@ export class AppComponent {
   login() {
     let origin = window.location.origin;
     let manifest = origin;
-    blockstack.redirectToSignIn(origin, manifest + '/manifest.json', ['store_write', 'publish_data', 'email'])
+    this.authProvider.login({origin: origin, manifest: manifest});
   }
 
   async filter() {
