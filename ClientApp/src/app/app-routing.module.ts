@@ -9,12 +9,14 @@ import { LoggedOutComponent } from "./core/loggedout/loggedout.component";
 import { ETLComponent } from "./etl/etl.component";
 import { ThingConfigComponent } from "./thing/thing-config/thing-config.component";
 import { ThingTransformComponent } from "./thing/thing-transform/thing-transform.component";
+import { FilesComponent } from "./files/files.component";
 
 const appRoutes: Routes  = [
   { path: "", component: HomeComponent, canActivate: [] },
   { path: "home", component: HomeComponent, canActivate: [] },
   { path: "loggedout", component: LoggedOutComponent, canActivate: [] },
   { path: "forbidden", component: ForbiddenComponent },
+  { path: "files", component: FilesComponent },
   { path: "data", component: ETLComponent },
   { path: "config", component: ThingConfigComponent },
   { path: "transform", component: ThingTransformComponent },

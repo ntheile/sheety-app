@@ -15,6 +15,11 @@ import { SharedModule } from "./shared/shared.module";
 import "hammerjs";
 import { SidenavService } from "./sidenav.service";
 
+import { NgxsModule } from '@ngxs/store';
+import { ExcelState } from './../state/excel.state';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,6 +29,11 @@ import { SidenavService } from "./sidenav.service";
       instrumentationKey: Environment.Application_Insights_Id,
     }),
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
+    NgxsModule.forRoot([
+      ExcelState
+    ]),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
     BrowserAnimationsModule,
     HttpClientModule,    
     CoreModule,
