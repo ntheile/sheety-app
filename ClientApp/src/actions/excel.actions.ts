@@ -11,3 +11,10 @@ export class RemoveExcel{
 
     constructor(public payload: string){}
 }
+
+
+export class UpdateExcel{
+    static readonly type = "[EXCEL] Update";
+
+    constructor(public payload: { excel: Excel }){}
+}

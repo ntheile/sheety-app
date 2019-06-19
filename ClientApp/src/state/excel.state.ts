@@ -1,6 +1,7 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
+import { patch, append, removeItem, insertItem, updateItem } from '@ngxs/store/operators'
 import { Excel } from './../models/excel.model';
-import { AddExcel, RemoveExcel } from './../actions/excel.actions';
+import { AddExcel, RemoveExcel, UpdateExcel} from './../actions/excel.actions';
 
 export class ExcelStateModel{
     excelFiles: Excel[];
@@ -39,6 +40,16 @@ export class ExcelState {
         patchState({
             excelFiles: getState().excelFiles.filter(a=>a.name != payload)
         })
+    }
+
+    @Action(UpdateExcel)
+    update( ctx:  StateContext<ExcelStateModel>, { payload }: UpdateExcel) {
+
+        ctx.setState(
+            patch({
+              excelFiles: updateItem<Excel>(excel => excel.id === payload.excel.id, payload.excel)
+            })
+        );
     }
 
 }

@@ -1,4 +1,13 @@
 <h2>Files</h2>
+
+<button mat-button (click)="saveThumbnail()">Create Thumbnail</button>
+
 <pre *ngIf="excelFiles$">
 {{ excelFiles$ | async | json }}
 </pre>
+
+
+
+<canvas #thumbsCanvasEL>
+
+</canvas>
