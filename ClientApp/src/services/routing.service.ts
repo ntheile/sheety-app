@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Router, Routes } from "@angular/router";
+import { Router, Routes, Route } from "@angular/router";
 import { HomeComponent} from "./../app/core/home/home.component";
 import { DataService } from "./data.service";
 declare let _ :any;
@@ -18,14 +18,17 @@ export class RoutingService {
   ) { }
 
   async configureDynamicRoutes(appRoutes) {
+    
     this.depth = 0;
     appRoutes = this.cleanRoutes(appRoutes);
     const hierarchy = await this.data.getHierarchy();
-    this.recurseHierarchyObject(hierarchy, appRoutes);
-    this.router.resetConfig(appRoutes);
+    let rts = this.recurseHierarchyObject(hierarchy, []);
+    // this.router.resetConfig(appRoutes);
+    this.router.config.unshift(...rts);
   }
 
   recurseHierarchyObject(node, appRoutes) {
+  
     let hasPropName = true;
     if (node) {
       // 1) Root
@@ -103,6 +106,8 @@ export class RoutingService {
         });
       }
     }
+
+    return appRoutes;
   }
 
   cleanRoutes(appRoutes){

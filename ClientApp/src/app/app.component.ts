@@ -61,8 +61,15 @@ export class AppComponent {
   }
 
   async init(){
+    this.checkDeepLink();
     let routeParams = this.activeRoute.snapshot.params;
     await this.gererateHierarchialDataFromRoute(routeParams);
+  }
+
+  checkDeepLink(){
+    if (location.pathname.includes('/search/') ){
+      localStorage.setItem('isDeepLink', location.pathname);
+    }
   }
 
   async showProfile() {

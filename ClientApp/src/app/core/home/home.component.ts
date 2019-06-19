@@ -10,6 +10,7 @@ import { SearchOptions } from "./../../../data/interfaces";
 import { RoutingService } from "../../../services/routing.service";
 import { SidenavService } from "../../sidenav.service";
 import { initChangeDetectorIfExisting } from "@angular/core/src/render3/instructions";
+import { checkAndUpdatePureExpressionInline } from "@angular/core/src/view/pure_expression";
 declare let require: any;
 declare let window: any;
 
@@ -61,7 +62,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.transformer = this.dataService.getTransformer();
         this.routeParams = this.activeRoute.snapshot.params;
         await this.gererateHierarchialDataFromRoute(this.routeParams);
-
+        this.getData();
+        this.checkDeepLink();
     }
 
     ngAfterViewInit() {
@@ -77,6 +79,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.isMobile = true;
         }
     }
+
+    checkDeepLink() {
+        let isDeepLink = localStorage.getItem('isDeepLink');
+        if (isDeepLink){
+            if (isDeepLink != 'false'){
+                localStorage.setItem('isDeepLink', 'false');
+                this.router.navigate([isDeepLink]);
+            }
+        }
+    }
+
+   
 
     async gererateHierarchialDataFromRoute(routeParams) {
         
@@ -99,9 +113,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
         }
 
-       
-        await this.routingService.configureDynamicRoutes(this.router.config);
-       
+        await this.routingService.configureDynamicRoutes(this.router.config);      
+    }
+
+    async getData(){
         const searchData = this.dataService.routeLookup[this.hierarchyDepth];
 
         let searchTerm = null;

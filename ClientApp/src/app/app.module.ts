@@ -29,16 +29,16 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
       instrumentationKey: Environment.Application_Insights_Id,
     }),
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
-    NgxsModule.forRoot([
-      ExcelState
-    ]),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
     BrowserAnimationsModule,
     HttpClientModule,    
     CoreModule,
     SharedModule,
     AppRoutingModule,
+    NgxsModule.forRoot([
+      ExcelState
+    ]),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
   ],
   providers: [
     AppInsightsService,
