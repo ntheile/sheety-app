@@ -20,7 +20,7 @@ import { ThingConfigComponent } from './../thing/thing-config/thing-config.compo
 import { ThingTransformComponent } from './../thing/thing-transform/thing-transform.component';
 import { ThingFacetsComponent } from './../thing/thing-facets/thing-facets.component';
 import { HttpModule } from '@angular/http';
-import { FilesComponent } from '../files/files.component';
+import { SheetyAppsComponent } from '../sheetyapps/sheetyapps.component';
 
 
 @NgModule({
@@ -44,7 +44,7 @@ import { FilesComponent } from '../files/files.component';
         ThingConfigComponent,
         ThingTransformComponent,
         ThingFacetsComponent,
-        FilesComponent,
+        SheetyAppsComponent,
     ],
     declarations: [
         HomeComponent,
@@ -62,7 +62,7 @@ import { FilesComponent } from '../files/files.component';
         ThingConfigComponent,
         ThingTransformComponent,
         ThingFacetsComponent,
-        FilesComponent,
+        SheetyAppsComponent,
     ],
     providers: [
         AppServerAuthService,

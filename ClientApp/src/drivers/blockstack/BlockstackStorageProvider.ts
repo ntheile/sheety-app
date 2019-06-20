@@ -14,4 +14,8 @@ export class BlockstackStorageProvider implements StorageProvider {
         console.log('putFile');
     }
 
+    deleteFile(path) {
+        console.log('putFile');
+    }
+
 }

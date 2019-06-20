@@ -3,7 +3,7 @@ import { AuthProvider } from '../AuthProvider';
 import { userInfo } from "os";
 // declare let blockstack: any;
 import { UserSession, AppConfig } from 'blockstack';
-import { User, getConfig, configure } from 'radiks';
+import { User, getConfig, configure, UserGroup } from 'radiks';
 import { Environment } from "../../environments/environment";
 declare let window: any;
 
@@ -27,6 +27,7 @@ export class BlockstackAuthProvider implements AuthProvider {
   private userInfo: UserInfo;
   userSession;
   params;
+  groups;
 
   constructor() {
     this.userInfo = { name: null };
@@ -58,6 +59,7 @@ export class BlockstackAuthProvider implements AuthProvider {
 
     if (this.userSession.isUserSignedIn()) {
 
+      this.configureRadiks();
       let profile = this.userSession.loadUserData();
       this.name = profile.username;
       this.userInfo.name = this.name;
@@ -80,20 +82,27 @@ export class BlockstackAuthProvider implements AuthProvider {
         } catch (e) { }
       }, 2500)
 
-      
+      this.getMyGroups();
 
     } else if (this.userSession.isSignInPending()) {
-      
       await this.userSession.handlePendingSignIn();
-
-      configure({
-        apiServer: Environment.RadiksUrl,
-        userSession: this.userSession
-      });
+      this.configureRadiks();
       await User.createWithCurrentUser();
+      this.getMyGroups();
       window.location = window.location.origin
     }
   }
 
+  
+  async getMyGroups() {
+    this.groups = await UserGroup.myGroups();
+  }
+
+  configureRadiks(){
+    configure({
+      apiServer: Environment.RadiksUrl,
+      userSession: this.userSession
+    });
+  }
 
 }

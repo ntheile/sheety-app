@@ -16,7 +16,7 @@ import "hammerjs";
 import { SidenavService } from "./sidenav.service";
 
 import { NgxsModule } from '@ngxs/store';
-import { ExcelState } from './../state/excel.state';
+import { SheetyAppState } from './../state/SheetyApp.State';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
@@ -35,7 +35,7 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
     SharedModule,
     AppRoutingModule,
     NgxsModule.forRoot([
-      ExcelState
+      SheetyAppState
     ]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
