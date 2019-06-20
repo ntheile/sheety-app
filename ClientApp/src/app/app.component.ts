@@ -38,15 +38,15 @@ export class AppComponent {
 
   private _mobileQueryListener: () => void;
   constructor(
-    changeDetectorRef: ChangeDetectorRef, 
-    media: MediaMatcher, 
-    public authService: AppServerAuthService, 
-    public dataService: DataService,
-    private sidenavService: SidenavService,
-    private router: Router,
-    public routingService: RoutingService,
-    private activeRoute: ActivatedRoute,
-    @Inject('AuthProvider') private authProvider: AuthProvider
+      changeDetectorRef: ChangeDetectorRef, 
+      media: MediaMatcher, 
+      public authService: AppServerAuthService, 
+      public dataService: DataService,
+      private sidenavService: SidenavService,
+      private router: Router,
+      public routingService: RoutingService,
+      private activeRoute: ActivatedRoute,
+      @Inject('AuthProvider') private authProvider: AuthProvider,
     ) {
     this.mobileQuery = media.matchMedia('(max-width: 1024px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -74,7 +74,7 @@ export class AppComponent {
 
   async showProfile() {
 
-    let userInfo = this.authProvider.getUserInfo();
+    let userInfo = await this.authProvider.getUserInfo();
 
     if (userInfo.name !== null) {
       this.name = userInfo.name;

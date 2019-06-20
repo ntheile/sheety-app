@@ -23,7 +23,7 @@ export class Environment {
   public static debugFacets = false;
   public static StorageProvider = InMemoryStorageProvider;
   public static AuthProvider = BlockstackAuthProvider;
-
+  public static RadiksUrl = "https://blockusign-radiks.azurewebsites.net";
 
   public static init(environment: any = window['Environment']) {
     if (environment) {

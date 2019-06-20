@@ -10,7 +10,7 @@ import { DataService } from './../../../services/data.service';
 })
 export class HeaderComponent implements OnInit {
 
-  public displayName: string;
+  public displayName;
 
   constructor(
     public authService: AppServerAuthService, 
@@ -19,7 +19,11 @@ export class HeaderComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.displayName = this.authService.getDisplayName();
+    this.init();
+  }
+
+  async init(){
+    this.displayName = await this.authService.getDisplayName();
   }
 
   logout() {

@@ -45,6 +45,7 @@
     "@ngxs/store": "^3.4.3",
     "@types/xlsx": "0.0.36",
     "aspnet-prerendering": "^3.0.1",
+    "blockstack": "^19.2.1",
     "canvas-datagrid": "^0.22.12",
     "core-js": "^2.5.7",
     "d3-array": "^2.2.0",
@@ -56,6 +57,7 @@
     "ng5-slider": "^1.1.14",
     "ngx-json-viewer": "^2.4.0",
     "normalize.css": "^7.0.0",
+    "radiks": "^0.2.1",
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.5.2",
     "underscore": "^1.9.1",
@@ -63,6 +65,8 @@
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^2.5.4",
+    "@angular-builders/dev-server": "^2.3.5",
     "@angular-devkit/build-angular": "~0.8.0",
     "@angular/cli": "~6.2.3",
     "@angular/compiler-cli": "^6.1.0",

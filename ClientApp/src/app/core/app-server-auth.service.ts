@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from '@angular/core';
 import { UserClaims } from './user-claims.model';
+import { AuthProvider } from "../../drivers/AuthProvider";
 declare let blockstack: any;
 
 /**
@@ -16,7 +17,11 @@ export class AppServerAuthService {
   public currentUser: UserClaims | undefined;
   public name = "none";
   private baseUrl: string;
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(
+      private http: HttpClient, 
+      @Inject('BASE_URL') baseUrl: string,
+      @Inject('AuthProvider') private authProvider: AuthProvider,
+    ) {
     this.baseUrl = baseUrl;
   }
 
@@ -40,9 +45,10 @@ export class AppServerAuthService {
    * Gets a display-friendly name for the signed in user
    * @return {string} Display friendly name of current user
    */
-  public getDisplayName(): string {
-    return blockstack.loadUserData().username;
-    return "none";
+  public async getDisplayName() {
+    let userInfo = await this.authProvider.getUserInfo();
+    return userInfo.name;
+    // return "none";
     if (
       this.currentUser &&
       this.currentUser.given_name &&

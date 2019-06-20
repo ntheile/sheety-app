@@ -28,6 +28,7 @@ export class Environment {
     public static Tenant = "#OverwrittenByAppSettings#";
     public static StorageProvider = InMemoryStorageProvider;
     public static AuthProvider = BlockstackAuthProvider;
+    public static RadiksUrl = "https://blockusign-radiks.azurewebsites.net";
 
     public static init(environment: any = window["Environment"]) {
         if (environment) {
