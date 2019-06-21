@@ -1,20 +1,13 @@
-// export interface SheetyAppModel {
-//     sheets: Array<string>;
-//     name: string;
-//     rawData: any;
-//     rawJSON: any;
-//     id: string;
-//     thumbnail: any;
-// }
-// sheets ['cars', 'commercial']
-// name cars.xlsx
-// rawData nvcds8(*(JDS))  
-// rawJSON [{}]
-// id 43543-fdvfegdfb34-vdffd34r-vdfvdf
+import { Injectable, Inject, InjectionToken } from "@angular/core";
+import { Environment } from "../environments/environment";
+import { BlockstackRadiksModelProvider } from "../drivers/blockstack/BlockstackRadiksModelProvider";
+let model;
+if (Environment.ModelProvider === BlockstackRadiksModelProvider) {
+   let { Model } = require("radiks");
+   model = Model;
+} 
 
-import { Model } from 'radiks';
-
-export class SheetyAppModel extends Model {
+export class SheetyAppModel extends model {
   static className = 'SheetyAppModel';
   static schema = {
     sheets: {
@@ -24,7 +17,7 @@ export class SheetyAppModel extends Model {
         type: String
     },
     rawData: {
-        type: String // base64 encoded data
+        type: String 
     },
     rawJSON: {
         type: String

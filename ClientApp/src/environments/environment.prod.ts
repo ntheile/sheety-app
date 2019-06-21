@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InMemoryStorageProvider } from '../drivers/memory/InMemoryStorageProvider';
 import { BlockstackAuthProvider } from '../drivers/blockstack/BlockstackAuthProvider';
+import { BlockstackRadiksModelProvider } from '../drivers/blockstack/BlockstackRadiksModelProvider';
 declare let require: any;
 
 // This environment file corresponds to the key/values found in appsettings.json(server-side)
@@ -24,6 +25,7 @@ export class Environment {
   public static StorageProvider = InMemoryStorageProvider;
   public static AuthProvider = BlockstackAuthProvider;
   public static RadiksUrl = "https://blockusign-radiks.azurewebsites.net";
+  public static ModelProvider = BlockstackRadiksModelProvider;
 
   public static init(environment: any = window['Environment']) {
     if (environment) {

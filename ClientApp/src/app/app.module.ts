@@ -46,7 +46,8 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
     MediaMatcher,
     SidenavService,
     {provide: 'StorageProvider', useClass: Environment.StorageProvider},
-    {provide: 'AuthProvider', useClass: Environment.AuthProvider}
+    {provide: 'AuthProvider', useClass: Environment.AuthProvider},
+    {provide: 'ModelProvider', useClass: Environment.ModelProvider}
   ],
   bootstrap: [AppComponent],
 })
