@@ -26,6 +26,66 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="ClientApp\dist\3rdpartylicenses.txt" />
+    <None Remove="ClientApp\dist\index.html" />
+    <None Remove="ClientApp\dist\main.js" />
+    <None Remove="ClientApp\dist\main.js.map" />
+    <None Remove="ClientApp\dist\polyfills.js" />
+    <None Remove="ClientApp\dist\polyfills.js.map" />
+    <None Remove="ClientApp\dist\runtime.js" />
+    <None Remove="ClientApp\dist\runtime.js.map" />
+    <None Remove="ClientApp\dist\styles.css" />
+    <None Remove="ClientApp\dist\styles.css.map" />
+    <None Remove="ClientApp\dist\vendor.js" />
+    <None Remove="ClientApp\dist\vendor.js.map" />
+    <None Remove="ClientApp\dist\assets\blockstack.js" />
+    <None Remove="ClientApp\dist\assets\blockstack_old.js" />
+    <None Remove="ClientApp\dist\assets\dow-logo-white.png" />
+    <None Remove="ClientApp\dist\assets\dow-logo.png" />
+    <None Remove="ClientApp\dist\assets\dropsheet.js" />
+    <None Remove="ClientApp\dist\assets\sheetjsw.js" />
+    <None Remove="ClientApp\dist\assets\sheety.svg" />
+    <None Remove="ClientApp\dist\assets\sheetylogo.png" />
+    <None Remove="ClientApp\dist\assets\xlsx.full.min.js" />
+    <None Remove="ClientApp\dist\assets\icons\100.png" />
+    <None Remove="ClientApp\dist\assets\icons\1024.png" />
+    <None Remove="ClientApp\dist\assets\icons\114.png" />
+    <None Remove="ClientApp\dist\assets\icons\120.png" />
+    <None Remove="ClientApp\dist\assets\icons\128.png" />
+    <None Remove="ClientApp\dist\assets\icons\144.png" />
+    <None Remove="ClientApp\dist\assets\icons\152.png" />
+    <None Remove="ClientApp\dist\assets\icons\16.png" />
+    <None Remove="ClientApp\dist\assets\icons\167.png" />
+    <None Remove="ClientApp\dist\assets\icons\180.png" />
+    <None Remove="ClientApp\dist\assets\icons\20.png" />
+    <None Remove="ClientApp\dist\assets\icons\256.png" />
+    <None Remove="ClientApp\dist\assets\icons\29.png" />
+    <None Remove="ClientApp\dist\assets\icons\32.png" />
+    <None Remove="ClientApp\dist\assets\icons\40.png" />
+    <None Remove="ClientApp\dist\assets\icons\50.png" />
+    <None Remove="ClientApp\dist\assets\icons\512.png" />
+    <None Remove="ClientApp\dist\assets\icons\57.png" />
+    <None Remove="ClientApp\dist\assets\icons\58.png" />
+    <None Remove="ClientApp\dist\assets\icons\60.png" />
+    <None Remove="ClientApp\dist\assets\icons\64.png" />
+    <None Remove="ClientApp\dist\assets\icons\72.png" />
+    <None Remove="ClientApp\dist\assets\icons\76.png" />
+    <None Remove="ClientApp\dist\assets\icons\80.png" />
+    <None Remove="ClientApp\dist\assets\icons\87.png" />
+    <None Remove="ClientApp\dist\assets\icons\watch.png" />
+    <None Remove="ClientApp\dist\assets\layouts\category.svg" />
+    <None Remove="ClientApp\dist\assets\layouts\filtering.svg" />
+    <None Remove="ClientApp\dist\assets\layouts\shopping.svg" />
+    <None Remove="ClientApp\dist\data\samples\blockstack\config.js" />
+    <None Remove="ClientApp\dist\data\samples\blockstack\reducer.js" />
+    <None Remove="ClientApp\dist\data\samples\blockstack\transformer.js" />
+    <None Remove="ClientApp\dist\data\samples\cars\reducer.js" />
+    <None Remove="ClientApp\dist\data\samples\cars\transformer.js" />
+    <None Remove="ClientApp\dist\data\samples\cars-nested\config.js" />
+    <None Remove="ClientApp\dist\data\samples\cars-nested\reducer.js" />
+    <None Remove="ClientApp\dist\data\samples\cars-nested\transformer.js" />
+  </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
@@ -46,7 +106,7 @@
     <ItemGroup>
       <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
       <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'false'" />
-      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </ResolvedFileToPublish>
