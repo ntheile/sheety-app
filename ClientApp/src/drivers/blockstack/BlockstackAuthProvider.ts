@@ -69,40 +69,39 @@ export class BlockstackAuthProvider implements AuthProvider {
       } catch (e) { console.log('no profile pic') }
 
       this.loginState = "[Logout]";
-
-
-      // get rid of ?authResponse=ey to prevent routing bugs
-      setTimeout(() => {
-        try {
-          let authParam = window.location.href.includes('authResponse');
-          if (authParam) {
-            let newUrl = window.location.href.replace("/?authResponse=" + this.userSession.loadUserData().authResponseToken, '');
-            history.pushState({}, null, newUrl);
-          }
-        } catch (e) { }
-      }, 2500)
-
-      this.getMyGroups();
-
+      this.getMyGroups(this.userSession);
     } else if (this.userSession.isSignInPending()) {
       await this.userSession.handlePendingSignIn();
       this.configureRadiks();
       await User.createWithCurrentUser();
-      this.getMyGroups();
+      this.getMyGroups(this.userSession);
       window.location = window.location.origin
     }
   }
 
-  
-  async getMyGroups() {
+
+  async getMyGroups(userSession) {
     this.groups = await UserGroup.myGroups();
+    this.removeAuthResp(userSession);
   }
 
-  configureRadiks(){
+  configureRadiks() {
     configure({
       apiServer: Environment.RadiksUrl,
       userSession: this.userSession
     });
+  }
+
+  removeAuthResp(userSession) {
+    // get rid of ?authResponse=ey to prevent routing bugs
+    let authParam = window.location.href.includes('authResponse');
+    if (authParam) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const myAuthRepsonse = urlParams.get('authResponse');
+      let newUrl = window.location.href.replace("/?authResponse=" + myAuthRepsonse, '');
+      history.pushState({}, null, newUrl);
+    }
+
   }
 
 }
