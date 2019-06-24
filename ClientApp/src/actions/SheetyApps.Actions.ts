@@ -24,3 +24,10 @@ export class UpdateSheetyApp{
 
     constructor(public payload: SheetyAppModel ){}
 }
+
+
+export class DeleteSheetyApp{
+    static readonly type = "[SheetyApp] Delete";
+
+    constructor(public payload: SheetyAppModel ){}
+}

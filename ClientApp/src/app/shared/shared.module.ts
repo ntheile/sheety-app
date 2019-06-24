@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { Ng5SliderModule } from "ng5-slider";
 import { LayoutDialogComponent } from "../dialogs/layout-dialog/layout-dialog.component";
 import { LayoutConfigDialogComponent } from "../dialogs/layout-config-dialog/layout-config-dialog.component";
-
+import { MomentModule } from 'ngx-moment';
 
 import {
     MatButtonModule,
@@ -72,11 +72,13 @@ const MATERIALCOMPONENTS = [
         CommonModule,
         FormsModule,
         MATERIALCOMPONENTS,
+        MomentModule
     ],
     exports: [
         CommonModule,
         FormsModule,
         MATERIALCOMPONENTS,
+        MomentModule
     ],
     providers: [
 

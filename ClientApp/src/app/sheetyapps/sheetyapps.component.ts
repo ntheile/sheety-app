@@ -1,19 +1,28 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, Inject } from '@angular/core';
 import { Store, Select, Selector, ofActionCompleted, ofAction } from '@ngxs/store';
-import { AddSheetyApp, RemoveSheetyApp, UpdateSheetyApp, GetAllSheetyApps } from '../../actions/SheetyApps.Actions';
+import { AddSheetyApp, RemoveSheetyApp, UpdateSheetyApp, GetAllSheetyApps, DeleteSheetyApp } from '../../actions/SheetyApps.Actions';
 import { SheetyAppState } from '../../state/SheetyApp.State';
 import { Observable } from 'rxjs/Observable';
 import { SheetyAppModel } from '../../models/SheetyAppModel';
 import { UtilsService } from '../../services/utils.service';
 import html2canvas from 'html2canvas';
 import { AuthProvider } from '../../drivers/AuthProvider';
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, fadeInExpandOnEnterAnimation, fadeOutCollapseOnLeaveAnimation, bounceInOnEnterAnimation } from 'angular-animations';
+
 declare let window: any;
 
 // https://coursetro.com/posts/code/152/Angular-NGXS-Tutorial---An-Alternative-to-Ngrx-for-State-Management
 @Component({
   selector: 'app-sheetyapps',
   templateUrl: './sheetyapps.component.html',
-  styleUrls: ['./sheetyapps.component.scss']
+  styleUrls: ['./sheetyapps.component.scss'],
+  animations: [
+    fadeInOnEnterAnimation(),
+    fadeOutOnLeaveAnimation(),
+    fadeInExpandOnEnterAnimation(),
+    fadeOutCollapseOnLeaveAnimation(),
+    bounceInOnEnterAnimation()
+  ]
 })
 export class SheetyAppsComponent implements OnInit {
   
@@ -65,6 +74,11 @@ export class SheetyAppsComponent implements OnInit {
   async createApp(){
     let thumbnail = await this.genThumbnail();
     this.addSheetyApp('excel' + this.randInt() + '.xls', '{json: data}', 'rawBinary', 'sheets', thumbnail);
+  }
+
+  async deleteApp(app){
+    await this.store.dispatch( new DeleteSheetyApp(app) );
+    console.log("delete app")
   }
 
   async queryApps(){
