@@ -1,5 +1,5 @@
 <div style="display: flex; flex-wrap:wrap; align-items: center; justify-content: center">
-    <div *ngFor="let item of currentData" >
+    <div *ngFor="let item of currentData" class="zoomOnHover" [@bounceInOnEnter] [@fadeOutOnLeave] >
         <div *ngIf="!dataService.currentSeachOptions.headerKey">
             <mat-card *ngFor="let key of searchOpts.keys" (click)="nav(item[key])" class="card-category">
                 <h2>{{ item[key] }}</h2>

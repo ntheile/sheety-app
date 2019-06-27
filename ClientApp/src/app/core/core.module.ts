@@ -21,6 +21,7 @@ import { ThingTransformComponent } from './../thing/thing-transform/thing-transf
 import { ThingFacetsComponent } from './../thing/thing-facets/thing-facets.component';
 import { HttpModule } from '@angular/http';
 import { SheetyAppsComponent } from '../sheetyapps/sheetyapps.component';
+import { LoadingComponent } from './../core/loading/loading.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { SheetyAppsComponent } from '../sheetyapps/sheetyapps.component';
         ThingTransformComponent,
         ThingFacetsComponent,
         SheetyAppsComponent,
+        LoadingComponent
     ],
     declarations: [
         HomeComponent,
@@ -63,6 +65,7 @@ import { SheetyAppsComponent } from '../sheetyapps/sheetyapps.component';
         ThingTransformComponent,
         ThingFacetsComponent,
         SheetyAppsComponent,
+        LoadingComponent
     ],
     providers: [
         AppServerAuthService,

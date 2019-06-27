@@ -1,8 +1,9 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { patch, append, removeItem, insertItem, updateItem } from '@ngxs/store/operators'
-import { SheetyAppModel } from './../models/SheetyAppModel';
-import { AddSheetyApp, RemoveSheetyApp, UpdateSheetyApp, GetAllSheetyApps, DeleteSheetyApp } from '../actions/SheetyApps.Actions';
+import { SheetyAppModel } from './../models/sheetyapp.model';
+import { AddSheetyApp, RemoveSheetyApp, UpdateSheetyApp, GetAllSheetyApps, DeleteSheetyApp } from '../actions/sheetyapps.actions';
 declare let underscore: any;
+declare let window: any;
 
 export class SheetyAppStateModel{
     sheetyApps: SheetyAppModel[];
@@ -19,6 +20,7 @@ export class SheetyAppState {
 
     @Selector()
     static getSheetyApps(state: SheetyAppStateModel){
+        console.log('getting sheet apps: ', state.sheetyApps.length);
         return underscore.sortBy( state.sheetyApps, 'createdAt').reverse();
     }
 
@@ -84,16 +86,24 @@ export class SheetyAppState {
     @Action(DeleteSheetyApp)
     async delete( ctx:  StateContext<SheetyAppStateModel>, { payload }: DeleteSheetyApp) {
 
-      
         // @ts-ignore
         let newSheetyApp = new SheetyAppModel(payload);
-        await newSheetyApp.destroy();
+        let resp;
+        try{
+            resp = await newSheetyApp.destroy();
+        } catch(e){
+            console.log("delete resp error: ", resp);
+            // if it fails to delete then Gaia and Radiks are out of sync, simply recreate and destroy
+            await window.userSession.putFile( (`SheetyAppModel/` + newSheetyApp._id ), '');
+            await newSheetyApp.destroy();
+        } 
+        
         ctx.setState(
             patch({
                 sheetyApps: removeItem<SheetyAppModel>(model => model === payload)
             })
         );
-        
+     
     }
 
 }

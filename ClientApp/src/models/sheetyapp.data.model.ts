@@ -7,24 +7,32 @@ if (Environment.ModelProvider === BlockstackRadiksModelProvider) {
    model = Model;
 } 
 
-export class SheetyAppModel extends model {
-  static className = 'SheetyAppModel';
+export class SheetyAppDataModel extends model {
+  static className = 'SheetyAppDataModel';
   static schema = {
+    sheetyAppModelId: {
+        type: String
+    },
+    config: {
+        type: String 
+    },
+    reducer: {
+      type: String 
+    },
+    transformer: {
+      type: String,
+    },
     sheets: {
       type: Array<String>()
     },
-    name: {
-        type: String
+    dataPath: {
+      type: String
     },
-    rawData: {
-        type: String 
+    excelPath: {
+      type: String
     },
-    rawJSON: {
-        type: String
-    },
-    userGroupId: {
-      type: String,
-      decrypted: true,
+    facetsPath: {
+      type: String
     },
     createdBy: {
       type: String,

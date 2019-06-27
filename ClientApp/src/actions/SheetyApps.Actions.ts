@@ -1,4 +1,4 @@
-import { SheetyAppModel } from '../models/SheetyAppModel';
+import { SheetyAppModel } from '../models/sheetyapp.model';
 
 export class GetAllSheetyApps{
     static readonly type = "[SheetyApp] Get all";

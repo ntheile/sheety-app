@@ -1,13 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, Inject } from '@angular/core';
 import { Store, Select, Selector, ofActionCompleted, ofAction } from '@ngxs/store';
-import { AddSheetyApp, RemoveSheetyApp, UpdateSheetyApp, GetAllSheetyApps, DeleteSheetyApp } from '../../actions/SheetyApps.Actions';
-import { SheetyAppState } from '../../state/SheetyApp.State';
+import { AddSheetyApp, RemoveSheetyApp, UpdateSheetyApp, GetAllSheetyApps, DeleteSheetyApp } from '../../actions/sheetyapps.actions';
+import { SheetyAppState } from '../../state/sheetyapp.state';
 import { Observable } from 'rxjs/Observable';
-import { SheetyAppModel } from '../../models/SheetyAppModel';
+import { SheetyAppModel } from '../../models/sheetyapp.model';
 import { UtilsService } from '../../services/utils.service';
 import html2canvas from 'html2canvas';
 import { AuthProvider } from '../../drivers/AuthProvider';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, fadeInExpandOnEnterAnimation, fadeOutCollapseOnLeaveAnimation, bounceInOnEnterAnimation } from 'angular-animations';
+import { SpinnerState } from './../../state/spinner.state';
+import { ToggleShow, ToggleHide } from './../../actions/spinner.actions';
 
 declare let window: any;
 
@@ -27,6 +29,7 @@ declare let window: any;
 export class SheetyAppsComponent implements OnInit {
   
   @Select(SheetyAppState.getSheetyApps) sheetyApps$: Observable<SheetyAppModel>;
+  @Select(SpinnerState) loading: Observable<boolean>;
 
   thumbnail = "";
   
@@ -39,6 +42,7 @@ export class SheetyAppsComponent implements OnInit {
     private cd: ChangeDetectorRef
   ) { 
     window.html2canvas = html2canvas;
+    
   }
 
   ngOnInit() {
@@ -46,11 +50,16 @@ export class SheetyAppsComponent implements OnInit {
   }
 
   async getAllSheetyApps(){
-    this.store.dispatch( await new GetAllSheetyApps() ); 
+    this.Loading();
+    await this.store.dispatch(
+      await new GetAllSheetyApps()
+    ).toPromise(); 
+    this.NotLoading();
   }
 
   async addSheetyApp(name, json, raw, sheets, thumbnail){
 
+    this.Loading();
     let userInfo = await this.authProvider.getUserInfo();
 
     this.currentSheetyApp = { 
@@ -61,7 +70,8 @@ export class SheetyAppsComponent implements OnInit {
       thumbnail: thumbnail,
       createdBy: userInfo.name
     };
-    this.store.dispatch( await new AddSheetyApp(this.currentSheetyApp));
+    await this.store.dispatch( await new AddSheetyApp(this.currentSheetyApp)).toPromise();
+    this.NotLoading();
   }
 
 
@@ -77,7 +87,9 @@ export class SheetyAppsComponent implements OnInit {
   }
 
   async deleteApp(app){
-    await this.store.dispatch( new DeleteSheetyApp(app) );
+    this.Loading();
+    await this.store.dispatch( new DeleteSheetyApp(app) ).toPromise();
+    this.NotLoading();
     console.log("delete app")
   }
 
@@ -92,5 +104,12 @@ export class SheetyAppsComponent implements OnInit {
     return parseInt((Math.random() * 100), 10)
   }
   
+  Loading() {
+    this.store.dispatch(new ToggleShow("spinner"));
+  }
+  NotLoading() {
+    this.store.dispatch(new ToggleHide("spinner"));
+  }
+
 
 }

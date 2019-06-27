@@ -9,6 +9,10 @@ import { SidenavService } from './sidenav.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RoutingService } from '../services/routing.service';
 import { AuthProvider } from '../drivers/AuthProvider';
+import { Observable } from 'rxjs';
+import { Store, Select } from '@ngxs/store';
+import { SpinnerState } from './../state/spinner.state';
+import { ToggleShow, ToggleHide } from './../actions/spinner.actions';
 declare let window: any;
 
 @Component({
@@ -25,7 +29,7 @@ export class AppComponent {
   loginState = "Login";
   profile: any;
   avatar: string = "https://www.gravatar.com/avatar/?d=identicon";
-  loading;
+  
   isMobile = true;
   resizeTimeout;
   Environment = Environment;
@@ -33,8 +37,8 @@ export class AppComponent {
   shouldFacet = true;
   @ViewChild(FacetComponent) facets;
   @ViewChild('sidenav') public sidenav: MatSidenav; 
+  @Select(SpinnerState) loading: Observable<boolean>;
 
-  
 
   private _mobileQueryListener: () => void;
   constructor(
@@ -47,6 +51,7 @@ export class AppComponent {
       public routingService: RoutingService,
       private activeRoute: ActivatedRoute,
       @Inject('AuthProvider') private authProvider: AuthProvider,
+      private store: Store,
     ) {
     this.mobileQuery = media.matchMedia('(max-width: 1024px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -57,7 +62,15 @@ export class AppComponent {
 
   ngOnInit(){
     this.sidenavService.setSidenav(this.sidenav);
-    
+    this.Hide("spinner");
+  }
+
+  Show(target) {
+    this.store.dispatch(new ToggleShow(target));
+  }
+
+  Hide(target) {
+    this.store.dispatch(new ToggleHide(target));
   }
 
   async init(){

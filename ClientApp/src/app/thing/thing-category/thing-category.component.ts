@@ -2,11 +2,20 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Environment } from '../../../environments/environment';
 import { DataService } from '../../../services/data.service';
 import { Router } from '@angular/router';
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, fadeInExpandOnEnterAnimation, fadeOutCollapseOnLeaveAnimation, bounceInOnEnterAnimation } from 'angular-animations';
+
 
 @Component({
   selector: 'app-thing-category',
   templateUrl: './thing-category.component.html',
-  styleUrls: ['./thing-category.component.scss']
+  styleUrls: ['./thing-category.component.scss'],
+  animations: [
+    fadeInOnEnterAnimation(),
+    fadeOutOnLeaveAnimation(),
+    fadeInExpandOnEnterAnimation(),
+    fadeOutCollapseOnLeaveAnimation(),
+    bounceInOnEnterAnimation()
+  ]
 })
 export class ThingCategoryComponent implements OnInit {
 

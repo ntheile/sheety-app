@@ -11,13 +11,21 @@ import { RoutingService } from "../../../services/routing.service";
 import { SidenavService } from "../../sidenav.service";
 import { initChangeDetectorIfExisting } from "@angular/core/src/render3/instructions";
 import { checkAndUpdatePureExpressionInline } from "@angular/core/src/view/pure_expression";
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, fadeInExpandOnEnterAnimation, fadeOutCollapseOnLeaveAnimation, bounceInOnEnterAnimation } from 'angular-animations';
 declare let require: any;
 declare let window: any;
 
 @Component({
     selector: "app-home",
     templateUrl: "./home.component.html",
-    styleUrls: ['./home.component.scss']
+    styleUrls: ['./home.component.scss'],
+    animations: [
+        fadeInOnEnterAnimation(),
+        fadeOutOnLeaveAnimation(),
+        fadeInExpandOnEnterAnimation(),
+        fadeOutCollapseOnLeaveAnimation(),
+        bounceInOnEnterAnimation()
+    ]
 })
 export class HomeComponent implements OnInit, AfterViewInit {
     public app_id: string;

@@ -1,2 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~normalize.css/normalize.css';
+
+.zoomOnHover{
+    transition: transform .2s; /* Animation */
+    cursor: pointer;
+}
+  
+.zoomOnHover:hover {
+   transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.sticky{
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    z-index: 99999;
+    top: 85px;
+}
+
+
+.sticky-header{
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 100px;
+    background-color: rgba(0,0,0,.2);
+    padding: 26px;
+    font-size: 20px;
+    z-index: 9999;
+    justify-content: center;
+    text-align: center; 
+    vertical-align: middle;
+    align-items: center;
+    border-radius: 10px;
+}
+
+    

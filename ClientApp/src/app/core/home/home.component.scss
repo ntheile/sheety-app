@@ -130,3 +130,13 @@
 //     }
 // }
 
+.filter-btn{
+    border-radius: 0px 16px 16px 0px;
+    width: 100px;
+}
+
+.filter-btn:hover{
+    -webkit-transition: width .1s; /* For Safari 3.1 to 6.0 */
+    transition: width .1s;
+    width: 110px;
+}

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AuthProvider } from '../AuthProvider';
 import { userInfo } from "os";
 // declare let blockstack: any;
-import { UserSession, AppConfig } from 'blockstack';
+import { UserSession, AppConfig, nextMonth } from 'blockstack';
 import { User, getConfig, configure, UserGroup } from 'radiks';
 import { Environment } from "../../environments/environment";
 declare let window: any;
@@ -25,19 +25,31 @@ export class BlockstackAuthProvider implements AuthProvider {
   private avatar;
   private loginState;
   private userInfo: UserInfo;
-  userSession;
   params;
   groups;
 
   constructor() {
     this.userInfo = { name: null };
+    window.userSession = null;
   }
 
   login(params: BlockStackLoginParams) {
     params.arrayScopes = ['store_write', 'publish_data', 'email'];
     this.params = params;
-
-    this.userSession.redirectToSignIn(params.origin, params.manifest + '/manifest.json', params.arrayScopes)
+    
+    let authRequest = window.userSession.makeAuthRequest(
+      window.userSession.generateAndStoreTransitKey(),
+      params.origin,
+      params.manifest + '/manifest.json',
+      params.arrayScopes,
+      params.origin,
+      nextMonth().getTime(),
+      {
+        solicitGaiaHubUrl: true
+      }
+    );
+    window.userSession.redirectToSignInWithAuthRequest(authRequest);
+    // window.userSession.redirectToSignIn(params.origin, params.manifest + '/manifest.json', params.arrayScopes)
   }
 
   logout() {
@@ -52,15 +64,15 @@ export class BlockstackAuthProvider implements AuthProvider {
   async checkLoginStatus() {
 
 
-    this.userSession = new UserSession({
+    window.userSession = new UserSession({
       appConfig: new AppConfig(['store_write', 'publish_data', 'email'])
     });
 
 
-    if (this.userSession.isUserSignedIn()) {
+    if (window.userSession.isUserSignedIn()) {
 
       this.configureRadiks();
-      let profile = this.userSession.loadUserData();
+      let profile = window.userSession.loadUserData();
       this.name = profile.username;
       this.userInfo.name = this.name;
       this.isLoggedIn = true;
@@ -69,12 +81,12 @@ export class BlockstackAuthProvider implements AuthProvider {
       } catch (e) { console.log('no profile pic') }
 
       this.loginState = "[Logout]";
-      this.getMyGroups(this.userSession);
-    } else if (this.userSession.isSignInPending()) {
-      await this.userSession.handlePendingSignIn();
+      this.getMyGroups(window.userSession);
+    } else if (window.userSession.isSignInPending()) {
+      await window.userSession.handlePendingSignIn();
       this.configureRadiks();
       await User.createWithCurrentUser();
-      this.getMyGroups(this.userSession);
+      this.getMyGroups(window.userSession);
       window.location = window.location.origin
     }
   }
@@ -82,17 +94,17 @@ export class BlockstackAuthProvider implements AuthProvider {
 
   async getMyGroups(userSession) {
     this.groups = await UserGroup.myGroups();
-    this.removeAuthResp(userSession);
+    this.removeAuthResp();
   }
 
   configureRadiks() {
     configure({
       apiServer: Environment.RadiksUrl,
-      userSession: this.userSession
+      userSession: window.userSession
     });
   }
 
-  removeAuthResp(userSession) {
+  removeAuthResp() {
     // get rid of ?authResponse=ey to prevent routing bugs
     let authParam = window.location.href.includes('authResponse');
     if (authParam) {
@@ -101,7 +113,6 @@ export class BlockstackAuthProvider implements AuthProvider {
       let newUrl = window.location.href.replace("/?authResponse=" + myAuthRepsonse, '');
       history.pushState({}, null, newUrl);
     }
-
   }
 
 }

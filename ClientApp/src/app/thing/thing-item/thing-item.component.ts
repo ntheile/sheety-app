@@ -2,11 +2,20 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Environment } from '../../../environments/environment';
 import { DataService } from '../../../services/data.service';
 import { isTemplateExpression } from 'typescript';
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, fadeInExpandOnEnterAnimation, fadeOutCollapseOnLeaveAnimation, bounceInOnEnterAnimation } from 'angular-animations';
+
 
 @Component({
   selector: 'app-thing-item',
   templateUrl: './thing-item.component.html',
-  styleUrls: ['./thing-item.component.scss']
+  styleUrls: ['./thing-item.component.scss'],
+  animations: [
+    fadeInOnEnterAnimation(),
+    fadeOutOnLeaveAnimation(),
+    fadeInExpandOnEnterAnimation(),
+    fadeOutCollapseOnLeaveAnimation(),
+    bounceInOnEnterAnimation()
+  ]
 })
 export class ThingItemComponent implements OnInit {
 

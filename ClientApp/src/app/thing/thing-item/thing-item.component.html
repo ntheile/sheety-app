@@ -1,5 +1,5 @@
 <section>
-      <mat-expansion-panel>
+      <mat-expansion-panel class="zoomOnHover" [@fadeInOnEnter] [@fadeOutOnLeave]>
             <mat-expansion-panel-header>
                   <div *ngIf="!dataService.currentSeachOptions.headerKey">
                         <div *ngFor="let key of searchOpts.keys" class="limit-text">
