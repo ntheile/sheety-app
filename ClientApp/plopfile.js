@@ -41,7 +41,10 @@ module.exports = function(plop) {
       const actions = [
         addFileByTpl({ directory, folderName, file: 'state' }),
         addFileByTpl({ directory, folderName, file: 'actions' }),
-        addFileByTpl({ directory, folderName, file: 'model' })
+        addFileByTpl({ directory, folderName, file: 'model' }),
+        addFileByTpl({ directory, folderName, file: 'component' }),
+        addFileByTplExt({ directory, folderName, file: 'component.html' }),
+        addFileByTplExt({ directory, folderName, file: 'component.scss' })
       ];
 
       if (spec) {
@@ -56,6 +59,13 @@ module.exports = function(plop) {
 function addFileByTpl({ directory, folderName, file }) {
   const templateFile = `./templates/${file}.tpl`;
   const typescriptFile = `{{\'dashCase\' name}}.${file}.ts`;
+  const path = `${process.cwd()}/${directory}/${folderName}/${typescriptFile}`;
+  return { type: 'add', skipIfExists: true, path, templateFile };
+}
+
+function addFileByTplExt({ directory, folderName, file }) {
+  const templateFile = `./templates/${file}.tpl`;
+  const typescriptFile = `{{\'dashCase\' name}}.${file}`;
   const path = `${process.cwd()}/${directory}/${folderName}/${typescriptFile}`;
   return { type: 'add', skipIfExists: true, path, templateFile };
 }

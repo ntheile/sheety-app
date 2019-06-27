@@ -31,6 +31,7 @@ export class SheetyAppsComponent implements OnInit {
   @Select(SheetyAppState.getSheetyApps) sheetyApps$: Observable<SheetyAppModel>;
   @Select(SpinnerState) loading: Observable<boolean>;
 
+  
   thumbnail = "";
   
   currentSheetyApp: any; // SheetyAppModel;

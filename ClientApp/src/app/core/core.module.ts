@@ -46,7 +46,7 @@ import { LoadingComponent } from './../core/loading/loading.component';
         ThingTransformComponent,
         ThingFacetsComponent,
         SheetyAppsComponent,
-        LoadingComponent
+        LoadingComponent,
     ],
     declarations: [
         HomeComponent,
@@ -65,7 +65,7 @@ import { LoadingComponent } from './../core/loading/loading.component';
         ThingTransformComponent,
         ThingFacetsComponent,
         SheetyAppsComponent,
-        LoadingComponent
+        LoadingComponent,
     ],
     providers: [
         AppServerAuthService,

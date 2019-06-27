@@ -5,8 +5,22 @@ import { {{pascalCase name}}Model } from './{{dashCase name}}.model';
 declare let underscore: any;
 declare let window: any;
 
+/* Remember to import your state into the app.module
+import { NgModule } from '@angular/core';
+import { NgxsModule } from '@ngxs/store';
+
+@NgModule({
+  imports: [
+    NgxsModule.forRoot([
+      {{pascalCase name}}State
+    ])
+  ]
+})
+export class AppModule {}
+*/
+
 export class {{pascalCase name}}StateModel {
-  public {{camelCase name}}s: any[];
+  {{camelCase name}}s: {{pascalCase name}}Model[];
 }
 
 @State<{{pascalCase name}}StateModel>({
@@ -17,11 +31,10 @@ export class {{pascalCase name}}StateModel {
 })
 
 
-
 export class {{pascalCase name}}State {
 
   @Selector()
-  static select{{pascalCase name}}s(state: {{pascalCase name}}StateModel ){
+  static select(state: {{pascalCase name}}StateModel ){
       return underscore.sortBy( state.{{camelCase name}}s, 'createdAt').reverse();
   }
   

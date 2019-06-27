@@ -39,7 +39,7 @@ import { SpinnerState, SpinnerState2 } from './../state/spinner.state';
     NgxsModule.forRoot([
       SheetyAppState,
       SpinnerState,
-      SpinnerState2
+      SpinnerState2,
     ]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
