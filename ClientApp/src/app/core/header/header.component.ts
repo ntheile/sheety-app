@@ -11,6 +11,7 @@ import { DataService } from './../../../services/data.service';
 export class HeaderComponent implements OnInit {
 
   public displayName;
+  
 
   constructor(
     public authService: AppServerAuthService, 

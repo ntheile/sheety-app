@@ -1,4 +1,4 @@
-<div  >
+<div  style="text-align: center">
   
   <!-- <button mat-button (click)="go('/')" style="float: left;">Sheety App</button> -->
   <button mat-button (click)="go('/apps')" style="float: left;">My Apps</button>
@@ -7,6 +7,7 @@
   <button mat-button (click)="go('/transform')" style="float: left;">Transform</button> -->
   <!-- <button mat-button (click)="goApi()" style="float: left;">API</button> -->
 
+  <span *ngIf="this.dataService.currentSheetyAppModel" >{{this.dataService.currentSheetyAppModel.name}}</span>
   <button mat-button class="large-user-account" style="float:right !important">{{displayName}}</button>
 <!-- 
   <button mat-button [matMenuTriggerFor]="menu" class="large-user-account" style="float:right !important">

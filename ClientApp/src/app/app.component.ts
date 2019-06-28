@@ -89,7 +89,7 @@ export class AppComponent {
 
     let userInfo = await this.authProvider.getUserInfo();
 
-    if (userInfo.name !== null) {
+    if (this.authProvider.isLoggedIn) {
       this.name = userInfo.name;
     } else {
         this.login();

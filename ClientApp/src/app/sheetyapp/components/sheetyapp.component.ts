@@ -56,13 +56,18 @@ export class SheetyappComponent implements OnInit {
 
   async getSheetyapp(){
     this.Loading();
-    await this.store.dispatch(
-      await new GetSheetyapp()
-    ).toPromise(); 
+    try{
+      await this.store.dispatch(
+        await new GetSheetyapp()
+      ).toPromise(); 
+    } catch(e){console.log('cannot get sheety apps')}
+    
     this.NotLoading();
   }
 
   async addSheetyapp(payload: AppConfigData) {
+
+    
     this.Loading();
     let model: SheetyappModel = new SheetyappModel();
     model.attrs.name = payload.name;
@@ -77,6 +82,8 @@ export class SheetyappComponent implements OnInit {
       this.editSheetyapp(this.dataService.currentSheetyAppModel );
     })
     
+
+  
   }
 
   gotoApp(app: SheetyappModel){
@@ -104,23 +111,29 @@ export class SheetyappComponent implements OnInit {
 
   openAppConfigDialog(): void {
 
-    const dialogRef = this.dialog.open(AppConfigDialogComponent, {
-      data: { },
-      disableClose: true,
-    });
 
-    const dialogOKSubscription = dialogRef.componentInstance.okClicked.subscribe( (result: AppConfigData ) => {
-      if (result){
-        console.log(result);
-        // this.openLayoutConfigDialog(layout);
-        this.addSheetyapp(result);
-      }
-      dialogOKSubscription.unsubscribe();
-    });
+    if (!this.authProvider.isLoggedIn){
+      alert('You must login in first. Please check if the login window opened in a new tab. If not, please refresh the page.');
+    } else{
+      const dialogRef = this.dialog.open(AppConfigDialogComponent, {
+        data: { },
+        disableClose: true,
+      });
+  
+      const dialogOKSubscription = dialogRef.componentInstance.okClicked.subscribe( (result: AppConfigData ) => {
+        if (result){
+          console.log(result);
+          // this.openLayoutConfigDialog(layout);
+          this.addSheetyapp(result);
+        }
+        dialogOKSubscription.unsubscribe();
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log("The dialog was closed, ", result);
+      });
+    }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log("The dialog was closed, ", result);
-    });
 
   }
 

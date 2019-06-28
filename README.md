@@ -1,5 +1,14 @@
 # Sheety App
 
+TODO
+----
+
+- [ ]  auth guard
+- [ ]
+- [ ]
+- [ ]
+
+
 ## ETL
 
 ## Vocabulary
@@ -34,3 +43,4 @@ ThingContainerComponent
         |_ ThingItemComponent
             |_ ThingPropertiesComponent
 </pre>
+

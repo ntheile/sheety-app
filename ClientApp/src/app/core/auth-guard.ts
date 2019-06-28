@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import {
     CanActivate, Router,
     ActivatedRouteSnapshot,
@@ -8,47 +8,58 @@ import {
     CanLoad, Route
 } from '@angular/router';
 import { AppServerAuthService } from '../core/app-server-auth.service';
+import { AuthProvider } from '../../drivers/AuthProvider';
+
 
 
 @Injectable()
 export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad {
 
-    constructor (private authService: AppServerAuthService, private router: Router) {
+    constructor (
+        private authService: AppServerAuthService, 
+        private router: Router,
+        @Inject('AuthProvider') private authProvider: AuthProvider,
+    ) {
+
     }
 
     // Permits the asynchronous loading of a given url
-    canLoad (route: Route): Promise<boolean> {
+    async canLoad (route: Route): Promise<boolean> {
         const url = `/${ route.path }`;
-        return this.checkLogin(url);
+        return await this.checkLogin(url);
     }
 
     // Assuming module/component loaded, checks if route can be activated
-    canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    async canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
 
         const url: string = state.url;
-        return this.checkLogin(url);
+        return await this.checkLogin(url);
     }
 
-    canActivateChild (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-        return this.canActivate(route, state);
+    async canActivateChild (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+        return await this.canActivate(route, state);
     }
 
     //asynchronously checks if user is logged on and authenticated
-    checkLogin (url: string): Promise<boolean> {
+    async checkLogin (url: string): Promise<boolean> {
+        
+        return await this.authProvider.isLoggedIn;
+        
+        
         //Allow user to go to logout page if not logged in.
         //Redirect to home page if logged in and trying to access 'logout'
-        const isLoggedOn = this.authService.isLoggedIn();
-        if (url === '/loggedout' && isLoggedOn) {
-            this.router.navigate(['/']);
-            return Promise.resolve(false);
-        } else if (url === '/loggedout' && !isLoggedOn) {
-            return Promise.resolve(true);
-        }
+        // const isLoggedOn = this.authService.isLoggedIn();
+        // if (url === '/loggedout' && isLoggedOn) {
+        //     this.router.navigate(['/']);
+        //     return Promise.resolve(false);
+        // } else if (url === '/loggedout' && !isLoggedOn) {
+        //     return Promise.resolve(true);
+        // }
 
-        if (!isLoggedOn) {
-            this.authService.login();
-            return Promise.resolve(false);
-        }
-        return Promise.resolve(true);
+        // if (!isLoggedOn) {
+        //     this.authService.login();
+        //     return Promise.resolve(false);
+        // }
+        // return Promise.resolve(true);
     }
 }

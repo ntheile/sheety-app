@@ -17,9 +17,9 @@
             *ngIf="(sheetyapps$ | async).length === 0" style="margin-top: 100px">
         <mat-card class="example-card zoomOnHover" 
             *ngFor="let item of sheetyapps$ | async" [@bounceInOnEnter] [@fadeOutOnLeave]>
-            <mat-card-header>
-                <mat-card-title>{{ item.name }} - {{ item._id }}</mat-card-title>
-                <mat-card-subtitle>{{ item.createdBy }} | {{ item.createdAt | amCalendar }}</mat-card-subtitle>
+            <mat-card-header style="text-align: center">
+                <mat-card-title ><h2>{{ item.name }}</h2></mat-card-title>
+                <mat-card-subtitle>{{ item.createdBy }} {{ item.createdAt | amCalendar }}</mat-card-subtitle>
             </mat-card-header>
             <img mat-card-image [src]="item.thumbnail || ( './../../../assets/undraw/app_2.svg'  ) "
                 width="300px" height="300px" style="object-fit: cover;">
@@ -29,10 +29,11 @@
                 </p>
             </mat-card-content>
             <mat-card-actions>
+                <button mat-button (click)="gotoApp(item)" mat-raised-button color="primary" style="float: right; width: 100%">View App</button>
+
                 <button mat-button (click)="editSheetyapp(item)">Edit</button>
                 <button mat-button (click)="deleteSheetyapp(item)">Delete</button>
-                <mat-slide-toggle [(ngModel)]="item.isPublic">Public</mat-slide-toggle>
-                <button mat-button (click)="gotoApp(item)" mat-raised-button color="primary" style="float: right">View App</button>
+                <mat-slide-toggle [(ngModel)]="item.isPublic">Public</mat-slide-toggle><br/>
             </mat-card-actions>
         </mat-card>
     </div>

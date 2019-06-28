@@ -5,6 +5,7 @@ import { userInfo } from "os";
 import { UserSession, AppConfig, nextMonth } from 'blockstack';
 import { User, getConfig, configure, UserGroup } from 'radiks';
 import { Environment } from "../../environments/environment";
+import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY } from "@angular/cdk/overlay/typings/overlay-directives";
 declare let window: any;
 
 interface BlockStackLoginParams {
@@ -21,12 +22,13 @@ export class BlockstackAuthProvider implements AuthProvider {
 
   private user;
   private name;
-  private isLoggedIn;
+  isLoggedIn = false;;
   private avatar;
   private loginState;
   private userInfo: UserInfo;
   params;
   groups;
+  
 
   constructor() {
     this.userInfo = { name: null };
@@ -63,38 +65,40 @@ export class BlockstackAuthProvider implements AuthProvider {
 
   async checkLoginStatus() {
 
-
     window.userSession = new UserSession({
       appConfig: new AppConfig(['store_write', 'publish_data', 'email'])
     });
 
-
     if (window.userSession.isUserSignedIn()) {
-
       this.configureRadiks();
       let profile = window.userSession.loadUserData();
       this.name = profile.username;
       this.userInfo.name = this.name;
-      this.isLoggedIn = true;
       try {
         this.avatar = profile.profile.image[0].contentUrl;
       } catch (e) { console.log('no profile pic') }
 
       this.loginState = "[Logout]";
-      this.getMyGroups(window.userSession);
+      // await User.createWithCurrentUser();
+      await this.getMyGroups(window.userSession);
     } else if (window.userSession.isSignInPending()) {
       await window.userSession.handlePendingSignIn();
       this.configureRadiks();
       await User.createWithCurrentUser();
-      this.getMyGroups(window.userSession);
-      window.location = window.location.origin
+      await this.getMyGroups(window.userSession);
+      // window.location = window.location.origin
+    } else {
+      console.log('unexpected error');
     }
   }
 
 
   async getMyGroups(userSession) {
-    this.groups = await UserGroup.myGroups();
+    try{
+      this.groups = await UserGroup.myGroups();
+    } catch(e){console.log('cannot get groups')}
     this.removeAuthResp();
+    this.isLoggedIn = true;
   }
 
   configureRadiks() {
