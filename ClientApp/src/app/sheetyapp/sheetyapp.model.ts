@@ -1,16 +1,19 @@
-import { Environment } from "../environments/environment";
-import { BlockstackRadiksModelProvider } from "../drivers/blockstack/BlockstackRadiksModelProvider";
+import { Environment } from "../../environments/environment";
+import { BlockstackRadiksModelProvider } from "../../drivers/blockstack/BlockstackRadiksModelProvider";
 let model;
 if (Environment.ModelProvider === BlockstackRadiksModelProvider) {
-   let { Model } = require("radiks");
-   model = Model;
-} 
+  let { Model } = require("radiks");
+  model = Model;
+}
 
-export class SheetyAppModel extends model {
-  static className = 'SheetyAppModel';
+export class SheetyappModel extends model {
+  static className = 'SheetyappModel';
   static schema = {
     name: {
-        type: String
+      type: String
+    },
+    layout: {
+      type: String
     },
     isPublic: {
       type: Boolean,
@@ -34,9 +37,9 @@ export class SheetyAppModel extends model {
     },
     createdBy: {
       type: String,
-    }, 
+    },
     key: {
       type: String,
-    }, 
+    },
   };
 }

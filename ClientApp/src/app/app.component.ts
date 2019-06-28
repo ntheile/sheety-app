@@ -136,7 +136,12 @@ export class AppComponent {
     for (let i = 0; i < hierarchyDepth; i++) {
         currentKey = currentKey + ".child"
     }
-    currentKey = eval(currentKey + ".name");
+    try{
+      currentKey = eval(currentKey + ".name");
+    } catch(e){
+      console.log('no hierarchy.name data');
+      return;
+    }
     
     this.dataService.currentKey.next(currentKey);
 

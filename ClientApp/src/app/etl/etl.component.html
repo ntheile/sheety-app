@@ -1,8 +1,11 @@
 <section class="etl">
   
   <mat-card style="max-width: 800px" fxLayout="column" fxLayoutAlign="center">
+    <h2 style="text-align: center" *ngIf="dataService.currentSheetyAppModel">{{ dataService.currentSheetyAppModel.name }}</h2>
+    <h2 style="text-align: center">Create an app from an excel spreadsheet!</h2>
     <div fxLayout="row wrap" fxLayoutAlign="center">
-      <h2>Create an app from an excel spreadsheet!</h2>
+
+      <p>* Please make sure the excel spreadsheet is tabular and the first row are the headers. <a href="data/samples/cars/data.xlxs">Here</a> is an example.</p>
     </div>
   
     <div fxLayout="row wrap" fxLayoutAlign="center">
@@ -14,6 +17,19 @@
         <button mat-raised-button color="primary" (click)="openLayoutDialog()" *ngIf="headers" style="float: right" >
           Next 
         </button>
+
+        <br/><br/>
+
+        <button mat-raised-button color="primary" (click)="getSheetyAppDataModel()">
+          Get
+        </button>&nbsp;&nbsp;
+        <button mat-raised-button color="primary" (click)="createSheetyAppDataModel()">
+          Create
+        </button>&nbsp;&nbsp;
+        <button mat-raised-button color="primary" (click)="updateSheetyAppDataModel()">
+          Update
+        </button>
+
       </form>
     </div>
   </mat-card> 

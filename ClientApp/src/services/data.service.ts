@@ -11,6 +11,9 @@ import { StorageProvider } from "../drivers/StorageProvider";
 declare let require: any;
 declare let blockstack: any;
 import 'rxjs/add/operator/toPromise';
+import { SheetyappModel } from "../app/sheetyapp/Sheetyapp.model";
+import { SheetyAppDataModel } from "../models/sheetyapp.data.model";
+import { ModelProvider } from "../drivers/ModelProvider";
 
 
 @Injectable({
@@ -36,7 +39,8 @@ export class DataService {
   facets;
   sheets;
   layout;
-
+  currentSheetyAppModel: SheetyappModel;
+  currentSheetyAppDataModel: SheetyAppDataModel;
 
   public data: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public currentData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -49,7 +53,8 @@ export class DataService {
   constructor(
     public http: HttpClient,
     public router: Router,
-    @Inject('StorageProvider') private storage: StorageProvider
+    @Inject('StorageProvider') private storage: StorageProvider,
+    @Inject('ModelProvider') private model: ModelProvider
   ) {
     this.init();
   }
@@ -153,6 +158,42 @@ export class DataService {
     return Environment.dataPath;
   }
 
+  async getSheetyAppModel(id){
+    let data = await SheetyappModel.findById(id);
+    if (data){
+      data = data.attrs;
+    }
+    this.currentSheetyAppModel = data;
+    return data;
+  }
+
+  async getSheetyAppDataModel(id){
+    let data = await SheetyAppDataModel.fetchList({ sheetyAppModelId: id });
+    if (data.length > 0){
+      data = data[0].attrs;
+    }  else {
+      return null;
+    } 
+
+    const d = await SheetyAppDataModel.findById(data._id);
+    this.currentSheetyAppDataModel = d;
+    return data;
+  }
+
+  async createSheetyAppDataModel(payload){
+    // @ts-ignore
+    let newSheetyDatamodel = new SheetyAppDataModel(payload);
+    const resp = await newSheetyDatamodel.save();
+    return resp.attrs;
+  }
+
+  async updateSheetyAppDataModel(payload) {
+    // @ts-ignore
+    this.currentSheetyAppDataModel.update(payload);
+    const resp = await this.currentSheetyAppDataModel.save();
+    return resp.attrs;
+  }
+
   async getData() {
     if (this.storageDriver === "memory") {
       let dataLocal = localStorage.getItem("data")
@@ -161,7 +202,7 @@ export class DataService {
         this.currentDataCache = dataLocal;
       }
       if (!this.currentDataCache) {
-        this.router.navigate(['/data']);
+        // this.router.navigate(['/data']);
       }
       return this.currentDataCache;
     }

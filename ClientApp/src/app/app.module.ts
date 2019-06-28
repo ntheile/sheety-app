@@ -20,6 +20,7 @@ import { SheetyAppState } from './../state/sheetyapp.state';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { SpinnerState, SpinnerState2 } from './../state/spinner.state';
+import { SheetyappState } from "./sheetyapp/sheetyapp.state";
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { SpinnerState, SpinnerState2 } from './../state/spinner.state';
       SheetyAppState,
       SpinnerState,
       SpinnerState2,
+      SheetyappState
     ]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),

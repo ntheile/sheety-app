@@ -8,6 +8,7 @@ import { Ng5SliderModule } from "ng5-slider";
 import { LayoutDialogComponent } from "../dialogs/layout-dialog/layout-dialog.component";
 import { LayoutConfigDialogComponent } from "../dialogs/layout-config-dialog/layout-config-dialog.component";
 import { MomentModule } from 'ngx-moment';
+import { AppConfigDialogComponent } from '../sheetyapp/dialogs/appconfig-dialog.component';
 
 import {
     MatButtonModule,
@@ -66,7 +67,8 @@ const MATERIALCOMPONENTS = [
 @NgModule({
     declarations: [
         LayoutDialogComponent,
-        LayoutConfigDialogComponent
+        LayoutConfigDialogComponent,
+        AppConfigDialogComponent,
     ],
     imports: [
         CommonModule,
@@ -85,7 +87,8 @@ const MATERIALCOMPONENTS = [
     ],
     entryComponents: [
         LayoutDialogComponent,
-        LayoutConfigDialogComponent
+        LayoutConfigDialogComponent,
+        AppConfigDialogComponent
     ],
 })
 export class SharedModule { }

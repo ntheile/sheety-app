@@ -11,7 +11,8 @@ export class SheetyAppDataModel extends model {
   static className = 'SheetyAppDataModel';
   static schema = {
     sheetyAppModelId: {
-        type: String
+        type: String,
+        decrypted: true
     },
     config: {
         type: String 
@@ -26,19 +27,20 @@ export class SheetyAppDataModel extends model {
       type: Array<String>()
     },
     dataPath: {
-      type: String
+      type: String // https://gaia.blockstack.org/hub/15P2niPu16fLYTJ6zn3FkC2tiGD6EMvS8w/{{app._id}}/data.json
     },
     excelPath: {
-      type: String
+      type: String // https://gaia.blockstack.org/hub/15P2niPu16fLYTJ6zn3FkC2tiGD6EMvS8w/{{app._id}}/excel.xml
     },
     facetsPath: {
-      type: String
+      type: String // // https://gaia.blockstack.org/hub/15P2niPu16fLYTJ6zn3FkC2tiGD6EMvS8w/{{app._id}}/facets.json
     },
     createdBy: {
       type: String,
     },
     _id: {
-      type: String
+      type: String,
+      decrypted: true
     }
   };
 }

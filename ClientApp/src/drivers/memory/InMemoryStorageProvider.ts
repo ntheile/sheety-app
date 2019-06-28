@@ -4,21 +4,21 @@ import { StorageProvider } from '../StorageProvider';
 @Injectable()
 export class InMemoryStorageProvider implements StorageProvider {
     
-    getFile(path) {
+    getFile(path, options?) {
         return new Promise((resolve) => {
             let data = localStorage.getItem(path);
             resolve(data);
         });
     }
     
-    putFile(path, content, config?) {
+    putFile(path, content, options?) {
         return new Promise((resolve) => {
             let data = localStorage.setItem(path, content);
             resolve('sucess');
         });
     }
 
-    deleteFile(path){
+    deleteFile(path, options?){
         return new Promise((resolve) => {
             let data = localStorage.removeItem(path);
             resolve('sucess');

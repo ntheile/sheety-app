@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnInit
 import { FormBuilder, Validators } from "@angular/forms";
 import { Http } from "@angular/http";
 import { MAT_DIALOG_DATA, MatBottomSheetConfig, MatDialog, MatDialogRef } from "@angular/material";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import * as canvasDatagrid from "canvas-datagrid";
 import * as XLSX from "xlsx";
 import { DataService } from "../../services/data.service";
@@ -12,9 +12,10 @@ import { SidenavService } from "../sidenav.service";
 import { ExcelService } from "../../services/excel.service";
 import { LayoutDialogComponent } from './../dialogs/layout-dialog/layout-dialog.component';
 import { LayoutConfigDialogComponent } from './../dialogs/layout-config-dialog/layout-config-dialog.component';
-// dont remove worker of $$ - need to avoid compile error for dynamic module loading with require()
+// dont remove worker or $$ - need to avoid compile error for dynamic module loading with require()
 import { worker } from "cluster";
 import { $$ } from "protractor";
+import { getLocaleDateTimeFormat } from "@angular/common";
 
 declare let DropSheet: any;
 declare let $: any;
@@ -40,6 +41,9 @@ export class ETLComponent implements OnInit {
   headers;
   selectedHeader;
   currentSheetIndex;
+  routeParams;
+  appId;
+
   @ViewChild("excelEl") excelEl: ElementRef;
 
 
@@ -53,6 +57,7 @@ export class ETLComponent implements OnInit {
     public etlService: EtlService,
     private sidenav: SidenavService,
     public excelService: ExcelService,
+    private activeRoute: ActivatedRoute,
   ) {
 
   }
@@ -61,6 +66,11 @@ export class ETLComponent implements OnInit {
     // if (this.dataService.currentDataCache){
     //   //location.reload();
     // }
+
+    this.routeParams = this.activeRoute.snapshot.params;
+    console.log('params: ', this.routeParams);
+    // getData based on route
+    this.getSheetyData();
 
     this.clear();
     if (Environment.storageDriver === "sample") {
@@ -219,5 +229,45 @@ export class ETLComponent implements OnInit {
     // this.router.navigate(['/']);
     location.replace('/');
   }
+
+  async getSheetyData(){
+    let id = this.routeParams['appID'];  
+    let sheetyApp = await this.dataService.getSheetyAppModel(id);
+    let sheetyAppData = await this.getSheetyAppDataModel();
+    console.log('[SheetyAppData] =>', sheetyAppData );
+    if (!sheetyAppData){
+      this.createSheetyAppDataModel();
+    }
+  }
+
+  async getSheetyAppDataModel(){
+    let data = await this.dataService.getSheetyAppDataModel(this.dataService.currentSheetyAppModel._id);
+    console.log('getSheetyAppDataModel: ', data);
+    return data;
+  }
+
+  async createSheetyAppDataModel(){
+    let newSheetyAppDataModel = {
+      sheetyAppModelId: this.dataService.currentSheetyAppModel._id,
+      config: 'config',
+      reducer: 'reducer',
+      transformer: 'transformer',
+      sheets: ['sheet1', 'sheet2'],
+      dataPath: 'https://gaia.blockstack.org/hub/15P2niPu16fLYTJ6zn3FkC2tiGD6EMvS8w/{{app._id}}/data.json',
+      excelPath: 'https://gaia.blockstack.org/hub/15P2niPu16fLYTJ6zn3FkC2tiGD6EMvS8w/{{app._id}}/excel.xml',
+      facetsPath: 'https://gaia.blockstack.org/hub/15P2niPu16fLYTJ6zn3FkC2tiGD6EMvS8w/{{app._id}}/facets.json'
+    };
+    let resp = await this.dataService.createSheetyAppDataModel(newSheetyAppDataModel);
+    console.log('[SheetyAppDataModel] Create => ', resp);
+  }
+
+  async updateSheetyAppDataModel(){
+    let updatedSheetyAppDataModel = {
+      config: 'updatedConfig' + '12'
+    };
+    let resp = await this.dataService.updateSheetyAppDataModel(updatedSheetyAppDataModel);
+    console.log('[SheetyAppDataModel] Update => ', resp);
+  }
+
 
 }

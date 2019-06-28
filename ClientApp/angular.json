@@ -30,6 +30,7 @@
               "src/data/samples/cars/transformer.js",
               "src/data/samples/cars/hierarchy.json",
               "src/data/samples/cars/data.json",
+              "src/data/samples/cars/data.xlsx",
               "src/data/samples/cars/facets.json",
               "src/data/samples/cars-nested/reducer.js",
               "src/data/samples/cars-nested/transformer.js",
