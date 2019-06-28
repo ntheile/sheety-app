@@ -9,16 +9,14 @@ import { LoggedOutComponent } from "./core/loggedout/loggedout.component";
 import { ETLComponent } from "./etl/etl.component";
 import { ThingConfigComponent } from "./thing/thing-config/thing-config.component";
 import { ThingTransformComponent } from "./thing/thing-transform/thing-transform.component";
-import { SheetyAppsComponent } from "./sheetyapps/sheetyapps.component";
 import { SheetyappComponent } from "./sheetyapp/components/sheetyapp.component";
 
 const appRoutes: Routes  = [
-  { path: "", component: HomeComponent, canActivate: [] },
+  { path: "", component: SheetyappComponent, canActivate: [] },
   { path: "home", component: HomeComponent, canActivate: [] },
   { path: "loggedout", component: LoggedOutComponent, canActivate: [] },
   { path: "forbidden", component: ForbiddenComponent },
-  { path: "apps", component: SheetyAppsComponent },
-  { path: "app", component: SheetyappComponent },
+  { path: "apps", component: SheetyappComponent },
   { path: "data", component: ETLComponent },
   { path: "data/:appID", component: ETLComponent },
   { path: "config", component: ThingConfigComponent },

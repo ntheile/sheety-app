@@ -11,8 +11,8 @@ import { RoutingService } from '../services/routing.service';
 import { AuthProvider } from '../drivers/AuthProvider';
 import { Observable } from 'rxjs';
 import { Store, Select } from '@ngxs/store';
-import { SpinnerState } from './../state/spinner.state';
-import { ToggleShow, ToggleHide } from './../actions/spinner.actions';
+import { SpinnerState } from './spinner/spinner.state';
+import { ToggleShow, ToggleHide } from './spinner/spinner.actions';
 declare let window: any;
 
 @Component({

@@ -11,8 +11,8 @@ import { StorageProvider } from "../drivers/StorageProvider";
 declare let require: any;
 declare let blockstack: any;
 import 'rxjs/add/operator/toPromise';
-import { SheetyappModel } from "../app/sheetyapp/Sheetyapp.model";
-import { SheetyAppDataModel } from "../models/sheetyapp.data.model";
+import { SheetyappModel } from "../app/sheetyapp/sheetyapp.model";
+import { SheetyAppDataModel } from "./../app/sheetyapp/sheetyapp.data.model";
 import { ModelProvider } from "../drivers/ModelProvider";
 
 

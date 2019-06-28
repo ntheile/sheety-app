@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, Inject } f
 import { Store, Select, Selector, ofActionCompleted, ofAction } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { GetSheetyapp, AddSheetyapp, UpdateSheetyapp, DeleteSheetyapp } from '../sheetyapp.actions';
-import { SheetyappModel } from '../sheetyapp.model';
-import { SheetyappState } from '../sheetyapp.state';
-import { SpinnerState } from '../../../state/spinner.state';
-import { ToggleShow, ToggleHide } from '../../../actions/spinner.actions';
+import { SheetyappModel } from './../sheetyapp.model';
+import { SheetyappState } from './../sheetyapp.state';
+import { SpinnerState } from './../../spinner/spinner.state';
+import { ToggleShow, ToggleHide } from './../../spinner/spinner.actions';
 import { fadeOutOnLeaveAnimation, bounceInOnEnterAnimation } from 'angular-animations';
 import { UtilsService } from '../../../services/utils.service';
 import { AuthProvider } from '../../../drivers/AuthProvider';
@@ -15,6 +15,7 @@ declare let window: any;
 import html2canvas from 'html2canvas';
 import { DataService } from '../../../services/data.service';
 import { Router } from '@angular/router';
+import { SidenavService } from '../../sidenav.service';
 
 @Component({
   selector: 'app-sheetyapp',
@@ -42,13 +43,16 @@ export class SheetyappComponent implements OnInit {
     public dialog: MatDialog,
     public dataService: DataService,
     private router: Router,
+    private sidenav: SidenavService,
   ) { 
     window.html2canvas = html2canvas;
   }
 
   ngOnInit() {
     this.getSheetyapp();
+    this.sidenav.close();
   }
+
 
   async getSheetyapp(){
     this.Loading();
@@ -65,12 +69,22 @@ export class SheetyappComponent implements OnInit {
     model.attrs.layout = payload.layout;    
     model.attrs.isPublic = false;
     this.currentSheetyapp = model.attrs;
-    await this.store.dispatch( await new AddSheetyapp(this.currentSheetyapp)).toPromise();
-    this.dataService.currentSheetyAppModel = this.currentSheetyapp;
-    this.NotLoading();
+    this.store.dispatch( 
+      await new AddSheetyapp(this.currentSheetyapp)
+    ).subscribe( data =>{
+      this.dataService.currentSheetyAppModel = data.sheetyapps.sheetyapps.slice(-1)[0];
+      this.NotLoading();
+      this.editSheetyapp(this.dataService.currentSheetyAppModel );
+    })
+    
   }
 
   gotoApp(app: SheetyappModel){
+    this.dataService.currentSheetyAppModel = app;
+    this.router.navigate(['/search']);
+  }
+
+  editSheetyapp(app: SheetyappModel){
     this.dataService.currentSheetyAppModel = app;
     this.router.navigate(['/data', app._id]);
   }

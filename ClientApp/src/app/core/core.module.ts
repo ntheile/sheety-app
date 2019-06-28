@@ -20,7 +20,6 @@ import { ThingConfigComponent } from './../thing/thing-config/thing-config.compo
 import { ThingTransformComponent } from './../thing/thing-transform/thing-transform.component';
 import { ThingFacetsComponent } from './../thing/thing-facets/thing-facets.component';
 import { HttpModule } from '@angular/http';
-import { SheetyAppsComponent } from '../sheetyapps/sheetyapps.component';
 import { LoadingComponent } from './../core/loading/loading.component';
 import { SheetyappComponent } from "../sheetyapp/components/sheetyapp.component";
 
@@ -46,7 +45,6 @@ import { SheetyappComponent } from "../sheetyapp/components/sheetyapp.component"
         ThingConfigComponent,
         ThingTransformComponent,
         ThingFacetsComponent,
-        SheetyAppsComponent,
         LoadingComponent,
         SheetyappComponent,
     ],
@@ -66,7 +64,6 @@ import { SheetyappComponent } from "../sheetyapp/components/sheetyapp.component"
         ThingConfigComponent,
         ThingTransformComponent,
         ThingFacetsComponent,
-        SheetyAppsComponent,
         LoadingComponent,
         SheetyappComponent
     ],

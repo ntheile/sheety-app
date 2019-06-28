@@ -1,6 +1,6 @@
 import { Injectable, Inject, InjectionToken } from "@angular/core";
-import { Environment } from "../environments/environment";
-import { BlockstackRadiksModelProvider } from "../drivers/blockstack/BlockstackRadiksModelProvider";
+import { Environment } from "../../environments/environment";
+import { BlockstackRadiksModelProvider } from "../../drivers/blockstack/BlockstackRadiksModelProvider";
 let model;
 if (Environment.ModelProvider === BlockstackRadiksModelProvider) {
    let { Model } = require("radiks");

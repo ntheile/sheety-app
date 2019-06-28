@@ -1,6 +1,6 @@
 <div style="margin: 16px 16px 16px 16px">
 
-    <h2 style="text-align: center">Create an app from an excel spreadsheet!</h2>
+    <h2 style="text-align: center">Create an app from an excel spreadsheet in minutes!</h2>
     <div class="sticky-header">
         <app-loading target="spinner" color="blue"></app-loading>
         <button mat-raised-button color="primary" (click)="openAppConfigDialog()" style="width: 320px; border-radius: 20px;">
@@ -29,9 +29,10 @@
                 </p>
             </mat-card-content>
             <mat-card-actions>
+                <button mat-button (click)="editSheetyapp(item)">Edit</button>
                 <button mat-button (click)="deleteSheetyapp(item)">Delete</button>
                 <mat-slide-toggle [(ngModel)]="item.isPublic">Public</mat-slide-toggle>
-                <button mat-button (click)="gotoApp(item)" mat-raised-button color="primary">View App</button>
+                <button mat-button (click)="gotoApp(item)" mat-raised-button color="primary" style="float: right">View App</button>
             </mat-card-actions>
         </mat-card>
     </div>

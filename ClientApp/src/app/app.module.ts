@@ -16,10 +16,9 @@ import "hammerjs";
 import { SidenavService } from "./sidenav.service";
 
 import { NgxsModule } from '@ngxs/store';
-import { SheetyAppState } from './../state/sheetyapp.state';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { SpinnerState, SpinnerState2 } from './../state/spinner.state';
+import { SpinnerState, SpinnerState2 } from './spinner/spinner.state';
 import { SheetyappState } from "./sheetyapp/sheetyapp.state";
 
 
@@ -38,7 +37,6 @@ import { SheetyappState } from "./sheetyapp/sheetyapp.state";
     SharedModule,
     AppRoutingModule,
     NgxsModule.forRoot([
-      SheetyAppState,
       SpinnerState,
       SpinnerState2,
       SheetyappState
