@@ -12,6 +12,7 @@ import { SidenavService } from "../../sidenav.service";
 import { initChangeDetectorIfExisting } from "@angular/core/src/render3/instructions";
 import { checkAndUpdatePureExpressionInline } from "@angular/core/src/view/pure_expression";
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, fadeInExpandOnEnterAnimation, fadeOutCollapseOnLeaveAnimation, bounceInOnEnterAnimation } from 'angular-animations';
+import { UtilsService } from "../../../services/utils.service";
 declare let require: any;
 declare let window: any;
 
@@ -28,7 +29,6 @@ declare let window: any;
     ]
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-    public app_id: string;
     hierarchy;
     routeParams;
     hierarchyDepth = 1;
@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         public http: HttpClient,
         public routingService: RoutingService,
         public sidenav: SidenavService,
+        public utils: UtilsService,
     ) {
         
     }
@@ -65,13 +66,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     async init(){
-        this.app_id = Environment.Application_Id;
-        this.reducer = this.dataService.getReducer();
-        this.transformer = this.dataService.getTransformer();
+       
+        await this.getSheetyData();
+       
         this.routeParams = this.activeRoute.snapshot.params;
         await this.gererateHierarchialDataFromRoute(this.routeParams);
-        this.getData();
-        this.checkDeepLink();
+       
+        this.reducer = await this.dataService.getReducer();
+        this.transformer = await this.dataService.getTransformer();
+        
+      
+        let data = await this.getData();
+        console.log('[Home.Component] Data', data);
+        // this.checkDeepLink();
     }
 
     ngAfterViewInit() {
@@ -98,8 +105,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
-   
+    async getSheetyData(){
+         // get app id from uri
+         let appId = this.utils.getAppIdFromUrl()
+         // get data based on appID
+         console.log('appID', appId);
+        let sheetyApp = await this.dataService.getSheetyAppModel(appId);
+        let sheetyAppData = await this.getSheetyAppDataModel();
+        console.log('[SheetyAppData] =>', sheetyAppData );
+        if (!sheetyAppData){
+          alert('no data found');
+          this.router.navigate(['/apps']);
+        }
+    }
 
+    async getSheetyAppDataModel(){
+        let data = await this.dataService.getSheetyAppDataModel(this.dataService.currentSheetyAppModel._id);
+        console.log('getSheetyAppDataModel: ', data);
+        return data;
+    }
+   
     async gererateHierarchialDataFromRoute(routeParams) {
         
         this.hierarchyDepth = Object.keys(routeParams).length;

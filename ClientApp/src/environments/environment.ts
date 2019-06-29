@@ -27,7 +27,7 @@ export class Environment {
     public static Application_Insights_Id = "#OverwrittenByAppSettings#";
     public static Redirect_Uri = "#OverwrittenByAppSettings#";
     public static Tenant = "#OverwrittenByAppSettings#";
-    public static StorageProvider = InMemoryStorageProvider;
+    public static StorageProvider = BlockstackStorageProvider;
     public static AuthProvider = BlockstackAuthProvider;
     public static ModelProvider = BlockstackRadiksModelProvider;
     public static ModelProviderImport = "radiks";

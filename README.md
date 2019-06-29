@@ -1,12 +1,6 @@
 # Sheety App
 
-TODO
-----
-
-- [ ]  auth guard
-- [ ]
-- [ ]
-- [ ]
+https://sheety.app
 
 
 ## ETL
@@ -44,3 +38,25 @@ ThingContainerComponent
             |_ ThingPropertiesComponent
 </pre>
 
+
+
+TODO
+----
+
+- [X] save paths for raw files
+- [ ] public files 
+     - [ ] set public names
+     - [ ] decrypt in gaia putFile
+     - [ ] AuthGuard
+        - [ ] in app component if querystring then quert radiks if its a public endpoint
+            - [ ] No then contineu as normal with login
+            - [ ] Yes public then download unencrypted content
+
+                        - [ ] Remove auth logic from app.component
+                        - [ ] Add Anonymous route to load public data
+                        - [ ] Add Auth Guard to all other routes
+
+- [ ] make public sheet for blockstack app mining results 
+- [ ] if view is category then open first item on details page
+- [ ]
+- [ ]

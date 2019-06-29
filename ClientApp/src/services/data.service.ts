@@ -96,7 +96,7 @@ export class DataService {
 
     if (this.storageDriver === "memory") {
       // let configStr = localStorage.getItem("config");
-      let configStr = await this.storage.getFile("config");
+      let configStr = this.currentSheetyAppDataModel.attrs.config
       if (configStr) {
         this.config = JSON.parse(configStr);
       }
@@ -126,10 +126,14 @@ export class DataService {
 
   }
 
-  saveConfig(config) {
+  async saveConfig(config) {
     this.config = config;
     if (this.storageDriver === "memory") {
-      localStorage.setItem("config", JSON.stringify(this.config));
+      // localStorage.setItem("config", JSON.stringify(this.config));
+      let updatedSheetyAppDataModel = {
+        config: JSON.stringify(this.config)
+      };
+      let resp = await this.updateSheetyAppDataModel(updatedSheetyAppDataModel);
     }
     return this.config;
   }
@@ -196,7 +200,8 @@ export class DataService {
 
   async getData() {
     if (this.storageDriver === "memory") {
-      let dataLocal = localStorage.getItem("data")
+      // let dataLocal = localStorage.getItem("data");
+      let dataLocal = await this.getFileHelper('data.json');
       if (dataLocal) {
         dataLocal = JSON.parse(dataLocal);
         this.currentDataCache = dataLocal;
@@ -217,18 +222,62 @@ export class DataService {
 
   }
 
-  saveData(data) {
+  async saveData(data) {
 
     if (this.storageDriver === "memory") {
-      localStorage.setItem("data", JSON.stringify(data));
+      // localStorage.setItem("data", JSON.stringify(data));
+      await this.putFileHelper('data.json', JSON.stringify(data));
     }
 
   }
 
+  async putExcel(excel){
+    return await this.putFileHelper('excel.xml', excel);
+  }
+
+ 
+
+  async getExcel(){
+    return await this.getFileHelper('excel.xml');
+  }
+
+  async getFileHelper(fileName){
+    let path = this.currentSheetyAppModel._id + "/" + fileName;
+    let options = null;
+    let resp;
+    if (this.currentSheetyAppModel.isPublic){
+      options = {
+        decrypt: false
+      };
+      resp = await this.storage.getFile(path, options);
+    } else{
+      resp = await this.storage.getFile(path);
+    }
+    return resp;
+  }
+
+  async putFileHelper(fileName, content){
+    let path = this.currentSheetyAppModel._id + "/" + fileName;
+    let options = null;
+    let resp;
+    if (this.currentSheetyAppModel.isPublic){
+      options = {
+        encrypt: false
+      };
+      resp = await this.storage.putFile(path, content, options);
+    } else {
+      resp = await this.storage.putFile(path, content);
+    }
+    return resp;
+  }
+
+ 
+
   async getFacets() {
 
     if (this.storageDriver === "memory") {
-      let facetsLocal = localStorage.getItem("facets");
+      // let facetsLocal = localStorage.getItem("facets");
+      let facetsLocal = await this.getFileHelper('facets.json');
       if (facetsLocal) {
         this.facets = JSON.parse(facetsLocal);
       }
@@ -245,11 +294,11 @@ export class DataService {
 
   }
 
-  saveFacets(facets) {
+  async saveFacets(facets) {
     if (this.storageDriver === "memory") {
-      localStorage.setItem("facets", JSON.stringify(facets));
+      // localStorage.setItem("facets", JSON.stringify(facets));
+      await this.putFileHelper('facets.json', JSON.stringify(facets));
     }
-
     this.facets = facets;
     return this.facets;
   }
@@ -535,7 +584,8 @@ export class DataService {
     let transformer = null;
     let transformerTemplate = null;
     if (this.storageDriver === "memory") {
-      transformer = localStorage.getItem("transformer");
+      // transformer = localStorage.getItem("transformer");
+      transformer = this.currentSheetyAppDataModel.attrs.transformer;
     }
     // let transformerTemplate = require(`../data/${this.getTransformUrl()}`);
     if (!transformer) {
@@ -555,18 +605,23 @@ export class DataService {
     // return require(`../data/${this.getTransformUrl()}`);
   }
 
-  setTransformer(transformer) {
+  async setTransformer(transformer) {
     if (this.storageDriver === "memory") {
-      transformer = localStorage.setItem("transformer", transformer);
+      // transformer = localStorage.setItem("transformer", transformer);
+      let updatedSheetyAppDataModel = {
+        transformer: transformer
+      };
+      let resp = await this.updateSheetyAppDataModel(updatedSheetyAppDataModel);
     }
     return transformer;
   }
 
-  getReducer() {
+  async getReducer() {
     let reducer = null;
     let reducerTemplate = null;
     if (this.storageDriver === "memory") {
-      reducer = localStorage.getItem("reducer");
+      // reducer = localStorage.getItem("reducer");
+      reducer = this.currentSheetyAppDataModel.attrs.reducer;
     }
     if (!reducer) {
       let functionBody =  `
@@ -576,7 +631,7 @@ export class DataService {
         return list;
       `;
       reducerTemplate = ["list", "keyword", "searchOptions", "Environment", functionBody];
-      this.setReducer(functionBody);
+      await this.setReducer(functionBody);
     } else{
       reducerTemplate = ["list", "keyword", "searchOptions", "Environment", reducer];
     }
@@ -586,9 +641,13 @@ export class DataService {
     //return require('../data/' + this.getReducerUrl());
   }
 
-  setReducer(reducer) {
+  async setReducer(reducer) {
     if (this.storageDriver === "memory") {
-      reducer = localStorage.setItem("reducer", reducer);
+      // reducer = localStorage.setItem("reducer", reducer);
+      let updatedSheetyAppDataModel = {
+        reducer: reducer
+      };
+      let resp = await this.updateSheetyAppDataModel(updatedSheetyAppDataModel);
     }
     return reducer;
     //return reducer;
@@ -605,19 +664,24 @@ export class DataService {
   getSheets() {
 
     if (this.storageDriver === "memory") {
-      let sheets = localStorage.getItem("sheets");
+      // let sheets = localStorage.getItem("sheets");
+      let sheets = this.currentSheetyAppDataModel.attrs.sheets;
       if (sheets) {
-        this.sheets = JSON.parse(sheets);
+        this.sheets = sheets;
       }
     }
 
     return this.sheets;
   }
 
-  setSheets(sheets) {
+  async setSheets(sheets) {
 
     if (this.storageDriver === "memory") {
-      localStorage.setItem("sheets", JSON.stringify(sheets));
+      // localStorage.setItem("sheets", JSON.stringify(sheets));
+      let updatedSheetyAppDataModel = {
+        sheets: sheets
+      };
+      let resp = await this.updateSheetyAppDataModel(updatedSheetyAppDataModel);
     }
   }
 

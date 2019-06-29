@@ -21,23 +21,29 @@ export class ThingTransformComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getFiles();
+    this.init();
   }
 
-  getFiles(){
-    this.transform  = localStorage.getItem("transformer");  // this.dataService.getTransformer(); //require(`./../../../data/${this.dataService.getTransformUrl()}`).transform;
-    this.reduce = localStorage.getItem("reducer");   //this.dataService.getReducer(); // require(`./../../../data/${this.dataService.getReducerUrl()}`).reduce;
+  async init(){
+    await this.getFiles();
   }
 
-  saveConfig(){
+  async getFiles(){
+    // this.transform  = localStorage.getItem("transformer");  // this.dataService.getTransformer(); //require(`./../../../data/${this.dataService.getTransformUrl()}`).transform;
+    // this.reduce = localStorage.getItem("reducer");   //this.dataService.getReducer(); // require(`./../../../data/${this.dataService.getReducerUrl()}`).reduce;
+    this.transform = await this.dataService.getTransformer();
+    this.reduce = await this.dataService.getReducer();
+  }
+
+  async saveConfig(){
     // wire up with ETL scripts, need to kick off a new ETL, etl should take these params
     // etl(config, transform, reduce)
 
     let reduceStr = this.utils.stripHTML(this.reduceEl.nativeElement.innerHTML);
     let transformStr = this.utils.stripHTML(this.transformEl.nativeElement.innerHTML);
 
-    this.dataService.setReducer(reduceStr);
-    this.dataService.setTransformer(transformStr);
+    await this.dataService.setReducer(reduceStr);
+    await this.dataService.setTransformer(transformStr);
 
   }
 

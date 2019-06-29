@@ -63,14 +63,18 @@ export class ETLComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.init();
+  }
+
+  async init(){
     // if (this.dataService.currentDataCache){
-    //   //location.reload();
+      //   //location.reload();
     // }
 
     this.routeParams = this.activeRoute.snapshot.params;
     console.log('params: ', this.routeParams);
     // getData based on route
-    this.getSheetyData();
+    await this.getSheetyData();
 
     this.clear();
     if (Environment.storageDriver === "sample") {
@@ -78,10 +82,11 @@ export class ETLComponent implements OnInit {
       this.excelService.downloadExcel(url);
     }
 
-    let excelCache = localStorage.getItem("excel");
+    // let excelCache = localStorage.getItem("excel");
+    let excelCache = await this.dataService.getExcel();
     if (excelCache) {
       let readtype: any = { type: this.excelService.rABS ? "binary" : "base64" };
-      this.excelService.loadExcel(excelCache, readtype);
+      await this.excelService.loadExcel(excelCache, readtype);
       this.sheets = this.dataService.getSheets();
       this.workbook = this.dataService.getWorkbook();
       this.showSheet(this.workbook, 0);
@@ -116,8 +121,8 @@ export class ETLComponent implements OnInit {
     for (i = 0, f = files[i]; i !== files.length; ++i) {
       const reader = new FileReader();
       const name = f.name;
-      reader.onload = (ee: any) => {
-        this.excelService.convertExcelBinary(ee);
+      reader.onload = async (ee: any) => {
+        await this.excelService.convertExcelBinary(ee);
         this.sheets = this.dataService.getSheets();
         this.workbook = this.dataService.getWorkbook();
         this.showSheet(this.workbook, 0);
@@ -206,10 +211,10 @@ export class ETLComponent implements OnInit {
       disableClose: true,
     });
 
-    const dialogOKSubscription = dialogRef.componentInstance.okClicked.subscribe(selectedHeader => {
+    const dialogOKSubscription = dialogRef.componentInstance.okClicked.subscribe(async selectedHeader => {
       if (selectedHeader){
         console.log(selectedHeader);
-        this.setThing(selectedHeader, dialogRef.componentInstance.data.layout);
+        await this.setThing(selectedHeader, dialogRef.componentInstance.data.layout);
       }
       dialogOKSubscription.unsubscribe();
     });
@@ -221,13 +226,15 @@ export class ETLComponent implements OnInit {
   }
 
 
-  setThing(thing, layout) {
-    this.dataService.setThing(thing);
+  async setThing(thing, layout) {
+    await this.dataService.setThing(thing);
     this.dataService.setLayout(layout);
-    let data = this.etlService.init(thing, layout);
+    let data = await this.etlService.init(thing, layout);
     // this.dataService.routeLookup = [];
     // this.router.navigate(['/']);
-    location.replace('/search');
+    setTimeout( ()=>{
+      location.replace('/search/' + this.dataService.currentSheetyAppModel._id);
+    }, 2000 );
   }
 
   async getSheetyData(){
@@ -247,27 +254,39 @@ export class ETLComponent implements OnInit {
   }
 
   async createSheetyAppDataModel(){
+
+    let gaiaUrl = window.userSession.loadUserData().gaiaHubConfig.url_prefix + window.userSession.loadUserData().gaiaHubConfig.address;
+    let basefilePath = gaiaUrl + '/' + this.dataService.currentSheetyAppModel._id + '/';
+
     let newSheetyAppDataModel = {
       sheetyAppModelId: this.dataService.currentSheetyAppModel._id,
-      config: 'config',
-      reducer: 'reducer',
-      transformer: 'transformer',
-      sheets: ['sheet1', 'sheet2'],
-      dataPath: 'https://gaia.blockstack.org/hub/15P2niPu16fLYTJ6zn3FkC2tiGD6EMvS8w/{{app._id}}/data.json',
-      excelPath: 'https://gaia.blockstack.org/hub/15P2niPu16fLYTJ6zn3FkC2tiGD6EMvS8w/{{app._id}}/excel.xml',
-      facetsPath: 'https://gaia.blockstack.org/hub/15P2niPu16fLYTJ6zn3FkC2tiGD6EMvS8w/{{app._id}}/facets.json'
+      reducer: `
+if (searchOptions.keys.includes('products.name') && searchOptions.searchTerm !== null) {
+  list = list[0].products.filter(product => product.name == keyword);
+}
+return list;
+      `,
+      transformer: `
+console.log('=>executing transformer template'); 
+searchOptions.omitFields = null;
+return searchOptions
+      `,      
+      dataPath: basefilePath + 'data.json',
+      excelPath: basefilePath + 'excel.xml',
+      facetsPath: basefilePath + 'facets.json'
     };
     let resp = await this.dataService.createSheetyAppDataModel(newSheetyAppDataModel);
     console.log('[SheetyAppDataModel] Create => ', resp);
+    this.init();
   }
 
-  async updateSheetyAppDataModel(){
-    let updatedSheetyAppDataModel = {
-      config: 'updatedConfig' + '12'
-    };
-    let resp = await this.dataService.updateSheetyAppDataModel(updatedSheetyAppDataModel);
-    console.log('[SheetyAppDataModel] Update => ', resp);
-  }
+  // async updateSheetyAppDataModel(){
+  //   let updatedSheetyAppDataModel = {
+  //     config: 'updatedConfig' + '12'
+  //   };
+  //   let resp = await this.dataService.updateSheetyAppDataModel(updatedSheetyAppDataModel);
+  //   console.log('[SheetyAppDataModel] Update => ', resp);
+  // }
 
 
 }

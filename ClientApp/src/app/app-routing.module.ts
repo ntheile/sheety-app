@@ -21,7 +21,7 @@ const appRoutes: Routes  = [
   { path: "data/:appID", component: ETLComponent },
   { path: "config", component: ThingConfigComponent },
   { path: "transform", component: ThingTransformComponent },
-  { path: '**', component: HomeComponent}
+  { path: '**', component: HomeComponent }
 ];
 const fullRoutePath = "search";
 const depth = 0;

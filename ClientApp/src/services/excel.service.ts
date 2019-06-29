@@ -23,14 +23,14 @@ export class ExcelService {
     const req = new XMLHttpRequest();
     req.open("GET", url, true);
     req.responseType = "arraybuffer";
-    req.onload = (e) => {
+    req.onload = async (e) => {
       const data = new Uint8Array(req.response);
-      this.convertExcelBinary(null, data);
+      await this.convertExcelBinary(null, data);
     };
     req.send();
   }
 
-  convertExcelBinary(e?, rawData?) {
+  async convertExcelBinary(e?, rawData?) {
     let data;
     let wb;
     let arr;
@@ -45,24 +45,23 @@ export class ExcelService {
         data = btoa(arr);
       }
     }
-    this.saveExcelBlob(data);
-    this.loadExcel(data, readtype);
+    await this.saveExcelBlob(data);
+    await this.loadExcel(data, readtype);
   }
 
-  saveExcelBlob(data) {
-    if (this.dataService.storageDriver === "memory") {
-      localStorage.setItem("excel", data);
-    }
+  async saveExcelBlob(data) {
+    // localStorage.setItem("excel", data);
+    await this.dataService.putExcel(data);
   }
 
-  loadExcel(data, readtype?) {
+  async loadExcel(data, readtype?) {
     let wb;
     try {
       wb = XLSX.read(data, readtype);
       this.workbook = wb;
       this.dataService.setWorkbook(this.workbook);
       this.sheets = wb.SheetNames;
-      this.dataService.setSheets(this.sheets);
+      await this.dataService.setSheets(this.sheets);
       this.dataService.setWorkbook(this.workbook);
     } catch (e) {
       console.log(e);

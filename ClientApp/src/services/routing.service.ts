@@ -35,7 +35,7 @@ export class RoutingService {
       if (node.name) {
         // add name route
         if (this.fullRoutePath === "search" || this.fullRoutePath.includes('properties') ) {
-          this.fullRoutePath = `search`;
+          this.fullRoutePath = `search/:appID`;
           hasPropName = false;
           const omitFields = [node.child.name];
           this.data.routeLookup.push({

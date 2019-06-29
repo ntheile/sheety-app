@@ -63,17 +63,17 @@ export class EtlService {
 
   }
 
-  init(thing, layout, config?) {
+  async init(thing, layout, config?) {
     this.clear();
     if (config){
-      this.config = this.setConfig(thing, config);
+      this.config = await this.setConfig(thing, config);
     } else {
-      this.config = this.setConfig(thing);
+      this.config =  await this.setConfig(thing);
     }
     
     this.workbook = this.dataService.getWorkbook();
     if (!this.workbook){
-      this.workbook = this.loadWorkbook();
+      this.workbook = await this.loadWorkbook();
     }
     this.sheetNames = this.dataService.getSheets();
 
@@ -94,7 +94,7 @@ export class EtlService {
     // fs.writeFile('../data.json', jsonStr, 'utf8', function(){ });
     // fs.writeFile(config.outputDir + "/data.json", jsonStr, 'utf8', function () { });
     this.dataService.data.next(this.database);
-    this.dataService.saveData(this.database);
+    await this.dataService.saveData(this.database);
     this.dataService.currentData.next(this.database);
     this.dataService.originalData = this.database;
     console.log("Transform completed successfully!");
@@ -109,7 +109,7 @@ export class EtlService {
     // this.dataService.saveFacets(null);
   }
 
-  setConfig(thing, config?) {
+  async setConfig(thing, config?) {
     this.thing = thing;
     if (!config){
       this.configTemplate.name = thing;
@@ -119,7 +119,7 @@ export class EtlService {
     } else {
       this.config = config;
     }
-    this.dataService.saveConfig(this.config);
+    await this.dataService.saveConfig(this.config);
     return this.config;
   }
 
@@ -161,11 +161,12 @@ export class EtlService {
     return workbook;
   }
 
-  loadWorkbook(){
+  async loadWorkbook(){
     if (this.dataService.storageDriver === "memory") {
       let wb;
       try {
-        let excelCache = localStorage.getItem("excel");
+        // let excelCache = localStorage.getItem("excel");
+        let excelCache = await this.dataService.getExcel();
         if(excelCache){
           let readtype: any = {type: this.excelService.rABS ? "binary" : "base64" };
           wb = XLSX.read(excelCache, readtype);

@@ -116,4 +116,11 @@ export class UtilsService {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  getAppIdFromUrl(){
+    let urlSplit = location.pathname.split('/');
+    let appIndexPosition = urlSplit.indexOf('search') + 1;
+    let appId = urlSplit[appIndexPosition];
+    return appId;
+  }
+
 }

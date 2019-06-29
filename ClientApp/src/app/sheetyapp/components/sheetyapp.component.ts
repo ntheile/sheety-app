@@ -72,7 +72,7 @@ export class SheetyappComponent implements OnInit {
     let model: SheetyappModel = new SheetyappModel();
     model.attrs.name = payload.name;
     model.attrs.layout = payload.layout;    
-    model.attrs.isPublic = false;
+    model.attrs.isPublic = true;
     this.currentSheetyapp = model.attrs;
     this.store.dispatch( 
       await new AddSheetyapp(this.currentSheetyapp)
@@ -87,8 +87,9 @@ export class SheetyappComponent implements OnInit {
   }
 
   gotoApp(app: SheetyappModel){
-    this.dataService.currentSheetyAppModel = app;
-    this.router.navigate(['/search']);
+    // this.dataService.currentSheetyAppModel = app;
+    // this.router.navigate(['/search/' + app._id]);
+    window.location.replace('/search/' + app._id);
   }
 
   editSheetyapp(app: SheetyappModel){
