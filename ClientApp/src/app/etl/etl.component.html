@@ -1,21 +1,19 @@
 <section class="etl">
-  
+
   <mat-card style="max-width: 800px" fxLayout="column" fxLayoutAlign="center">
-    <h2 style="text-align: center" *ngIf="dataService.currentSheetyAppModel">Upload your Excel Spreadsheet - {{ dataService.currentSheetyAppModel.name }}</h2>
+    <h2 style="text-align: center" *ngIf="dataService.currentSheetyAppModel">Upload your Excel Spreadsheet</h2>
+
     <div fxLayout="row wrap" fxLayoutAlign="center">
 
-      <p>* Please make sure the excel spreadsheet is tabular and the first row are the headers.</p>
-      <!-- <a href="data/samples/cars/data.xlxs">Here</a> is an example. -->
-    </div>
-  
-    <div fxLayout="row wrap" fxLayoutAlign="center">
-      
       <form [formGroup]="formGroup" novalidate style="margin-right: 40px; margin-left: 40px">
-        <input hidden type="file"  #fileInput (change)="onFileChange($event)" />
-        <button mat-raised-button color="primary" (click)="fileInput.click()" style="margin-right: 16px">Upload</button>
+        <input hidden type="file" #fileInput (change)="onFileChange($event)" />
+        <button mat-raised-button color="primary" (click)="fileInput.click()" style="margin-right: 16px">
+          <i class="material-icons">cloud_upload</i> &ngsp; Upload
+        </button>
 
-        <button mat-raised-button color="primary" (click)="openLayoutDialog()" *ngIf="headers" style="float: right" >
-          Next 
+        <button mat-raised-button color="primary" (click)="openLayoutDialog()" *ngIf="headers" style="float: right"
+          [@bounceInOnEnter]>
+          Next &nbsp; <i class="material-icons">arrow_forward</i>
         </button>
 
         <!-- 
@@ -31,22 +29,27 @@
         </button>  -->
       </form>
     </div>
-  </mat-card> 
+    <div fxLayout="row wrap" fxLayoutAlign="center">
+      <p>* Please make sure the excel spreadsheet is tabular and the first row are the headers.</p>
+      <!-- <a href="data/samples/cars/data.xlxs">Here</a> is an example. -->
+    </div>
 
-  
-  <br/>
+  </mat-card>
 
-  
+
+  <br />
+
+
 
   <div fxLayout="row wrap" fxLayoutAlign="start" *ngIf="sheets">
-      <div *ngFor="let sheet of sheets; index as i;" fxLayout="column" fxLayoutAlign="start">
-          <button  (click)="showSheet(null, i)">{{ sheet }}</button>
-          <mat-slide-toggle *ngIf="currentSheetIndex == i" (click)="hideSheet(sheet, i)">Hide</mat-slide-toggle>
-        </div>
+    <div *ngFor="let sheet of sheets; index as i;" fxLayout="column" fxLayoutAlign="start">
+      <button (click)="showSheet(null, i)">{{ sheet }}</button>
+      <!-- <mat-slide-toggle *ngIf="currentSheetIndex == i" (click)="hideSheet(sheet, i)">Hide</mat-slide-toggle> -->
+    </div>
   </div>
-  
 
-  <div #excelEl ></div>
-  
- 
+
+  <div #excelEl></div>
+
+
 </section>

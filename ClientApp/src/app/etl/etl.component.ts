@@ -16,6 +16,7 @@ import { LayoutConfigDialogComponent } from './../dialogs/layout-config-dialog/l
 import { worker } from "cluster";
 import { $$ } from "protractor";
 import { getLocaleDateTimeFormat } from "@angular/common";
+import { bounceInOnEnterAnimation, fadeOutOnLeaveAnimation } from "angular-animations";
 
 declare let DropSheet: any;
 declare let $: any;
@@ -27,6 +28,10 @@ declare let window: any;
   selector: "app-etl",
   templateUrl: "./etl.component.html",
   styleUrls: ["./etl.component.scss"],
+  animations: [
+    bounceInOnEnterAnimation(),
+    fadeOutOnLeaveAnimation(),
+  ]
 })
 export class ETLComponent implements OnInit {
 

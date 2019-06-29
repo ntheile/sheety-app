@@ -1,14 +1,22 @@
 <div  style="text-align: center">
   
+  <button mat-button (click)="go('/apps')" style="float: left;">Sheety App</button>
+  <div>
+      <img mat-card-avatar style="float:right; cursor: pointer; max-width: 50px;" *ngIf="avatar" [src]="avatar" [matMenuTriggerFor]="menu">
+  </div>
+  
+ 
   <!-- <button mat-button (click)="go('/')" style="float: left;">Sheety App</button> -->
-  <button mat-button (click)="go('/apps')" style="float: left;">My Apps</button>
+  <button mat-button (click)="go('/apps')" style="float: right;">My Apps &nbsp;<i class="material-icons">apps</i></button>&nbsp;&nbsp;
   <!-- <button mat-button (click)="go('/data')" style="float: left;">Data</button>
   <button mat-button (click)="go('/config')" style="float: left;">Config</button>
   <button mat-button (click)="go('/transform')" style="float: left;">Transform</button> -->
   <!-- <button mat-button (click)="goApi()" style="float: left;">API</button> -->
 
+  
+
   <span *ngIf="this.dataService.currentSheetyAppModel" >{{this.dataService.currentSheetyAppModel.name}}</span>
-  <button mat-button class="large-user-account" style="float:right !important">{{displayName}}</button>
+ 
 <!-- 
   <button mat-button [matMenuTriggerFor]="menu" class="large-user-account" style="float:right !important">
     {{ displayName || "Unknown User" }}
@@ -19,10 +27,10 @@
       <i class="material-icons">&#xE853;</i>
     </div>
   </button> -->
-  <!-- <mat-menu #menu="matMenu" style="float:right !important">
+  <mat-menu #menu="matMenu" style="float:right !important">
     <span mat-menu-item disabled class="user-name">{{ displayName }}</span>
-    <a *ngIf="authService.isLoggedIn()" mat-menu-item (click)="logout()">Logout</a>
-    <a *ngIf="!authService.isLoggedIn()" mat-menu-item (click)="login()">Login</a>
-  </mat-menu> -->
+    <a *ngIf="authProvider.isLoggedIn" mat-menu-item (click)="logout()">Logout</a>
+    <a *ngIf="!authProvider.isLoggedIn" mat-menu-item (click)="login()">Login</a> 
+  </mat-menu> 
 
 </div>

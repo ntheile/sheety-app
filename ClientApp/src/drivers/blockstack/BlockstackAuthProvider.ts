@@ -55,7 +55,8 @@ export class BlockstackAuthProvider implements AuthProvider {
   }
 
   logout() {
-    throw new Error("Method not implemented.");
+    window.userSession.signUserOut();
+    alert('You have been logged out. Please close the current tab');
   }
 
   async getUserInfo() {
@@ -86,7 +87,9 @@ export class BlockstackAuthProvider implements AuthProvider {
       this.configureRadiks();
       await User.createWithCurrentUser();
       await this.getMyGroups(window.userSession);
-      // window.location = window.location.origin
+      setTimeout( ()=>{
+        window.location.reload();
+      }, 500 );
     } else {
       console.log('unexpected error');
     }
@@ -118,5 +121,6 @@ export class BlockstackAuthProvider implements AuthProvider {
       history.pushState({}, null, newUrl);
     }
   }
+
 
 }

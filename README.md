@@ -44,7 +44,13 @@ TODO
 ----
 
 - [X] save paths for raw files
-- [ ] public files 
+- [ ] icons
+- [ ] laoding spinners
+- [ ] dialog for new features
+- [ ] fix categories and breadcrumbs
+- [ ] Share *COMING SOON
+- [ ] Sell *COMCING SOON
+- [ ] public files *COMING SOON
      - [ ] set public names
      - [ ] decrypt in gaia putFile
      - [ ] AuthGuard

@@ -29,11 +29,13 @@
                 </p>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-button (click)="gotoApp(item)" mat-raised-button color="primary" style="float: right; width: 100%">View App</button>
+                <button mat-button (click)="gotoApp(item)" mat-raised-button color="primary" style="width: 100%; margin-bottom: 16px">View App</button>
 
-                <button mat-button (click)="editSheetyapp(item)">Edit</button>
-                <button mat-button (click)="deleteSheetyapp(item)">Delete</button>
-                <mat-slide-toggle [(ngModel)]="item.isPublic">Public</mat-slide-toggle><br/>
+                <button mat-button (click)="msg('Coming soon - You will be able to share your data with groups')"><i class="material-icons">share</i>Share</button>
+                <button mat-button (click)="msg('Coming soon - You will be able to sell your data. Support for micro transactions on the Bitcoin Lightning network')"><i class="material-icons" >attach_money</i>Sell</button>
+                <mat-slide-toggle [(ngModel)]="item.isPublic" (click)="msg('Coming soon - You will be able share public links to apps')" >Public</mat-slide-toggle>&nbsp;&nbsp;<i class="material-icons" >public</i><br/>
+                <button mat-button (click)="editSheetyapp(item)"><i class="material-icons">edit</i>&nbsp;Edit</button>
+                <button mat-button (click)="deleteSheetyapp(item)"><i class="material-icons">delete</i>&nbsp;Delete</button>
             </mat-card-actions>
         </mat-card>
     </div>

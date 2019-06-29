@@ -72,7 +72,7 @@ export class SheetyappComponent implements OnInit {
     let model: SheetyappModel = new SheetyappModel();
     model.attrs.name = payload.name;
     model.attrs.layout = payload.layout;    
-    model.attrs.isPublic = true;
+    model.attrs.isPublic = false;
     this.currentSheetyapp = model.attrs;
     this.store.dispatch( 
       await new AddSheetyapp(this.currentSheetyapp)
@@ -148,6 +148,10 @@ export class SheetyappComponent implements OnInit {
 
   NotLoading() {
     this.store.dispatch(new ToggleHide("spinner"));
+  }
+
+  msg(msg){
+    alert(msg);
   }
 
 }
