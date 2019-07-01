@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from "../../services/data.service";
 import { Environment } from '../../environments/environment';
-
+declare let $: any;
 
 @Component({
   selector: 'app-thing-container',
@@ -50,6 +50,11 @@ export class ThingContainerComponent implements OnInit {
 
     this.dataService.shouldFacet.subscribe( (shouldFacet)=>{
       this.shouldFacet = shouldFacet;
+    
+        $(document).ready( ()=>{
+            $('.app-loader').hide();
+        });
+    
     });
 
   }

@@ -32,7 +32,12 @@
                -->
         </mat-sidenav>
         <div class="body-content">
-            <router-outlet></router-outlet>
+            <router-outlet>
+            </router-outlet>
+            <div class="app-loader super-center">
+                <h2>Loading...</h2>
+                <img src="./../assets/undraw/undraw_fast_loading_0lbh.svg"  width="320px">
+            </div>
         </div>
         <footer>
             <app-footer></app-footer>

@@ -74,9 +74,11 @@ export class AppComponent {
   }
 
   async init(){
+    this.Show('spinner');
     this.checkDeepLink();
     let routeParams = this.activeRoute.snapshot.params;
     await this.gererateHierarchialDataFromRoute(routeParams);
+    this.Hide('spinner');
   }
 
   checkDeepLink(){

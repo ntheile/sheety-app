@@ -1,5 +1,6 @@
 import { State, Action, StateContext } from '@ngxs/store';
 import { ToggleShow, ToggleHide } from './spinner.actions';
+declare let $:any;
 
 @State<boolean>({ 
   name: 'spinner', 

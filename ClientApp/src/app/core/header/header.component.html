@@ -1,6 +1,7 @@
 <div  style="text-align: center">
   
   <button mat-button (click)="go('/apps')" style="float: left;">Sheety App</button>
+  <app-loading target="spinner" color="blue"  style="float: left;"></app-loading>
   <div>
       <img mat-card-avatar style="float:right; cursor: pointer; max-width: 50px;" *ngIf="avatar" [src]="avatar" [matMenuTriggerFor]="menu">
   </div>
@@ -14,8 +15,9 @@
   <!-- <button mat-button (click)="goApi()" style="float: left;">API</button> -->
 
   
-
   <span *ngIf="this.dataService.currentSheetyAppModel" >{{this.dataService.currentSheetyAppModel.name}}</span>
+ 
+
  
 <!-- 
   <button mat-button [matMenuTriggerFor]="menu" class="large-user-account" style="float:right !important">

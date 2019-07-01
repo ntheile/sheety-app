@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute, Router, UrlHandlingStrategy } from "@angular/router";
 import * as d3 from "d3-collection";
 import * as _ from "lodash";
@@ -13,9 +13,13 @@ import { initChangeDetectorIfExisting } from "@angular/core/src/render3/instruct
 import { checkAndUpdatePureExpressionInline } from "@angular/core/src/view/pure_expression";
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, fadeInExpandOnEnterAnimation, fadeOutCollapseOnLeaveAnimation, bounceInOnEnterAnimation } from 'angular-animations';
 import { UtilsService } from "../../../services/utils.service";
+import { Observable } from "rxjs";
+import { SpinnerState } from "../../spinner/spinner.state";
+import { Select, Store } from "@ngxs/store";
+import { ToggleHide, ToggleShow } from "../../spinner/spinner.actions";
 declare let require: any;
 declare let window: any;
-
+declare let $: any;
 @Component({
     selector: "app-home",
     templateUrl: "./home.component.html",
@@ -48,8 +52,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     isMobile = false;
 
     @ViewChild(FacetComponent) facets;
+    @Select(SpinnerState) loading: Observable<boolean>;
+
 
     constructor(
+        public store: Store,
         public dataService: DataService,
         private router: Router,
         private activeRoute: ActivatedRoute,
@@ -57,6 +64,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         public routingService: RoutingService,
         public sidenav: SidenavService,
         public utils: UtilsService,
+        public cd: ChangeDetectorRef
     ) {
         
     }
@@ -67,6 +75,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     async init(){
        
+        this.store.dispatch( new ToggleShow('spinner') );
         await this.getSheetyData();
        
         this.routeParams = this.activeRoute.snapshot.params;
@@ -79,6 +88,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let data = await this.getData();
         console.log('[Home.Component] Data', data);
         // this.checkDeepLink();
+        this.store.dispatch( new ToggleHide('spinner') );
     }
 
     ngAfterViewInit() {
@@ -92,7 +102,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
         if (window.innerWidth < 1024){
             this.isMobile = true;
-        }
+        }  
     }
 
     checkDeepLink() {
@@ -117,6 +127,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
           alert('no data found');
           this.router.navigate(['/apps']);
         }
+        this.store.dispatch(new ToggleHide("spinner"));
+
     }
 
     async getSheetyAppDataModel(){
@@ -135,7 +147,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
         for (let i = 0; i < this.hierarchyDepth; i++) {
             this.currentKey = this.currentKey + ".child"
         }
-        this.currentKey = eval(this.currentKey + ".name");
+        try{
+            this.currentKey = eval(this.currentKey + ".name");
+        } catch(e) {
+            alert('No Excel data found. Please go back to the "My App" page, click EDIT and upload data');
+        }
+        
         
         this.dataService.currentKey.next(this.currentKey);
 

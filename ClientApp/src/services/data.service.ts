@@ -644,6 +644,7 @@ export class DataService {
   async setReducer(reducer) {
     if (this.storageDriver === "memory") {
       // reducer = localStorage.setItem("reducer", reducer);
+
       let updatedSheetyAppDataModel = {
         reducer: reducer
       };
@@ -652,6 +653,7 @@ export class DataService {
     return reducer;
     //return reducer;
   }
+
 
   getWorkbook() {
     return this.workbook;

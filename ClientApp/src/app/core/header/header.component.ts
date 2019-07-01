@@ -4,6 +4,10 @@ import { Router } from '@angular/router';
 import { DataService } from './../../../services/data.service';
 import { AuthProvider } from '../../../drivers/AuthProvider';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Store, Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { SpinnerState } from '../../spinner/spinner.state';
+import { ToggleShow, ToggleHide } from '../../spinner/spinner.actions';
 declare let window: any;
 
 @Component({
@@ -15,6 +19,7 @@ export class HeaderComponent implements OnInit {
 
   public displayName;
   public avatar;
+  @Select(SpinnerState) loading: Observable<boolean>;
 
   constructor(
     public authService: AppServerAuthService, 
@@ -22,6 +27,7 @@ export class HeaderComponent implements OnInit {
     public dataService: DataService,
     @Inject('AuthProvider') public authProvider: AuthProvider,
     public domSanitizer: DomSanitizer,
+    private store: Store,
     ) { }
 
   ngOnInit() {
@@ -29,6 +35,7 @@ export class HeaderComponent implements OnInit {
   }
 
   async init(){
+    this.Loading();
     this.displayName = await this.authService.getDisplayName();
     this.avatar = this.domSanitizer.bypassSecurityTrustUrl("https://www.gravatar.com/avatar/00000000000000000000000000000000?d=retro&f=y");
     try{
@@ -58,4 +65,13 @@ export class HeaderComponent implements OnInit {
   goApi(){
     location.replace(this.getApiUrl());
   }
+
+  Loading() {
+    this.store.dispatch(new ToggleShow("spinner"));
+  }
+
+  NotLoading() {
+    this.store.dispatch(new ToggleHide("spinner"));
+  }
+
 }

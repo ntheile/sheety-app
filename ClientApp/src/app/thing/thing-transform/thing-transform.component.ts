@@ -42,9 +42,12 @@ export class ThingTransformComponent implements OnInit {
     let reduceStr = this.utils.stripHTML(this.reduceEl.nativeElement.innerHTML);
     let transformStr = this.utils.stripHTML(this.transformEl.nativeElement.innerHTML);
 
+    
+
     await this.dataService.setReducer(reduceStr);
     await this.dataService.setTransformer(transformStr);
 
   }
 
+  
 }

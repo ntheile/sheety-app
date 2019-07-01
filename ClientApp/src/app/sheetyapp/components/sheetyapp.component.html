@@ -2,7 +2,6 @@
 
     <h2 style="text-align: center">Create an app from an excel spreadsheet in minutes!</h2>
     <div class="sticky-header">
-        <app-loading target="spinner" color="blue"></app-loading>
         <button mat-raised-button color="primary" (click)="openAppConfigDialog()" style="width: 320px; border-radius: 20px;">
             Create App
             <i class="material-icons">add</i>
@@ -17,12 +16,14 @@
             *ngIf="(sheetyapps$ | async).length === 0" style="margin-top: 100px">
         <mat-card class="example-card zoomOnHover" 
             *ngFor="let item of sheetyapps$ | async" [@bounceInOnEnter] [@fadeOutOnLeave]>
-            <mat-card-header style="text-align: center">
+            <mat-card-header style="text-align: center" (click)="gotoApp(item)" >
                 <mat-card-title ><h2>{{ item.name }}</h2></mat-card-title>
                 <mat-card-subtitle>{{ item.createdBy }} {{ item.createdAt | amCalendar }}</mat-card-subtitle>
             </mat-card-header>
-            <img mat-card-image [src]="item.thumbnail || ( './../../../assets/undraw/app_2.svg'  ) "
-                width="300px" height="300px" style="object-fit: cover;">
+            <img mat-card-image
+                (click)="gotoApp(item)" 
+                [src]="item.thumbnail || ( './../../../assets/undraw/app_2.svg'  ) "
+                width="300px" height="300px" style="object-fit: cover;" >
             <mat-card-content >
                 <p>
                     {{ item.sheets }}

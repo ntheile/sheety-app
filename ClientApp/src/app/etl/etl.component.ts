@@ -17,6 +17,8 @@ import { worker } from "cluster";
 import { $$ } from "protractor";
 import { getLocaleDateTimeFormat } from "@angular/common";
 import { bounceInOnEnterAnimation, fadeOutOnLeaveAnimation } from "angular-animations";
+import { ToggleHide, ToggleShow } from "../spinner/spinner.actions";
+import { Store } from "@ngxs/store";
 
 declare let DropSheet: any;
 declare let $: any;
@@ -53,6 +55,7 @@ export class ETLComponent implements OnInit {
 
 
   constructor(
+    public store: Store,
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
     public dataService: DataService,
@@ -75,7 +78,7 @@ export class ETLComponent implements OnInit {
     // if (this.dataService.currentDataCache){
       //   //location.reload();
     // }
-
+    this.store.dispatch(new ToggleShow("spinner"));
     this.routeParams = this.activeRoute.snapshot.params;
     console.log('params: ', this.routeParams);
     // getData based on route
@@ -96,6 +99,12 @@ export class ETLComponent implements OnInit {
       this.workbook = this.dataService.getWorkbook();
       this.showSheet(this.workbook, 0);
     }
+
+    this.store.dispatch(new ToggleHide("spinner"));
+    $(document).ready( ()=>{
+      $('.app-loader').hide();
+    });
+
 
   }
 
@@ -123,6 +132,7 @@ export class ETLComponent implements OnInit {
     const files: any = e.target.files;
     let i;
     let f;
+    this.store.dispatch(new ToggleShow("spinner"));
     for (i = 0, f = files[i]; i !== files.length; ++i) {
       const reader = new FileReader();
       const name = f.name;
@@ -139,6 +149,7 @@ export class ETLComponent implements OnInit {
         reader.readAsArrayBuffer(f);
       }
     }
+    this.store.dispatch(new ToggleHide("spinner"));
   }
 
 
@@ -232,11 +243,13 @@ export class ETLComponent implements OnInit {
 
 
   async setThing(thing, layout) {
+    this.store.dispatch(new ToggleShow("spinner"));
     await this.dataService.setThing(thing);
     this.dataService.setLayout(layout);
     let data = await this.etlService.init(thing, layout);
     // this.dataService.routeLookup = [];
     // this.router.navigate(['/']);
+    this.store.dispatch(new ToggleHide("spinner"));
     setTimeout( ()=>{
       location.replace('/search/' + this.dataService.currentSheetyAppModel._id);
     }, 2000 );

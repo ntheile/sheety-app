@@ -16,6 +16,7 @@ import html2canvas from 'html2canvas';
 import { DataService } from '../../../services/data.service';
 import { Router } from '@angular/router';
 import { SidenavService } from '../../sidenav.service';
+declare let $: any;
 
 @Component({
   selector: 'app-sheetyapp',
@@ -63,6 +64,10 @@ export class SheetyappComponent implements OnInit {
     } catch(e){console.log('cannot get sheety apps')}
     
     this.NotLoading();
+    $(document).ready( ()=>{
+      $('.app-loader').hide();
+    });
+
   }
 
   async addSheetyapp(payload: AppConfigData) {

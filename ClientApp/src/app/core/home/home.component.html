@@ -15,7 +15,7 @@
             <a [href]="breadcrumb.href">{{ breadcrumb.label  }}</a>&nbsp;/&nbsp;
         </span>
     </div>
-
+    
     <div fxLayout='row wrap' fxLayoutAlign="space-evenly stretch">
         <!-- <mat-card fxFlex="30%" fxFlex.xs="100%" *ngIf="shouldFacet || Environment.debugFacets"
             style="margin-bottom: 20px">
@@ -32,8 +32,9 @@
             <app-thing-container></app-thing-container>
         </mat-card>
     </div>
-
+    
     <!-- list of items in categories for nested data  -->
     <app-thing-category *ngIf="!shouldFacet"></app-thing-category>
+    
 
 </div>
