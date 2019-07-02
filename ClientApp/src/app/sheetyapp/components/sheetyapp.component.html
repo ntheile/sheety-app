@@ -34,7 +34,7 @@
 
                 <button mat-button (click)="msg('Coming soon - You will be able to share your data with groups')"><i class="material-icons">share</i>Share</button>
                 <button mat-button (click)="msg('Coming soon - You will be able to sell your data. Support for micro transactions on the Bitcoin Lightning network')"><i class="material-icons" >attach_money</i>Sell</button>
-                <mat-slide-toggle [(ngModel)]="item.isPublic" (click)="msg('Coming soon - You will be able share public links to apps')" >Public</mat-slide-toggle>&nbsp;&nbsp;<i class="material-icons" >public</i><br/>
+                <mat-slide-toggle [disabled]="true" [(ngModel)]="item.isPublic" (click)="msg('Coming soon - You will be able share public links to apps')" >Public</mat-slide-toggle>&nbsp;&nbsp;<i class="material-icons" >public</i><br/>
                 <button mat-button (click)="editSheetyapp(item)"><i class="material-icons">edit</i>&nbsp;Edit</button>
                 <button mat-button (click)="deleteSheetyapp(item)"><i class="material-icons">delete</i>&nbsp;Delete</button>
             </mat-card-actions>

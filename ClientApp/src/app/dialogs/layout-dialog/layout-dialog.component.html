@@ -10,15 +10,18 @@
         <img class="layoutImage" src="./../../assets/layouts/filtering.svg" width="150px" />
       </div>
     </mat-card>
-    <mat-card class="layout-sq-card" (click)="select('category')" [class.layout-selected]="selectedLayout == 'category'">
+    <!-- <mat-card class="layout-sq-card" (click)="select('category')" [class.layout-selected]="selectedLayout == 'category'"> -->
+    <mat-card class="layout-sq-card"  [class.layout-selected]="selectedLayout == 'category'">
     <div class="layout-square" >
         <div class="layout-square">
           <h3 style="text-align:center">Category Drill Down</h3>
+          <div style="text-align:center;">coming soon</div>
       </div>
       <img src="./../../assets/layouts/category.svg" width="150px" />
     </div>
     </mat-card>
-    <mat-card class="layout-sq-card" (click)="select('filter')" [class.layout-selected]="selectedLayout == 'shopping'">
+    <!-- <mat-card class="layout-sq-card" (click)="select('shopping')" [class.layout-selected]="selectedLayout == 'shopping'"> -->
+    <mat-card class="layout-sq-card" [class.layout-selected]="selectedLayout == 'shopping'">
     <div class="layout-square" >
       <div class="layout-square">
         <h3 style="text-align:center">Shopping</h3>
