@@ -70,7 +70,12 @@ export class BlockstackAuthProvider implements AuthProvider {
       appConfig: new AppConfig(['store_write', 'publish_data', 'email'])
     });
 
+  
+
     if (window.userSession.isUserSignedIn()) {
+
+      console.log('already signed in');
+
       this.configureRadiks();
       let profile = window.userSession.loadUserData();
       this.name = profile.username;
@@ -82,7 +87,10 @@ export class BlockstackAuthProvider implements AuthProvider {
       this.loginState = "[Logout]";
       // await User.createWithCurrentUser();
       await this.getMyGroups(window.userSession);
+      this.backupGroupMemberships();
     } else if (window.userSession.isSignInPending()) {
+
+      console.log('pending sign in');
       await window.userSession.handlePendingSignIn();
       this.configureRadiks();
       await User.createWithCurrentUser();
@@ -93,10 +101,13 @@ export class BlockstackAuthProvider implements AuthProvider {
     } else {
       console.log('unexpected error');
     }
+
+  
   }
 
 
   async getMyGroups(userSession) {
+   
     try{
       this.groups = await UserGroup.myGroups();
     } catch(e){console.log('cannot get groups')}
@@ -120,6 +131,24 @@ export class BlockstackAuthProvider implements AuthProvider {
       let newUrl = window.location.href.replace("/?authResponse=" + myAuthRepsonse, '');
       history.pushState({}, null, newUrl);
     }
+  }
+
+  async backupGroupMemberships(){
+    let groupMembership = localStorage.getItem('GROUP_MEMBERSHIPS_STORAGE_KEY');
+    let resp = null;
+    if (groupMembership){
+      resp = await window.userSession.putFile('GroupMembershipBackup.json', groupMembership);
+    }
+    return resp;
+  }
+
+  async fetchGroupMembershipBackup(){
+    let resp = await window.userSession.getFile('GroupMembershipBackup.json');
+    return resp;
+  }
+
+  async setGroupMembership(groupKeys){
+    localStorage.setItem("GROUP_MEMBERSHIPS_STORAGE_KEY", groupKeys);
   }
 
 

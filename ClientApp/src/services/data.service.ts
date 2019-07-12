@@ -96,7 +96,11 @@ export class DataService {
 
     if (this.storageDriver === "memory") {
       // let configStr = localStorage.getItem("config");
-      let configStr = this.currentSheetyAppDataModel.attrs.config
+      let configStr = null;
+      try{
+        configStr = this.currentSheetyAppDataModel.attrs.config
+      } catch(e){}
+      
       if (configStr) {
         this.config = JSON.parse(configStr);
       }
@@ -242,7 +246,13 @@ export class DataService {
   }
 
   async getFileHelper(fileName){
-    let path = this.currentSheetyAppModel._id + "/" + fileName;
+    let path = null;
+    try{
+      path = this.currentSheetyAppModel._id + "/" + fileName;
+    } catch(e){
+      return;
+    }
+    
     let options = null;
     let resp;
     if (this.currentSheetyAppModel.isPublic){

@@ -22,7 +22,7 @@ import { ThingFacetsComponent } from './../thing/thing-facets/thing-facets.compo
 import { HttpModule } from '@angular/http';
 import { LoadingComponent } from './../core/loading/loading.component';
 import { SheetyappComponent } from "../sheetyapp/components/sheetyapp.component";
-
+import { GroupComponent } from '../group/group.component';
 
 @NgModule({
     imports: [
@@ -47,6 +47,7 @@ import { SheetyappComponent } from "../sheetyapp/components/sheetyapp.component"
         ThingFacetsComponent,
         LoadingComponent,
         SheetyappComponent,
+        GroupComponent
     ],
     declarations: [
         HomeComponent,
@@ -65,7 +66,8 @@ import { SheetyappComponent } from "../sheetyapp/components/sheetyapp.component"
         ThingTransformComponent,
         ThingFacetsComponent,
         LoadingComponent,
-        SheetyappComponent
+        SheetyappComponent,
+        GroupComponent
     ],
     providers: [
         AppServerAuthService,
@@ -85,6 +87,7 @@ export class CoreModule {
 
 export function startup(authService: AppServerAuthService): () => Promise<any> {
     return (): Promise<void> => {
-        return authService.getUserInfo();
+        // return authService.getUserInfo();
+        return null;
     };
 }

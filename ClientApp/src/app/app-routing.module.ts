@@ -10,6 +10,7 @@ import { ETLComponent } from "./etl/etl.component";
 import { ThingConfigComponent } from "./thing/thing-config/thing-config.component";
 import { ThingTransformComponent } from "./thing/thing-transform/thing-transform.component";
 import { SheetyappComponent } from "./sheetyapp/components/sheetyapp.component";
+import { GroupComponent } from './group/group.component';
 
 const appRoutes: Routes  = [
   { path: "", component: SheetyappComponent, canActivate: [] },
@@ -21,6 +22,7 @@ const appRoutes: Routes  = [
   { path: "data/:appID", component: ETLComponent },
   { path: "config", component: ThingConfigComponent },
   { path: "transform", component: ThingTransformComponent },
+  { path: "group", component: GroupComponent },
   { path: '**', component: HomeComponent }
 ];
 const fullRoutePath = "search";

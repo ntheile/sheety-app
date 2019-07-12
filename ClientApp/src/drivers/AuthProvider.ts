@@ -3,4 +3,7 @@ export interface AuthProvider {
     logout({}:any):any;
     getUserInfo(): any;
     isLoggedIn: boolean;
+    backupGroupMemberships():any;
+    fetchGroupMembershipBackup(): any;
+    setGroupMembership(groupKey): any;
 }
