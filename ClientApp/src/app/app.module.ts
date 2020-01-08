@@ -3,7 +3,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { ErrorHandler, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { AppInsightsService, ApplicationInsightsModule } from "@markpieszak/ng-application-insights";
+// import { AppInsightsService, ApplicationInsightsModule } from "@markpieszak/ng-application-insights";
 import { Environment } from "../environments/environment";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -27,9 +27,9 @@ import { SheetyappState } from "./sheetyapp/sheetyapp.state";
     AppComponent,
   ],
   imports: [
-    ApplicationInsightsModule.forRoot({
-      instrumentationKey: Environment.Application_Insights_Id,
-    }),
+    // ApplicationInsightsModule.forRoot({
+    //   instrumentationKey: Environment.Application_Insights_Id,
+    // }),
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
     BrowserAnimationsModule,
     HttpClientModule,    
@@ -45,7 +45,7 @@ import { SheetyappState } from "./sheetyapp/sheetyapp.state";
     NgxsLoggerPluginModule.forRoot(),
   ],
   providers: [
-    AppInsightsService,
+    // AppInsightsService,
     AuthGuardService,
     MediaMatcher,
     SidenavService,
