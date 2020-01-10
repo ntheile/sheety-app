@@ -28,7 +28,7 @@ export class AppComponent {
   isLoggedIn = false;
   loginState = "Login";
   profile: any;
-  avatar: string = "https://www.gravatar.com/avatar/?d=identicon";
+  avatar: string = "./../assets/placeuser.png";
   
   isMobile = true;
   resizeTimeout;

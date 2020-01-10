@@ -29,11 +29,6 @@ namespace thing_faceter
 {
     public class Startup
     {
-        public static string _clientID = "";
-        public static string _clientSecret = "";
-        public static string _authority = "https://login.microsoftonline.com/c3e32f53-cb7f-4809-968d-1cc4ccc785fe";
-        private string _redirectUri = "";
-        public static string _resourceID = "";
         public static List<string> AnonymousRoutes = new List<string> { "/api", "/forbidden", "/notfound", "/loggedout" };
         public IConfiguration Configuration { get; }
 
@@ -43,105 +38,16 @@ namespace thing_faceter
         {
 
             Configuration = configuration;
-
-
-            _clientSecret = Configuration["Environment:Client_Secret"];
-            _resourceID = Configuration["Environment:Api_Resource_Uri"];
-            _clientID = Configuration["Environment:Application_Id"];
-            _redirectUri = Configuration["Environment:Redirect_Uri"];
+            
         }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMemoryCache();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             // Register the IConfiguration instance which MyOptions binds against.
             services.Configure<EnvironmentOptions>(Configuration.GetSection("Environment"));
-
-            //services.AddAuthentication(auth =>
-            //{
-            //    auth.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //    auth.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //    auth.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //}).AddCookie(options =>
-            //{
-            //    options.Cookie.Name = "thing_faceter_AUTH";                
-            //    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-            //    options.Cookie.SameSite = SameSiteMode.None;
-            //    options.Cookie.Expiration = TimeSpan.FromHours(1);
-            //    options.LoginPath = new PathString("/Account/Login");
-            //    options.LogoutPath = new PathString("/Account/Logout");
-            //    options.AccessDeniedPath = new PathString("/forbidden"); 
-            //    // The default setting for cookie expiration is 14 days. SlidingExpiration is set to true by default
-            //    options.ExpireTimeSpan = TimeSpan.FromHours(1);
-            //    options.SlidingExpiration = true;
-            //    options.Events.OnRedirectToLogin = ctx =>
-            //    {
-            //        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == (int)HttpStatusCode.OK)
-            //        {
-            //            ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            //        }
-            //        else
-            //        {
-            //            ctx.Response.Redirect(ctx.RedirectUri);
-            //        }
-            //        return Task.FromResult(0);
-            //    };
-            //    options.Events.OnRedirectToAccessDenied = (ctx) =>
-            //    {
-            //        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == (int)HttpStatusCode.OK)
-            //        {
-            //            ctx.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-            //        }
-            //        else
-            //            ctx.Response.Redirect(ctx.RedirectUri);
-            //        return Task.CompletedTask;
-            //    };
-            //})
-            //.AddOpenIdConnect(oidcOptions =>
-            //{
-            //    oidcOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //    oidcOptions.ClientId = _clientID;
-            //    oidcOptions.ClientSecret = _clientSecret;
-            //    oidcOptions.Authority = _authority;
-            //    oidcOptions.ResponseType = OpenIdConnectResponseType.CodeIdToken;
-            //    oidcOptions.SaveTokens = true;
-            //    oidcOptions.ClaimActions.Remove("amr");
-            //    oidcOptions.ClaimActions.Remove("aud");
-            //    oidcOptions.ClaimActions.Remove("iss");
-            //    oidcOptions.ClaimActions.Remove("iat");
-            //    oidcOptions.ClaimActions.Remove("nbf");
-            //    oidcOptions.ClaimActions.Remove("exp");
-            //    oidcOptions.Events = new OpenIdConnectEvents
-            //    {
-            //        OnTicketReceived = context =>
-            //        {
-            //            context.Properties.IsPersistent = true;
-            //            return Task.FromResult(0);
-            //        },
-            //        OnAuthorizationCodeReceived = async (context) =>
-            //        {
-            //            // Acquire a Token for the API and cache it in the Distributed Token Cache using ADAL
-            //            string userObjectId = (context.Principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier"))?.Value;
-            //            ClientCredential credentials = new ClientCredential(_clientID, _clientSecret);
-
-            //            //Get an instance of the token cache for the current user request
-            //            IDistributedCache distributedCache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
-            //            var cache = new DistributedTokenCache(context.Principal, distributedCache);
-            //            AuthenticationContext authContext = new AuthenticationContext(_authority, cache);
-
-            //            AuthenticationResult authResult = await authContext.AcquireTokenByAuthorizationCodeAsync(context.ProtocolMessage.Code,
-            //                new Uri(context.Properties.Items[OpenIdConnectDefaults.RedirectUriForCodePropertiesKey]), credentials, _resourceID);
-
-            //            // Notify the OIDC middleware that we already took care of code redemption.
-            //            context.HandleCodeRedemption(authResult.AccessToken, authResult.IdToken);
-            //        },
-            //        OnRemoteFailure = OnAuthenticationFailed
-
-            //    };
-            //});
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
@@ -160,7 +66,23 @@ namespace thing_faceter
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IAntiforgery antiforgery)
         {
+            // Add header
+            app.Use(async (context, nextMiddleware) =>
+            {
+                context.Response.OnStarting(() =>
+                {
+                    context.Response.Headers.Add("can't-be-evil", "true");
 
+                    // delete cookies 
+                    foreach (var cookie in context.Request.Cookies.Keys)
+                    {
+                        context.Response.Cookies.Delete(cookie);
+                    }
+
+                    return Task.FromResult(0);
+                });
+                await nextMiddleware();
+            });
 
             if (env.IsDevelopment())
             {
@@ -189,7 +111,6 @@ namespace thing_faceter
             });
 
             app.UseHttpsRedirection();
-            // app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

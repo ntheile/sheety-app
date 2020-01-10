@@ -41,18 +41,7 @@ namespace thing_faceter.Controllers
         [Route("Account/Logout")]
         public ActionResult Logout()
         {
-            string userObjectId = User.GetObjectIdentifierValue();
-
-            //Get an instance of the token cache for the current user request
-            IDistributedCache distributedCache = HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
-
-            var cache = new DistributedTokenCache(User, distributedCache);
-            AuthenticationContext authContext = new AuthenticationContext(Startup._authority, cache);
-            authContext.TokenCache.Clear();
-
-            //Explicitly delete the cookie(this is an IE compatability thing)
-            Response.Cookies.Delete("thing_faceter_AUTH");
-
+          
             // Let Azure AD sign-out
             return SignOut(
                 new AuthenticationProperties { RedirectUri = _environmentOptions.Post_Logout_Redirect_Uri },

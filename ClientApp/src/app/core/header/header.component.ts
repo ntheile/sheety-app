@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
   async init(){
     this.Loading();
     this.displayName = await this.authService.getDisplayName();
-    this.avatar = this.domSanitizer.bypassSecurityTrustUrl("https://www.gravatar.com/avatar/00000000000000000000000000000000?d=retro&f=y");
+    this.avatar = "./../../../assets/placeuser.png";
     try{
       let imageAva = window.userSession.loadUserData().profile.image[0].contentUrl;
       this.avatar = this.domSanitizer.bypassSecurityTrustUrl(imageAva);

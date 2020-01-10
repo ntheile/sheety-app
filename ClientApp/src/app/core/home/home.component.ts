@@ -17,6 +17,8 @@ import { Observable } from "rxjs";
 import { SpinnerState } from "../../spinner/spinner.state";
 import { Select, Store } from "@ngxs/store";
 import { ToggleHide, ToggleShow } from "../../spinner/spinner.actions";
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 declare let require: any;
 declare let window: any;
 declare let $: any;
@@ -64,7 +66,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         public routingService: RoutingService,
         public sidenav: SidenavService,
         public utils: UtilsService,
-        public cd: ChangeDetectorRef
+        public cd: ChangeDetectorRef,
+        private _snackBar: MatSnackBar
     ) {
         
     }
@@ -124,7 +127,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let sheetyAppData = await this.getSheetyAppDataModel();
         console.log('[SheetyAppData] =>', sheetyAppData );
         if (!sheetyAppData){
-          alert('no data found');
+          let snackBarRef = this._snackBar.open("no data found", "close", { duration: 5000 });
           this.router.navigate(['/apps']);
         }
         this.store.dispatch(new ToggleHide("spinner"));
@@ -150,7 +153,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         try{
             this.currentKey = eval(this.currentKey + ".name");
         } catch(e) {
-            alert('No Excel data found. Please go back to the "My App" page, click EDIT and upload data');
+            let snackBarRef = this._snackBar.open('No Excel data found. Please go back to the "My App" page, click EDIT and upload data', "close", { duration: 5000 });
         }
         
         

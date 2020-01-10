@@ -16,6 +16,8 @@ import html2canvas from 'html2canvas';
 import { DataService } from '../../../services/data.service';
 import { Router } from '@angular/router';
 import { SidenavService } from '../../sidenav.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 declare let $: any;
 
 @Component({
@@ -28,13 +30,13 @@ declare let $: any;
   ]
 })
 export class SheetyappComponent implements OnInit {
-  
+
   @Select(SheetyappState.select) sheetyapps$: Observable<SheetyappModel>;
   @Select(SpinnerState) loading: Observable<boolean>;
 
   currentSheetyapp;
   thumbnail = "";
-  
+  alertMsg = "";
 
   constructor(
     private store: Store,
@@ -45,26 +47,28 @@ export class SheetyappComponent implements OnInit {
     public dataService: DataService,
     private router: Router,
     private sidenav: SidenavService,
-  ) { 
+    private _snackBar: MatSnackBar
+  ) {
     window.html2canvas = html2canvas;
   }
 
   ngOnInit() {
     this.getSheetyapp();
     this.sidenav.close();
+    
   }
+  
 
-
-  async getSheetyapp(){
+  async getSheetyapp() {
     this.Loading();
-    try{
+    try {
       await this.store.dispatch(
         await new GetSheetyapp()
-      ).toPromise(); 
-    } catch(e){console.log('cannot get sheety apps')}
-    
+      ).toPromise();
+    } catch (e) { console.log('cannot get sheety apps') }
+
     this.NotLoading();
-    $(document).ready( ()=>{
+    $(document).ready(() => {
       $('.app-loader').hide();
     });
 
@@ -72,45 +76,45 @@ export class SheetyappComponent implements OnInit {
 
   async addSheetyapp(payload: AppConfigData) {
 
-    
+
     this.Loading();
     let model: SheetyappModel = new SheetyappModel();
     model.attrs.name = payload.name;
-    model.attrs.layout = payload.layout;    
+    model.attrs.layout = payload.layout;
     model.attrs.isPublic = false;
     this.currentSheetyapp = model.attrs;
-    this.store.dispatch( 
+    this.store.dispatch(
       await new AddSheetyapp(this.currentSheetyapp)
-    ).subscribe( data =>{
+    ).subscribe(data => {
       this.dataService.currentSheetyAppModel = data.sheetyapps.sheetyapps.slice(-1)[0];
       this.NotLoading();
-      this.editSheetyapp(this.dataService.currentSheetyAppModel );
+      this.editSheetyapp(this.dataService.currentSheetyAppModel);
     })
-    
 
-  
+
+
   }
 
-  gotoApp(app: SheetyappModel){
+  gotoApp(app: SheetyappModel) {
     // this.dataService.currentSheetyAppModel = app;
     // this.router.navigate(['/search/' + app._id]);
     window.location.replace('/search/' + app._id);
   }
 
-  editSheetyapp(app: SheetyappModel){
+  editSheetyapp(app: SheetyappModel) {
     this.dataService.currentSheetyAppModel = app;
     this.router.navigate(['/data', app._id]);
   }
 
-  
-  async deleteSheetyapp( payload ){
+
+  async deleteSheetyapp(payload) {
     this.Loading();
-    await this.store.dispatch( new DeleteSheetyapp(payload) ).toPromise();
+    await this.store.dispatch(new DeleteSheetyapp(payload)).toPromise();
     this.NotLoading();
   }
 
-  async query(){
-    this.store.select(state => state.sheetyapp.sheetyapp).subscribe( ( data ) => {
+  async query() {
+    this.store.select(state => state.sheetyapp.sheetyapp).subscribe((data) => {
       // console.log(data.filter(a=>a._id == '' ));
     });
   }
@@ -118,23 +122,24 @@ export class SheetyappComponent implements OnInit {
   openAppConfigDialog(): void {
 
 
-    if (!this.authProvider.isLoggedIn){
-      alert('You must login in first. Please check if the login window opened in a new tab. If not, please refresh the page.');
-    } else{
+    if (!this.authProvider.isLoggedIn) {
+      let snackBarRef = this._snackBar.open('You must login in first. Please check if the login window opened in a new tab. If not, please refresh the page.', "close", { duration: 5000 });
+      
+    } else {
       const dialogRef = this.dialog.open(AppConfigDialogComponent, {
-        data: { },
+        data: {},
         disableClose: true,
       });
-  
-      const dialogOKSubscription = dialogRef.componentInstance.okClicked.subscribe( (result: AppConfigData ) => {
-        if (result){
+
+      const dialogOKSubscription = dialogRef.componentInstance.okClicked.subscribe((result: AppConfigData) => {
+        if (result) {
           console.log(result);
           // this.openLayoutConfigDialog(layout);
           this.addSheetyapp(result);
         }
         dialogOKSubscription.unsubscribe();
       });
-  
+
       dialogRef.afterClosed().subscribe((result) => {
         console.log("The dialog was closed, ", result);
       });
@@ -143,8 +148,8 @@ export class SheetyappComponent implements OnInit {
 
   }
 
-  getRandNum(){
-    return (this.utils.getRandomInt(1, 5)).toString() ;
+  getRandNum() {
+    return (this.utils.getRandomInt(1, 5)).toString();
   }
 
   Loading() {
@@ -155,8 +160,12 @@ export class SheetyappComponent implements OnInit {
     this.store.dispatch(new ToggleHide("spinner"));
   }
 
-  msg(msg){
-    alert(msg);
+  msg(msg) {
+    let snackBarRef = this._snackBar.open(msg, "close", { duration: 5000 });
   }
+
+ 
+
+
 
 }

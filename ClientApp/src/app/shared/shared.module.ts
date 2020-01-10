@@ -10,6 +10,7 @@ import { LayoutConfigDialogComponent } from "../dialogs/layout-config-dialog/lay
 import { MomentModule } from 'ngx-moment';
 import { AppConfigDialogComponent } from '../sheetyapp/dialogs/appconfig-dialog.component';
 
+
 import {
     MatButtonModule,
     MatCardModule,
@@ -32,6 +33,7 @@ import {
     MatSlideToggleModule,
     MatTableModule,
     MatToolbarModule,
+    MatSnackBarModule
 } from "@angular/material";
 
 
@@ -62,6 +64,7 @@ const MATERIALCOMPONENTS = [
     FlexLayoutModule,
     MatDialogModule,
     MatSelectModule,
+    MatSnackBarModule
 ];
 
 @NgModule({

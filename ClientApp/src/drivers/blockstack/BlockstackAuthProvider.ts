@@ -7,6 +7,7 @@ import { User, getConfig, configure, UserGroup } from 'radiks';
 import { Environment } from "../../environments/environment";
 import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY } from "@angular/cdk/overlay/typings/overlay-directives";
 declare let window: any;
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 interface BlockStackLoginParams {
   origin: any,
@@ -30,7 +31,7 @@ export class BlockstackAuthProvider implements AuthProvider {
   groups;
   
 
-  constructor() {
+  constructor(private _snackBar: MatSnackBar) {
     this.userInfo = { name: null };
     window.userSession = null;
   }
@@ -56,7 +57,7 @@ export class BlockstackAuthProvider implements AuthProvider {
 
   logout() {
     window.userSession.signUserOut();
-    alert('You have been logged out. Please close the current tab');
+    let snackBarRef = this._snackBar.open('You have been logged out. Please close the current tab', "close", { duration: 5000 });
   }
 
   async getUserInfo() {

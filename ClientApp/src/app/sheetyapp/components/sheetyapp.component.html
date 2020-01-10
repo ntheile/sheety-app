@@ -2,7 +2,8 @@
 
     <h2 style="text-align: center">Create an app from an excel spreadsheet in minutes!</h2>
     <div class="sticky-header">
-        <button mat-raised-button color="primary" (click)="openAppConfigDialog()" style="width: 320px; border-radius: 20px;">
+        <button mat-raised-button color="primary" (click)="openAppConfigDialog()"
+            style="width: 320px; border-radius: 20px;">
             Create App
             <i class="material-icons">add</i>
         </button>
@@ -14,30 +15,41 @@
     <div fxLayout="row wrap" fxLayoutAlign="center center" style="height: 100%">
         <img src="./../../../assets/undraw/undraw_creation_process_vndn.svg" width="320px"
             *ngIf="(sheetyapps$ | async).length === 0" style="margin-top: 100px">
-        <mat-card class="example-card zoomOnHover" 
-            *ngFor="let item of sheetyapps$ | async" [@bounceInOnEnter] [@fadeOutOnLeave]>
-            <mat-card-header style="text-align: center" (click)="gotoApp(item)" >
-                <mat-card-title ><h2>{{ item.name }}</h2></mat-card-title>
+        <mat-card class="example-card zoomOnHover" *ngFor="let item of sheetyapps$ | async" [@bounceInOnEnter]
+            [@fadeOutOnLeave]>
+            <mat-card-header style="text-align: center" (click)="gotoApp(item)">
+                <mat-card-title>
+                    <h2>{{ item.name }}</h2>
+                </mat-card-title>
                 <mat-card-subtitle>{{ item.createdBy }} {{ item.createdAt | amCalendar }}</mat-card-subtitle>
             </mat-card-header>
-            <img mat-card-image
-                (click)="gotoApp(item)" 
-                [src]="item.thumbnail || ( './../../../assets/undraw/app_2.svg'  ) "
-                width="300px" height="300px" style="object-fit: cover;" >
-            <mat-card-content >
+            <img mat-card-image (click)="gotoApp(item)"
+                [src]="item.thumbnail || ( './../../../assets/undraw/app_2.svg'  ) " width="300px" height="300px"
+                style="object-fit: cover;">
+            <mat-card-content>
                 <p>
                     {{ item.sheets }}
                 </p>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-button (click)="gotoApp(item)" mat-raised-button color="primary" style="width: 100%; margin-bottom: 16px">View App</button>
+                <button mat-button (click)="gotoApp(item)" mat-raised-button color="primary"
+                    style="width: 100%; margin-bottom: 16px">View App</button>
 
-                <button mat-button (click)="msg('Coming soon - You will be able to share your data with groups')"><i class="material-icons">share</i>Share</button>
-                <button mat-button (click)="msg('Coming soon - You will be able to sell your data. Support for micro transactions on the Bitcoin Lightning network')"><i class="material-icons" >attach_money</i>Sell</button>
-                <mat-slide-toggle [disabled]="true" [(ngModel)]="item.isPublic" (click)="msg('Coming soon - You will be able share public links to apps')" >Public</mat-slide-toggle>&nbsp;&nbsp;<i class="material-icons" >public</i><br/>
+                <button mat-button (click)="msg('Coming soon - You will be able to share your data with groups')"><i
+                        class="material-icons">share</i>Share</button>
+                <button mat-button
+                    (click)="msg('Coming soon - You will be able to sell your data. Support for micro transactions on the Bitcoin Lightning network')"><i
+                        class="material-icons">attach_money</i>Sell</button>
+                <mat-slide-toggle [disabled]="true" [(ngModel)]="item.isPublic"
+                    (click)="msg('Coming soon - You will be able share public links to apps')">Public</mat-slide-toggle>
+                &nbsp;&nbsp;<i class="material-icons">public</i><br />
                 <button mat-button (click)="editSheetyapp(item)"><i class="material-icons">edit</i>&nbsp;Edit</button>
-                <button mat-button (click)="deleteSheetyapp(item)"><i class="material-icons">delete</i>&nbsp;Delete</button>
+                <button mat-button (click)="deleteSheetyapp(item)"><i
+                        class="material-icons">delete</i>&nbsp;Delete</button>
             </mat-card-actions>
         </mat-card>
     </div>
+
+   
+
 </div>

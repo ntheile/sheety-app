@@ -5,6 +5,19 @@
   <title>Sheety App</title>
   <base href="/">
 
+  <script>
+    function deleteAllCookies() {
+      var cookies = document.cookie.split(";");
+
+      for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i];
+          var eqPos = cookie.indexOf("=");
+          var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      }
+    }
+    deleteAllCookies();
+  </script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -12,7 +25,7 @@
   <link href="./assets/css/roboto/roboto-fontface.css" rel="stylesheet" /> 
   <script src="./assets/underscore.js"> </script>
   
-  <script src="./assets/jquery,js" ></script>
+  <script src="./assets/jquery.js" ></script>
   <script>
     // the global _ will now be undefined to avoid conflicts
     window.underscore = _.noConflict();

@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'appconfig-dialog',
@@ -14,7 +15,8 @@ export class AppConfigDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<AppConfigDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AppConfigData
+    @Inject(MAT_DIALOG_DATA) public data: AppConfigData,
+    private _snackBar: MatSnackBar
   ) { }
 
   onNoClick(): void {
@@ -25,7 +27,7 @@ export class AppConfigDialogComponent {
     this.selectedLayout = layout;
 
     if (this.name == "") {
-      alert("Please choose a name for your app");
+      let snackBarRef = this._snackBar.open("Please choose a name for your app", "close", { duration: 5000 });
       return;
     };
 

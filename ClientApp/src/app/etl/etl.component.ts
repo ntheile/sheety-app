@@ -19,6 +19,7 @@ import { getLocaleDateTimeFormat } from "@angular/common";
 import { bounceInOnEnterAnimation, fadeOutOnLeaveAnimation } from "angular-animations";
 import { ToggleHide, ToggleShow } from "../spinner/spinner.actions";
 import { Store } from "@ngxs/store";
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 declare let DropSheet: any;
 declare let $: any;
@@ -66,6 +67,7 @@ export class ETLComponent implements OnInit {
     private sidenav: SidenavService,
     public excelService: ExcelService,
     private activeRoute: ActivatedRoute,
+    private _snackBar: MatSnackBar
   ) {
 
   }
@@ -194,7 +196,7 @@ export class ETLComponent implements OnInit {
   openLayoutDialog(): void {
 
     if (!this.headers) {
-      alert('Please choose an excel spreadsheet that is tabular and has the first row as headers')
+      let snackBarRef = this._snackBar.open('Please choose an excel spreadsheet that is tabular and has the first row as headers', "close", { duration: 5000 });
     }
 
     const dialogRef = this.dialog.open(LayoutDialogComponent, {
